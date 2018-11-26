@@ -1,4 +1,4 @@
-package com.mmc.chomp.game.board;
+package com.mmc.chomp.game.board.domain;
 
 public class BoardFactory {
     public static ChompBoard create(int rows, int cols){

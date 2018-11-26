@@ -1,4 +1,4 @@
-package com.mmc.chomp.game.board;
+package com.mmc.chomp.game.board.domain;
 
 import lombok.Value;
 

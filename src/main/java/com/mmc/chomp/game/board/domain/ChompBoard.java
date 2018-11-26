@@ -1,11 +1,13 @@
-package com.mmc.chomp.game.board;
+package com.mmc.chomp.game.board.domain;
 
-import com.mmc.chomp.ddd.annotation.domain.Agregate;
-import com.mmc.chomp.game.board.exceptions.ChocolateTakenException;
+import com.mmc.chomp.ddd.annotation.domain.support.DomainEventPublisher;
+
 import com.mmc.chomp.game.board.values.ChocolateBoxValue;
+import com.mmc.chomp.game.sharedkernel.Position;
+import com.mmc.chomp.game.sharedkernel.exceptions.ChocolateTakenException;
 
-@Agregate
 public class ChompBoard {
+    private DomainEventPublisher domainEventPublisher;
     private ChocolateBox box;
     private Picker picker = new Picker();
 
@@ -15,7 +17,17 @@ public class ChompBoard {
 
     public void peakChocolate(Position position){
         checkIfIsPossiblePeakChocolate(position);
+
         peak(position);
+
+        checkIfPoisionLeft();
+    }
+
+    private void checkIfPoisionLeft() {
+        if (box.getChocolateAt(Position.AT_RIGHT_OF_POISON_POSITION).isTaken()
+                && box.getChocolateAt(Position.AT_BOTTOM_OF_POISON_POSITION).isTaken()) {
+            //domainEventPublisher.event(new PoisonLeftEvent());
+        }
     }
 
     private void peak(Position position) {

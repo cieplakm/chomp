@@ -1,4 +1,4 @@
-package com.mmc.chomp.game.board.exceptions;
+package com.mmc.chomp.game.sharedkernel.exceptions;
 
 public class ChocolateTakenException extends RuntimeException {
 }
