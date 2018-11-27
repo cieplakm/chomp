@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class Event {
-    private EmbeddedId embeddedId;
+    protected EmbeddedId embeddedId;
     private String message;
 }

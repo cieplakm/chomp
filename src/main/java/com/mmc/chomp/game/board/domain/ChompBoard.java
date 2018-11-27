@@ -21,15 +21,11 @@ public class ChompBoard {
         checkIfIsPossiblePeakChocolate(position);
 
         peak(position);
-
-        checkIfPoisionLeft();
     }
 
-    private void checkIfPoisionLeft() {
-        if (box.getChocolateAt(Position.AT_RIGHT_OF_POISON_POSITION).isTaken()
-                && box.getChocolateAt(Position.AT_BOTTOM_OF_POISON_POSITION).isTaken()) {
-            domainEventPublisher.event(new PoisonLeftEvent());
-        }
+    public boolean checkIfPoisionLeft() {
+        return box.getChocolateAt(Position.AT_RIGHT_OF_POISON_POSITION).isTaken()
+                && box.getChocolateAt(Position.AT_BOTTOM_OF_POISON_POSITION).isTaken();
     }
 
     private void peak(Position position) {

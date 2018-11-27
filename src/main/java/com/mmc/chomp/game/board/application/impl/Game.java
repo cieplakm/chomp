@@ -1,5 +1,8 @@
 package com.mmc.chomp.game.board.application.impl;
 
+import com.mmc.chomp.IoC;
+import com.mmc.chomp.ddd.annotation.domain.support.DomainEventPublisher;
+import com.mmc.chomp.ddd.annotation.domain.support.PoisonLeftEvent;
 import com.mmc.chomp.game.Participant;
 import com.mmc.chomp.game.board.domain.ChompBoard;
 import com.mmc.chomp.game.sharedkernel.Position;
@@ -12,6 +15,8 @@ public class Game {
     private Participant creator;
     private ChompBoard chompBoard;
     private Participant joiner;
+
+    private DomainEventPublisher domainEventPublisher = IoC.domainEventPublisher();
 
     public Game(EmbeddedId embeddedId, Participant creator, ChompBoard chompBoard) {
         this.embeddedId = embeddedId;
@@ -35,6 +40,9 @@ public class Game {
         if (isFull()){
             chompBoard.peakChocolate(position);
         }
+
+        domainEventPublisher.event(new PoisonLeftEvent(embeddedId));
+
         changeTurn();
     }
 

@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DomainEventPublisher {
-    private GameRepository gameRepository = IoC.gameRepository;
+    private GameRepository gameRepository = IoC.gameRepository();
 
     public void event(Event event){
         Game game = gameRepository.get(event.getEmbeddedId());
