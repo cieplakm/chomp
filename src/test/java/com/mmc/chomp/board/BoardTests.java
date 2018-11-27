@@ -1,24 +1,24 @@
 package com.mmc.chomp.board;
 
 import com.mmc.chomp.game.board.domain.BoardFactory;
-import com.mmc.chomp.game.sharedkernel.exceptions.ChocolateTakenException;
+import com.mmc.chomp.game.board.domain.ChompBoard;
+import com.mmc.chomp.game.board.domain.Size;
 import com.mmc.chomp.game.board.values.ChocolateBoxValue;
 import com.mmc.chomp.game.board.values.ChocolateValue;
-import com.mmc.chomp.game.board.domain.ChompBoard;
-import com.mmc.chomp.game.board.sharedkernel.Position;
+import com.mmc.chomp.game.sharedkernel.Position;
+import com.mmc.chomp.game.sharedkernel.exceptions.ChocolateTakenException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
-
 
 public class BoardTests {
 
     @Test
-    public void shouldPeakFormPointToRightAndFromPointToBottom(){
+    public void shouldPeakFormPointToRightAndFromPointToBottom() {
         int row = 5;
         int col = 5;
         Position position = new Position(2, 2);
 
-        ChompBoard chompBoard = BoardFactory.create(row, col);
+        ChompBoard chompBoard = BoardFactory.create(new Size(row, col));
         chompBoard.peakChocolate(position);
         ChocolateBoxValue snapshot = chompBoard.snapshot();
 
@@ -32,14 +32,14 @@ public class BoardTests {
     }
 
     @Test
-    public void cannotPeakSameChocolateTwice(){
+    public void cannotPeakSameChocolateTwice() {
         int row = 5;
         int col = 5;
         Position position = new Position(2, 2);
 
-        ChompBoard chompBoard = BoardFactory.create(row, col);
+        ChompBoard chompBoard = BoardFactory.create(new Size(row, col));
         chompBoard.peakChocolate(position);
-        Assertions.assertThatThrownBy(()->chompBoard.peakChocolate(position)).isInstanceOf(ChocolateTakenException.class);
+        Assertions.assertThatThrownBy(() -> chompBoard.peakChocolate(position)).isInstanceOf(ChocolateTakenException.class);
 
     }
 }
