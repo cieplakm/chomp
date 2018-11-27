@@ -1,6 +1,6 @@
 package com.mmc.chomp.board;
 
-import com.mmc.chomp.game.board.application.impl.EmbeddedId;
+import com.mmc.chomp.ddd.annotation.domain.support.EmbeddedId;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

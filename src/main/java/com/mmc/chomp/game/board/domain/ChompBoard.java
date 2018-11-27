@@ -12,7 +12,7 @@ public class ChompBoard {
         this.box = box;
     }
 
-    public void peakChocolate(Position position){
+    public void peakChocolate(Position position) throws ChocolateTakenException {
         checkIfIsPossiblePeakChocolate(position);
 
         peak(position);
@@ -27,7 +27,7 @@ public class ChompBoard {
        picker.pick(box,position);
     }
 
-    private void checkIfIsPossiblePeakChocolate(Position position) {
+    private void checkIfIsPossiblePeakChocolate(Position position) throws ChocolateTakenException {
         if (box.getChocolateAt(position).isTaken()) {
             throw new ChocolateTakenException();
         }

@@ -13,7 +13,7 @@ import org.junit.Test;
 public class BoardTests {
 
     @Test
-    public void shouldPeakFormPointToRightAndFromPointToBottom() {
+    public void shouldPeakFormPointToRightAndFromPointToBottom() throws ChocolateTakenException {
         int row = 5;
         int col = 5;
         Position position = new Position(2, 2);
@@ -32,7 +32,7 @@ public class BoardTests {
     }
 
     @Test
-    public void cannotPeakSameChocolateTwice() {
+    public void cannotPeakSameChocolateTwice() throws ChocolateTakenException {
         int row = 5;
         int col = 5;
         Position position = new Position(2, 2);

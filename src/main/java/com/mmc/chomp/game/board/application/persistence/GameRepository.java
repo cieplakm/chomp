@@ -1,7 +1,7 @@
 package com.mmc.chomp.game.board.application.persistence;
 
-import com.mmc.chomp.game.board.application.impl.EmbeddedId;
-import com.mmc.chomp.game.board.application.impl.Game;
+import com.mmc.chomp.ddd.annotation.domain.support.EmbeddedId;
+import com.mmc.chomp.game.board.domain.Game;
 
 import java.util.HashMap;
 import java.util.Map;
