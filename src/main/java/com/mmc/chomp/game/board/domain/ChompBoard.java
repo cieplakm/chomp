@@ -28,6 +28,8 @@ public class ChompBoard {
                 && box.getChocolateAt(Position.AT_BOTTOM_OF_POISON_POSITION).isTaken()) {
             //domainEventPublisher.event(new PoisonLeftEvent());
         }
+
+
     }
 
     private void peak(Position position) {
