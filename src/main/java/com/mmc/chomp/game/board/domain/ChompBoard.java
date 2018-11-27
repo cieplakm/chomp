@@ -1,8 +1,5 @@
 package com.mmc.chomp.game.board.domain;
 
-import com.mmc.chomp.IoC;
-import com.mmc.chomp.ddd.annotation.domain.support.DomainEventPublisher;
-import com.mmc.chomp.ddd.annotation.domain.support.PoisonLeftEvent;
 import com.mmc.chomp.game.board.values.ChocolateBoxValue;
 import com.mmc.chomp.game.sharedkernel.Position;
 import com.mmc.chomp.game.sharedkernel.exceptions.ChocolateTakenException;
@@ -10,8 +7,6 @@ import com.mmc.chomp.game.sharedkernel.exceptions.ChocolateTakenException;
 public class ChompBoard {
     private ChocolateBox box;
     private Picker picker = new Picker();
-
-    private DomainEventPublisher domainEventPublisher = IoC.domainEventPublisher;
 
     ChompBoard(ChocolateBox box) {
         this.box = box;

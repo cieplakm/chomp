@@ -16,12 +16,13 @@ public class Game {
     private ChompBoard chompBoard;
     private Participant joiner;
 
-    private DomainEventPublisher domainEventPublisher = IoC.domainEventPublisher();
+    private DomainEventPublisher domainEventPublisher;
 
     public Game(EmbeddedId embeddedId, Participant creator, ChompBoard chompBoard) {
         this.embeddedId = embeddedId;
         this.creator = creator;
         this.chompBoard = chompBoard;
+        domainEventPublisher = IoC.domainEventPublisher();
     }
 
     public void join(Participant joiner){
@@ -41,7 +42,9 @@ public class Game {
             chompBoard.peakChocolate(position);
         }
 
-        domainEventPublisher.event(new PoisonLeftEvent(embeddedId));
+        if (chompBoard.checkIfPoisionLeft()) {
+            domainEventPublisher.event(new PoisonLeftEvent(embeddedId));
+        }
 
         changeTurn();
     }

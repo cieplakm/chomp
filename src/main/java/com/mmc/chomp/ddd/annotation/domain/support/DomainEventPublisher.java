@@ -8,11 +8,15 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DomainEventPublisher {
-    private GameRepository gameRepository = IoC.gameRepository();
+    private GameRepository gameRepository;
+
+    public DomainEventPublisher() {
+        gameRepository = IoC.gameRepository();
+    }
 
     public void event(Event event){
         Game game = gameRepository.get(event.getEmbeddedId());
         Participant participant = game.currentTurn();
-        log.info("Game won " + participant.getLogin());
+        log.info("Game won " + participant.getEmbeddedId().toString());
     }
 }

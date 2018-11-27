@@ -15,7 +15,7 @@ public class DefaultXYZService implements XYZService {
     private TurnChanger turnChanger;
     ChompBoardRepository boardRepository;
 
-    private GameRepository gameRepository = IoC.gameRepository;
+    private GameRepository gameRepository = IoC.gameRepository();
 
     @Override
     public EmbeddedId createGame(Participant creator, Size boardSize) {
