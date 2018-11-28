@@ -1,10 +1,12 @@
-package com.mmc.chomp.game.board.domain;
+package com.mmc.chomp.game.game;
 
 import com.mmc.chomp.IoC;
 import com.mmc.chomp.ddd.annotation.domain.support.EmbeddedId;
 import com.mmc.chomp.ddd.annotation.domain.support.GameOver;
 import com.mmc.chomp.ddd.annotation.domain.support.ParticipantData;
 import com.mmc.chomp.game.Participant;
+import com.mmc.chomp.game.board.domain.ChompBoard;
+import com.mmc.chomp.game.canonicalmodel.publishedlanguage.BaseAgregateRoot;
 import com.mmc.chomp.game.sharedkernel.Position;
 import com.mmc.chomp.game.sharedkernel.exceptions.ChocolateTakenException;
 import com.mmc.chomp.game.sharedkernel.exceptions.JoinException;
@@ -12,8 +14,9 @@ import com.mmc.chomp.game.sharedkernel.exceptions.NoOponentException;
 import com.mmc.chomp.game.sharedkernel.exceptions.NotStartedException;
 import com.mmc.chomp.game.turn.TurnChanger;
 
-import static com.mmc.chomp.game.board.domain.Game.GameStatus.FINISHED;
-import static com.mmc.chomp.game.board.domain.Game.GameStatus.STARTED;
+import static com.mmc.chomp.game.game.Game.GameStatus.CREATED;
+import static com.mmc.chomp.game.game.Game.GameStatus.FINISHED;
+import static com.mmc.chomp.game.game.Game.GameStatus.STARTED;
 
 public class Game extends BaseAgregateRoot {
     private GameStatus status;
@@ -27,9 +30,11 @@ public class Game extends BaseAgregateRoot {
         this.creator = creator;
         this.chompBoard = chompBoard;
         domainEventPublisher = IoC.domainEventPublisher();
+
+        status = CREATED;
     }
 
-    enum GameStatus{
+    enum GameStatus {
         CREATED, STARTED, FINISHED
     }
 

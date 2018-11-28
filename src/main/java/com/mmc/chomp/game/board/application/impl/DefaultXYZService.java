@@ -8,7 +8,7 @@ import com.mmc.chomp.game.board.application.persistence.GameRepository;
 import com.mmc.chomp.game.board.application.service.XYZService;
 import com.mmc.chomp.game.board.domain.BoardFactory;
 import com.mmc.chomp.game.board.domain.ChompBoard;
-import com.mmc.chomp.game.board.domain.Game;
+import com.mmc.chomp.game.game.Game;
 import com.mmc.chomp.game.board.domain.Size;
 import com.mmc.chomp.game.sharedkernel.Position;
 import com.mmc.chomp.game.turn.TurnChanger;
