@@ -1,4 +1,4 @@
-package com.mmc.chomp.app.ranking.domain;
+package com.mmc.chomp.app.game.domain.ranking;
 
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.BaseAgregateRoot;
 import com.mmc.chomp.ddd.annotation.domain.support.AggregateId;
@@ -23,6 +23,9 @@ public class Rank extends BaseAgregateRoot {
         rank--;
     }
 
+    public long getRank(){
+        return rank;
+    }
 
     public ParticipantData getParticipantData() {
         return participantData;

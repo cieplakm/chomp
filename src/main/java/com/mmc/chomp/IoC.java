@@ -4,7 +4,7 @@ package com.mmc.chomp;
 import com.mmc.chomp.app.game.domain.game.GameRepository;
 import com.mmc.chomp.app.game.infrastructure.repo.impl.MockGameRepository;
 import com.mmc.chomp.app.game.infrastructure.repo.impl.MockRatingRepository;
-import com.mmc.chomp.app.ranking.domain.RankingRepository;
+import com.mmc.chomp.app.game.domain.ranking.RankingRepository;
 import com.mmc.chomp.app.system.infrastructure.event.impl.DefaultDomainEventPublisher;
 
 public class IoC {

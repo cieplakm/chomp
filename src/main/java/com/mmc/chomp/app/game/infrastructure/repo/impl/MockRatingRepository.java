@@ -1,13 +1,13 @@
 package com.mmc.chomp.app.game.infrastructure.repo.impl;
 
-import com.mmc.chomp.app.game.domain.game.Game;
-import com.mmc.chomp.app.ranking.domain.Rank;
+import com.mmc.chomp.app.game.domain.ranking.RankingRepository;
+import com.mmc.chomp.app.game.domain.ranking.Rank;
 import com.mmc.chomp.ddd.annotation.domain.support.AggregateId;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MockRatingRepository implements com.mmc.chomp.app.ranking.domain.RankingRepository {
+public class MockRatingRepository implements RankingRepository {
     private RankRepository rankRepository = new RankRepository();
 
     @Override

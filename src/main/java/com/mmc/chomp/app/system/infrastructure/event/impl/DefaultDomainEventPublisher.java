@@ -3,10 +3,9 @@ package com.mmc.chomp.app.system.infrastructure.event.impl;
 import com.mmc.chomp.IoC;
 import com.mmc.chomp.app.canonicalmodel.events.GameOver;
 import com.mmc.chomp.app.game.domain.game.GameRepository;
-import com.mmc.chomp.app.game.infrastructure.repo.impl.MockGameRepository;
 
-import com.mmc.chomp.app.ranking.application.api.RankingService;
-import com.mmc.chomp.app.ranking.application.impl.DefaultRankingService;
+import com.mmc.chomp.app.game.application.api.service.RankingService;
+import com.mmc.chomp.app.game.application.impl.DefaultRankingService;
 import com.mmc.chomp.ddd.annotation.domain.support.DomainEventPublisher;
 
 import com.mmc.chomp.app.canonicalmodel.events.Event;

@@ -19,8 +19,6 @@ public class GameServiceTests {
 
         AggregateId id = service.createGame(participant1, new Size(5, 5));
 
-
-
         service.joinToGame(id, participant2);
 
         service.start(id);
@@ -29,5 +27,15 @@ public class GameServiceTests {
         service.move(id, new Position(1,0));
         service.move(id, new Position(0,1));
 
+
+        AggregateId id2 = service.createGame(participant1, new Size(5, 5));
+
+        service.joinToGame(id2, participant2);
+
+        service.start(id2);
+
+        service.move(id2, new Position(2,2));
+        service.move(id2, new Position(1,0));
+        service.move(id2, new Position(0,1));
     }
 }
