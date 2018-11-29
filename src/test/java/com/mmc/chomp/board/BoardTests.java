@@ -1,12 +1,13 @@
 package com.mmc.chomp.board;
 
-import com.mmc.chomp.game.board.domain.BoardFactory;
-import com.mmc.chomp.game.board.domain.ChompBoard;
-import com.mmc.chomp.game.board.domain.Size;
-import com.mmc.chomp.game.board.values.ChocolateBoxValue;
-import com.mmc.chomp.game.board.values.ChocolateValue;
-import com.mmc.chomp.game.sharedkernel.Position;
-import com.mmc.chomp.game.sharedkernel.exceptions.ChocolateTakenException;
+import com.mmc.chomp.app.game.domain.board.Board;
+import com.mmc.chomp.app.game.domain.board.BoardFactory;
+
+import com.mmc.chomp.app.game.domain.board.Size;
+import com.mmc.chomp.app.values.ChocolateBoxValue;
+import com.mmc.chomp.app.values.ChocolateValue;
+import com.mmc.chomp.app.sharedkernel.Position;
+import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ public class BoardTests {
         int col = 5;
         Position position = new Position(2, 2);
 
-        ChompBoard chompBoard = BoardFactory.create(new Size(row, col));
+        Board chompBoard = BoardFactory.create(new Size(row, col));
         chompBoard.peakChocolate(position);
         ChocolateBoxValue snapshot = chompBoard.snapshot();
 
@@ -37,7 +38,7 @@ public class BoardTests {
         int col = 5;
         Position position = new Position(2, 2);
 
-        ChompBoard chompBoard = BoardFactory.create(new Size(row, col));
+        Board chompBoard = BoardFactory.create(new Size(row, col));
         chompBoard.peakChocolate(position);
         Assertions.assertThatThrownBy(() -> chompBoard.peakChocolate(position)).isInstanceOf(ChocolateTakenException.class);
 

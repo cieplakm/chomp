@@ -4,5 +4,6 @@ import lombok.Value;
 
 @Value
 public class ParticipantData {
+    private AggregateId aggregateId;
     private String login;
 }
