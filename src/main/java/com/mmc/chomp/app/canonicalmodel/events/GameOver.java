@@ -7,8 +7,8 @@ import lombok.Value;
 @Value
 public class GameOver extends Event {
     private ParticipantData participantData;
-    public GameOver(AggregateId aggregateId, ParticipantData participantData) {
-        this.participantData = participantData;
-        this.aggregateId = aggregateId;
+    public GameOver(AggregateId gameId, ParticipantData winner) {
+        this.participantData = winner;
+        this.aggregateId = gameId;
     }
 }

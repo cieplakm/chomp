@@ -12,6 +12,7 @@ import com.mmc.chomp.app.sharedkernel.exceptions.JoinException;
 import com.mmc.chomp.app.sharedkernel.exceptions.NoOponentException;
 import com.mmc.chomp.app.sharedkernel.exceptions.NotStartedException;
 
+import com.mmc.chomp.ddd.annotation.domain.support.ParticipantData;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.CREATED;
@@ -25,6 +26,7 @@ public class Game extends BaseAgregateRoot {
     private Participant currentTurn;
     private Participant creator;
     private Participant joiner;
+    private ParticipantData winner;
 
     public Game(AggregateId aggregateId, Participant creator, Board board) {
         this.aggregateId = aggregateId;
@@ -44,7 +46,7 @@ public class Game extends BaseAgregateRoot {
             throw new JoinException();
         }
         this.joiner = joiner;
-        log.info("New joiner at {} app", aggregateId.getId());
+        log.info("New joiner at {} game", aggregateId.getId());
     }
 
     public void start() {
@@ -69,7 +71,7 @@ public class Game extends BaseAgregateRoot {
         if (isFull()) {
             try {
                 board.peakChocolate(position);
-                log.info("{} moved at {} app",  currentTurn.snapshot().getLogin(), aggregateId.getId());
+                log.info("{} moved at {} game",  currentTurn.snapshot().getLogin(), aggregateId.getId());
             } catch (ChocolateTakenException e) {
                 e.printStackTrace();
             }
@@ -77,29 +79,26 @@ public class Game extends BaseAgregateRoot {
 
         if (board.checkIfPoisionLeft()) {
             finishGame();
-            domainEventPublisher.event(new GameOver(aggregateId, wonParticipant().snapshot()));
             return;
         }
         changeTurn();
     }
 
-    private Participant wonParticipant() {
-        if (currentTurn.equals(creator)) {
-            return joiner;
-        }else {
-            return creator;
-        }
+    private void gameOverEvent() {
+        domainEventPublisher.event(new GameOver(aggregateId, winner));
     }
 
     private void finishGame() {
         status = FINISHED;
+        winner = opponent(currentTurn).snapshot();
         log.info("Game {} finished", aggregateId.getId());
+        gameOverEvent();
     }
 
     private void changeTurn() {
         TurnChanger turnChanger = new TurnChanger();
         currentTurn = turnChanger.switchTurn(currentTurn, creator, joiner);
-        log.info("{}'s turn at {} app", currentTurn.snapshot().getLogin(), aggregateId.getId());
+        log.info("{}'s turn at {} game", currentTurn.snapshot().getLogin(), aggregateId.getId());
     }
 
     public void leave(Participant participant) {
@@ -109,6 +108,18 @@ public class Game extends BaseAgregateRoot {
         } else {
             joiner = null;
         }
+    }
+
+    private Participant opponent(Participant participant){
+        if (participant.equals(creator)) {
+            return joiner;
+        }else {
+            return creator;
+        }
+    }
+
+    public ParticipantData getWinner(){
+        return winner;
     }
 
     private boolean isFull() {

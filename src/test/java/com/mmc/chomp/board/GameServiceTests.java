@@ -10,16 +10,16 @@ import com.mmc.chomp.app.sharedkernel.Position;
 import org.junit.Test;
 
 public class GameServiceTests {
-
+    private GameService service = new DefaultGameService();
 
     @Test
-    public void shoudl(){
-        GameService service = new DefaultGameService();
-
+    public void shouldCreateGame(){
         Participant participant1 = new Participant("Jon");
         Participant participant2 = new Participant("Ann");
 
         AggregateId id = service.createGame(participant1, new Size(5, 5));
+
+
 
         service.joinToGame(id, participant2);
 
@@ -28,6 +28,6 @@ public class GameServiceTests {
         service.move(id, new Position(2,2));
         service.move(id, new Position(1,0));
         service.move(id, new Position(0,1));
-        service.move(id, new Position(0,1));
+
     }
 }
