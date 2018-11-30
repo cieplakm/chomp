@@ -1,6 +1,6 @@
 package com.mmc.chomp.app.game.domain.ranking;
 
-import com.mmc.chomp.ddd.annotation.domain.support.AggregateId;
+import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 
 public interface RankingRepository {
     Rank getByParticipant(AggregateId participantId);

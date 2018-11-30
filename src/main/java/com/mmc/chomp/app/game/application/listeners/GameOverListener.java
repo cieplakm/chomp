@@ -1,0 +1,18 @@
+package com.mmc.chomp.app.game.application.listeners;
+
+import com.mmc.chomp.app.canonicalmodel.events.GameOver;
+import com.mmc.chomp.app.game.application.api.service.RankingService;
+
+public class GameOverListener implements EventHandler<GameOver> {
+
+    private RankingService rankingService;
+
+    public GameOverListener(RankingService rankingService) {
+        this.rankingService = rankingService;
+    }
+
+    @Override
+    public void handle(GameOver event) {
+        rankingService.changeRanking(event.getWinner(), event.getLooser());
+    }
+}

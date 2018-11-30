@@ -1,7 +1,11 @@
 package com.mmc.chomp.app.game.application.api.service;
 
-import com.mmc.chomp.ddd.annotation.domain.support.AggregateId;
+import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
 
 public interface RankingService {
-    void changeRanking(AggregateId gameId);
+
+    void changeRanking(PlayerData winner, PlayerData looser);
+
+    void create(PlayerData playerData);
+
 }

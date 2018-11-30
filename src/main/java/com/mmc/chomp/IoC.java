@@ -1,6 +1,7 @@
 package com.mmc.chomp;
 
 
+import com.mmc.chomp.app.game.application.impl.DefaultRankingService;
 import com.mmc.chomp.app.game.domain.game.GameRepository;
 import com.mmc.chomp.app.game.infrastructure.repo.impl.MockGameRepository;
 import com.mmc.chomp.app.game.infrastructure.repo.impl.MockRatingRepository;

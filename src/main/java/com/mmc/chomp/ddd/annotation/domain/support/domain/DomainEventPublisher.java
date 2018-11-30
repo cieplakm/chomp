@@ -1,4 +1,4 @@
-package com.mmc.chomp.ddd.annotation.domain.support;
+package com.mmc.chomp.ddd.annotation.domain.support.domain;
 
 import com.mmc.chomp.app.canonicalmodel.events.Event;
 

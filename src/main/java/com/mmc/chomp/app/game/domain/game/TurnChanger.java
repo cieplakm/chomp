@@ -1,29 +1,18 @@
 package com.mmc.chomp.app.game.domain.game;
 
-import com.mmc.chomp.app.sharedkernel.Participant;
-
 import java.util.Random;
 
-public class TurnChanger {
+class TurnChanger {
 
-    public Participant choose(Participant participant1, Participant participant2){
-        Random random = new Random();
-        boolean b = random.nextBoolean();
-
-        if (b){
-            return participant1;
-        }else {
-            return participant2;
-        }
+    private TurnChanger(){
     }
 
-    public Participant switchTurn(Participant currentTurn, Participant participant1, Participant participant2) {
-        Participant currentTurnParticipant;
-        if (currentTurn.equals(participant1)){
-            currentTurnParticipant = participant2;
-        }else {
-            currentTurnParticipant = participant1;
-        }
-        return currentTurnParticipant;
+    static <T> T drawLotsPlayer(T t1, T t2) {
+        boolean b = new Random().nextBoolean();
+        return b ? t1 : t2;
+    }
+
+    static <T> T switchTurn(T currentP, T p1, T p2) {
+        return currentP.equals(p1) ? p2 : p1;
     }
 }

@@ -4,7 +4,6 @@ import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
 import lombok.Value;
 
 @Value
-public class GameOver extends Event {
-    private PlayerData winner;
-    private PlayerData looser;
+public class UserCreatedEvent extends Event {
+    private PlayerData playerData;
 }

@@ -2,7 +2,7 @@ package com.mmc.chomp.app.game.infrastructure.repo.impl;
 
 import com.mmc.chomp.app.game.domain.game.Game;
 import com.mmc.chomp.app.game.domain.game.GameRepository;
-import com.mmc.chomp.ddd.annotation.domain.support.AggregateId;
+import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 
 import java.util.HashMap;
 import java.util.Map;

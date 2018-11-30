@@ -1,7 +1,7 @@
-package com.mmc.chomp.app.canonicalmodel.publishedlanguage;
+package com.mmc.chomp.ddd.annotation.domain.support.domain;
 
+import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.system.infrastructure.event.impl.DefaultDomainEventPublisher;
-import com.mmc.chomp.ddd.annotation.domain.support.AggregateId;
 
 public abstract class BaseAgregateRoot {
     protected AggregateId aggregateId;

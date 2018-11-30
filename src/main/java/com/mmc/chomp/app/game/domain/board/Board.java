@@ -1,8 +1,8 @@
 package com.mmc.chomp.app.game.domain.board;
 
-import com.mmc.chomp.app.values.ChocolateBoxValue;
 import com.mmc.chomp.app.sharedkernel.Position;
 import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
+import com.mmc.chomp.app.values.ChocolateBoxValue;
 
 public class Board {
     private ChocolateBox box;
@@ -15,16 +15,12 @@ public class Board {
     public void peakChocolate(Position position) throws ChocolateTakenException {
         checkIfIsPossiblePeakChocolate(position);
 
-        peak(position);
+        picker.pick(box, position);
     }
 
-    public boolean checkIfPoisionLeft() {
+    public boolean isPoissonLeft() {
         return box.getChocolateAt(Position.AT_RIGHT_OF_POISON_POSITION).isTaken()
                 && box.getChocolateAt(Position.AT_BOTTOM_OF_POISON_POSITION).isTaken();
-    }
-
-    private void peak(Position position) {
-       picker.pick(box,position);
     }
 
     private void checkIfIsPossiblePeakChocolate(Position position) throws ChocolateTakenException {
@@ -33,7 +29,7 @@ public class Board {
         }
     }
 
-    public ChocolateBoxValue snapshot(){
+    public ChocolateBoxValue snapshot() {
         return box.snapshot();
     }
 }
