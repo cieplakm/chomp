@@ -7,7 +7,7 @@ import com.mmc.chomp.ddd.annotation.domain.AggregateRoot;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.canonicalmodel.events.GameOver;
 import com.mmc.chomp.app.sharedkernel.Player;
-import com.mmc.chomp.ddd.annotation.domain.support.domain.BaseAgregateRoot;
+import com.mmc.chomp.ddd.support.domain.BaseAgregateRoot;
 import com.mmc.chomp.app.sharedkernel.Position;
 import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
 import com.mmc.chomp.app.sharedkernel.exceptions.JoinException;

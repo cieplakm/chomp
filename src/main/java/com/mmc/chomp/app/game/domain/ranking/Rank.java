@@ -1,6 +1,6 @@
 package com.mmc.chomp.app.game.domain.ranking;
 
-import com.mmc.chomp.ddd.annotation.domain.support.domain.BaseAgregateRoot;
+import com.mmc.chomp.ddd.support.domain.BaseAgregateRoot;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,7 @@
 package com.mmc.chomp.app.sharedkernel;
 
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
-import com.mmc.chomp.ddd.annotation.domain.support.domain.BaseAgregateRoot;
+import com.mmc.chomp.ddd.support.domain.BaseAgregateRoot;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import lombok.AllArgsConstructor;
 

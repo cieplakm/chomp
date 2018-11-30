@@ -1,6 +1,6 @@
-package com.mmc.chomp.ddd.annotation.domain.support.infrastructure.repository;
+package com.mmc.chomp.ddd.support.repository;
 
-import com.mmc.chomp.ddd.annotation.domain.support.domain.BaseAgregateRoot;
+import com.mmc.chomp.ddd.support.domain.BaseAgregateRoot;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package com.mmc.chomp.app.user;
 
-import com.mmc.chomp.ddd.annotation.domain.support.domain.BaseAgregateRoot;
+import com.mmc.chomp.ddd.support.domain.BaseAgregateRoot;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import lombok.Value;
 

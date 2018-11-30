@@ -11,7 +11,7 @@ import com.mmc.chomp.app.game.application.listeners.EventHandler;
 import com.mmc.chomp.app.game.application.listeners.GameOverListener;
 import com.mmc.chomp.app.game.application.listeners.TurnChangingListener;
 import com.mmc.chomp.app.game.application.listeners.UserCreatedListener;
-import com.mmc.chomp.ddd.annotation.domain.support.domain.DomainEventPublisher;
+import com.mmc.chomp.ddd.support.domain.DomainEventPublisher;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

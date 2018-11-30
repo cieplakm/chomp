@@ -3,7 +3,7 @@ package com.mmc.chomp.app.game.infrastructure.repo.impl;
 import com.mmc.chomp.app.user.User;
 import com.mmc.chomp.app.user.UserRepository;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
-import com.mmc.chomp.ddd.annotation.domain.support.infrastructure.repository.GenericAggregateRepository;
+import com.mmc.chomp.ddd.support.repository.GenericAggregateRepository;
 
 public class MockUserRepository implements UserRepository {
     private GenericAggregateRepository<User> genericAggregateRepository = new GenericAggregateRepository<>();

@@ -3,7 +3,7 @@ package com.mmc.chomp.app.user;
 import com.mmc.chomp.app.canonicalmodel.events.UserCreatedEvent;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
-import com.mmc.chomp.ddd.annotation.domain.support.domain.DomainEventPublisher;
+import com.mmc.chomp.ddd.support.domain.DomainEventPublisher;
 
 public class DefaultUserService implements UserService{
     private UserRepository userRepository;
