@@ -1,4 +1,4 @@
-package com.mmc.chomp.app.user;
+package com.mmc.chomp.app.system.user;
 
 import com.mmc.chomp.app.canonicalmodel.events.UserCreatedEvent;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;

@@ -3,7 +3,7 @@ package com.mmc.chomp.app.game.domain.game;
 import com.mmc.chomp.IoC;
 import com.mmc.chomp.app.canonicalmodel.events.TurnChangedEvent;
 import com.mmc.chomp.app.game.domain.board.Board;
-import com.mmc.chomp.ddd.annotation.domain.AggregateRoot;
+import com.mmc.chomp.ddd.annotation.AggregateRoot;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.canonicalmodel.events.GameOver;
 import com.mmc.chomp.app.sharedkernel.Player;
@@ -103,13 +103,10 @@ public class Game extends BaseAgregateRoot {
         log.info("{}'s turn at {} game", currentTurn.getLogin(), aggregateId.getId());
     }
 
-    public void leave(Player player) {
+    public void leave(PlayerData player) {
         status = FINISHED;
-        if (player.equals(creator)) {
-            creator = null;
-        } else {
-            joiner = null;
-        }
+        winner = opponent(player);
+        gameOverEvent();
     }
 
     private PlayerData opponent(PlayerData participant){
@@ -118,10 +115,6 @@ public class Game extends BaseAgregateRoot {
         }else {
             return creator;
         }
-    }
-
-    public PlayerData getWinner(){
-        return winner;
     }
 
     private boolean isFull() {

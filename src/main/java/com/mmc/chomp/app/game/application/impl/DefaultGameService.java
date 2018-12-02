@@ -13,10 +13,12 @@ import com.mmc.chomp.app.game.domain.board.BoardFactory;
 import com.mmc.chomp.app.game.domain.game.Game;
 import com.mmc.chomp.app.game.domain.board.Size;
 import com.mmc.chomp.app.sharedkernel.Position;
+import com.mmc.chomp.app.system.user.UserService;
 
 
 public class DefaultGameService implements GameService {
     private GameRepository gameRepository;
+    private UserService userService;
 
     public DefaultGameService(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
@@ -50,6 +52,10 @@ public class DefaultGameService implements GameService {
     public void start(AggregateId id) {
         Game game = gameRepository.get(id);
         game.start();
+    }
+
+    private Player loadPlayer(){
+        userService.get();
     }
 
 }

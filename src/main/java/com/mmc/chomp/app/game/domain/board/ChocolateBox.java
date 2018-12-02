@@ -2,8 +2,6 @@ package com.mmc.chomp.app.game.domain.board;
 
 
 
-import com.mmc.chomp.app.values.ChocolateBoxValue;
-import com.mmc.chomp.app.values.ChocolateValue;
 import com.mmc.chomp.app.sharedkernel.Position;
 
 class ChocolateBox {

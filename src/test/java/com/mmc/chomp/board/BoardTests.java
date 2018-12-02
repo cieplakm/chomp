@@ -4,8 +4,8 @@ import com.mmc.chomp.app.game.domain.board.Board;
 import com.mmc.chomp.app.game.domain.board.BoardFactory;
 
 import com.mmc.chomp.app.game.domain.board.Size;
-import com.mmc.chomp.app.values.ChocolateBoxValue;
-import com.mmc.chomp.app.values.ChocolateValue;
+import com.mmc.chomp.app.game.domain.board.ChocolateBoxValue;
+import com.mmc.chomp.app.game.domain.board.ChocolateValue;
 import com.mmc.chomp.app.sharedkernel.Position;
 import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
 import org.assertj.core.api.Assertions;
