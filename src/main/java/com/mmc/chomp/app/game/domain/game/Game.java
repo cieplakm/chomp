@@ -1,5 +1,6 @@
 package com.mmc.chomp.app.game.domain.game;
 
+import com.mmc.chomp.GameProjection;
 import com.mmc.chomp.IoC;
 import com.mmc.chomp.app.canonicalmodel.events.TurnChangedEvent;
 import com.mmc.chomp.app.game.domain.board.Board;
@@ -119,6 +120,10 @@ public class Game extends BaseAgregateRoot {
 
     private boolean isFull() {
         return joiner != null;
+    }
+
+    public GameProjection snapshot(){
+        return new GameProjection();
     }
 
 }

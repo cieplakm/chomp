@@ -18,7 +18,7 @@ import com.mmc.chomp.app.system.user.UserService;
 
 public class DefaultGameService implements GameService {
     private GameRepository gameRepository;
-    private UserService userService;
+
 
     public DefaultGameService(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
@@ -53,9 +53,4 @@ public class DefaultGameService implements GameService {
         Game game = gameRepository.get(id);
         game.start();
     }
-
-    private Player loadPlayer(){
-        userService.get();
-    }
-
 }

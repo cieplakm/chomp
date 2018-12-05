@@ -22,4 +22,8 @@ class Chocolate {
     boolean isTaken() {
         return isTaken;
     }
+
+    ChocolateData chocolateData(){
+        return new ChocolateData(isTaken);
+    }
 }

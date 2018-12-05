@@ -4,5 +4,5 @@ import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 
 public interface UserService {
     AggregateId create(String login, String pass);
-    User get();
+    User get(AggregateId aggregateId);
 }

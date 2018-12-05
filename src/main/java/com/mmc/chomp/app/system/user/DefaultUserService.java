@@ -24,5 +24,9 @@ public class DefaultUserService implements UserService{
         return user.getAggregateId();
     }
 
+    @Override
+    public User get(AggregateId aggregateId) {
+        return userRepository.get(aggregateId);
+    }
 
 }

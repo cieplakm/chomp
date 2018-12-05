@@ -1,10 +1,9 @@
 package com.mmc.chomp.app.sharedkernel;
 
+import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
 import com.mmc.chomp.ddd.support.domain.BaseAgregateRoot;
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import lombok.AllArgsConstructor;
-
 
 @AllArgsConstructor
 public class Player extends BaseAgregateRoot {
@@ -15,7 +14,7 @@ public class Player extends BaseAgregateRoot {
         this.login = login;
     }
 
-    public PlayerData snapshot(){
+    public PlayerData snapshot() {
         return new PlayerData(aggregateId, login);
     }
 
