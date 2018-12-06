@@ -2,20 +2,19 @@ package com.mmc.chomp.app.game.domain.game;
 
 import com.mmc.chomp.GameProjection;
 import com.mmc.chomp.IoC;
-import com.mmc.chomp.app.canonicalmodel.events.TurnChangedEvent;
-import com.mmc.chomp.app.game.domain.board.Board;
-import com.mmc.chomp.ddd.annotation.AggregateRoot;
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.canonicalmodel.events.GameOver;
+import com.mmc.chomp.app.canonicalmodel.events.TurnChangedEvent;
+import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
+import com.mmc.chomp.app.game.domain.board.Board;
 import com.mmc.chomp.app.sharedkernel.Player;
-import com.mmc.chomp.ddd.support.domain.BaseAgregateRoot;
 import com.mmc.chomp.app.sharedkernel.Position;
 import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
 import com.mmc.chomp.app.sharedkernel.exceptions.JoinException;
 import com.mmc.chomp.app.sharedkernel.exceptions.NoOponentException;
 import com.mmc.chomp.app.sharedkernel.exceptions.NotStartedException;
-
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
+import com.mmc.chomp.ddd.annotation.AggregateRoot;
+import com.mmc.chomp.ddd.support.domain.BaseAgregateRoot;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.CREATED;
@@ -26,10 +25,15 @@ import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.STARTED;
 @AggregateRoot
 public class Game extends BaseAgregateRoot {
     private GameStatus status;
+
     private Board board;
+
     private PlayerData currentTurn;
+
     private PlayerData creator;
+
     private PlayerData joiner;
+
     private PlayerData winner;
 
     public Game(AggregateId aggregateId, Player creator, Board board) {
@@ -39,6 +43,7 @@ public class Game extends BaseAgregateRoot {
         domainEventPublisher = IoC.domainEventPublisher();
 
         status = CREATED;
+        log.info("Game {} created", aggregateId.getId());
     }
 
     enum GameStatus {
@@ -54,7 +59,7 @@ public class Game extends BaseAgregateRoot {
     }
 
     public void start() {
-        if (!isFull()){
+        if (!isFull()) {
             throw new NoOponentException();
         }
         choseWhoFirst();
@@ -74,9 +79,10 @@ public class Game extends BaseAgregateRoot {
         if (isFull()) {
             try {
                 board.peakChocolate(position);
-                log.info("{} moved at {} game",  currentTurn.getLogin(), aggregateId.getId());
+                log.info("{} moved at {} game", currentTurn.getLogin(), aggregateId.getId());
             } catch (ChocolateTakenException e) {
                 e.printStackTrace();
+                return;
             }
         }
 
@@ -110,10 +116,10 @@ public class Game extends BaseAgregateRoot {
         gameOverEvent();
     }
 
-    private PlayerData opponent(PlayerData participant){
+    private PlayerData opponent(PlayerData participant) {
         if (participant.equals(creator)) {
             return joiner;
-        }else {
+        } else {
             return creator;
         }
     }
@@ -122,8 +128,14 @@ public class Game extends BaseAgregateRoot {
         return joiner != null;
     }
 
-    public GameProjection snapshot(){
-        return new GameProjection();
+    public GameProjection snapshot() {
+        return new GameProjection(
+                status.toString(),
+                board.snapshot(),
+                creator.getAggregateId().getId(),
+                joiner.getAggregateId().getId(),
+                winner.getAggregateId().getId()
+        );
     }
 
 }

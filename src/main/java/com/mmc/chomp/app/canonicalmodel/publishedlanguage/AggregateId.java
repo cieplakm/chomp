@@ -22,9 +22,12 @@ public class AggregateId {
     public boolean equals(Object o) {
         if (this == o)
             return true;
+
         if (o == null || getClass() != o.getClass())
             return false;
+
         AggregateId that = (AggregateId) o;
+
         return Objects.equals(id, that.id);
     }
 
