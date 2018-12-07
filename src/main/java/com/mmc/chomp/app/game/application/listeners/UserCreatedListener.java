@@ -1,6 +1,6 @@
 package com.mmc.chomp.app.game.application.listeners;
 
-import com.mmc.chomp.app.canonicalmodel.events.UserCreatedEvent;
+import com.mmc.chomp.app.game.domain.game.events.UserCreatedEvent;
 import com.mmc.chomp.app.game.application.api.service.RankingService;
 
 public class UserCreatedListener implements EventHandler<UserCreatedEvent> {
@@ -11,6 +11,6 @@ public class UserCreatedListener implements EventHandler<UserCreatedEvent> {
     }
 
     public void handle(UserCreatedEvent event){
-        rankingService.create(event.getPlayerData());
+        rankingService.create(event.getPlayerId());
     }
 }

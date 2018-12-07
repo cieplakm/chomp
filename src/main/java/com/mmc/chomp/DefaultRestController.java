@@ -5,6 +5,7 @@ import com.mmc.chomp.communication.ResponserProcessor;
 import com.mmc.chomp.communication.request.CreateGameRequest;
 import com.mmc.chomp.communication.request.JoinGameRequest;
 import com.mmc.chomp.communication.request.MoveRequest;
+import com.mmc.chomp.communication.request.RatingRequest;
 import com.mmc.chomp.communication.request.StartRequest;
 import com.mmc.chomp.communication.request.StateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,13 @@ public class DefaultRestController {
     public String move(@RequestBody StateRequest request) throws JsonProcessingException {
         return responserProcessor.response(request);
     }
+
+    @RequestMapping(value = "/ranking", method = RequestMethod.POST)
+    public String move(@RequestBody RatingRequest request) throws JsonProcessingException {
+        return responserProcessor.response(request);
+    }
+
+
 
 
 }

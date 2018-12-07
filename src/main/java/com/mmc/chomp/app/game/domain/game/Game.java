@@ -2,8 +2,8 @@ package com.mmc.chomp.app.game.domain.game;
 
 import com.mmc.chomp.GameProjection;
 import com.mmc.chomp.IoC;
-import com.mmc.chomp.app.canonicalmodel.events.GameOver;
-import com.mmc.chomp.app.canonicalmodel.events.TurnChangedEvent;
+import com.mmc.chomp.app.game.domain.game.events.GameOver;
+import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
 import com.mmc.chomp.app.game.domain.board.Board;
@@ -14,7 +14,7 @@ import com.mmc.chomp.app.sharedkernel.exceptions.JoinException;
 import com.mmc.chomp.app.sharedkernel.exceptions.NoOponentException;
 import com.mmc.chomp.app.sharedkernel.exceptions.NotStartedException;
 import com.mmc.chomp.ddd.annotation.AggregateRoot;
-import com.mmc.chomp.ddd.support.domain.BaseAgregateRoot;
+import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.CREATED;
@@ -23,22 +23,17 @@ import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.STARTED;
 
 @Slf4j
 @AggregateRoot
-public class Game extends BaseAgregateRoot {
+public class Game extends BaseAggregateRoot {
     private GameStatus status;
-
     private Board board;
-
-    private PlayerData currentTurn;
-
-    private PlayerData creator;
-
-    private PlayerData joiner;
-
-    private PlayerData winner;
+    private AggregateId currentTurn;
+    private AggregateId creator;
+    private AggregateId joiner;
+    private AggregateId winner;
 
     public Game(AggregateId aggregateId, Player creator, Board board) {
         this.aggregateId = aggregateId;
-        this.creator = creator.snapshot();
+        this.creator = creator.getAggregateId();
         this.board = board;
         domainEventPublisher = IoC.domainEventPublisher();
 
@@ -54,7 +49,7 @@ public class Game extends BaseAgregateRoot {
         if (isFull()) {
             throw new JoinException();
         }
-        this.joiner = joiner.snapshot();
+        this.joiner = joiner.getAggregateId();
         log.info("New joiner at {} game", aggregateId.getId());
     }
 
@@ -69,7 +64,7 @@ public class Game extends BaseAgregateRoot {
 
     private void choseWhoFirst() {
         currentTurn = TurnChanger.drawLotsPlayer(creator, joiner);
-        log.info("First will be: {} at {}", currentTurn.getLogin(), aggregateId.getId());
+        log.info("First will be: {} at {}", currentTurn.getId(), aggregateId.getId());
     }
 
     public void move(Position position) {
@@ -79,7 +74,7 @@ public class Game extends BaseAgregateRoot {
         if (isFull()) {
             try {
                 board.peakChocolate(position);
-                log.info("{} moved at {} game", currentTurn.getLogin(), aggregateId.getId());
+                log.info("{} moved at {} game", currentTurn.getId(), aggregateId.getId());
             } catch (ChocolateTakenException e) {
                 e.printStackTrace();
                 return;
@@ -106,17 +101,17 @@ public class Game extends BaseAgregateRoot {
 
     private void changeTurn() {
         currentTurn = TurnChanger.switchTurn(currentTurn, creator, joiner);
-        domainEventPublisher.event(new TurnChangedEvent(aggregateId, currentTurn.getAggregateId()));
-        log.info("{}'s turn at {} game", currentTurn.getLogin(), aggregateId.getId());
+        domainEventPublisher.event(new TurnChangedEvent(aggregateId, currentTurn));
+        log.info("{}'s turn at {} game", currentTurn.getId(), aggregateId.getId());
     }
 
-    public void leave(PlayerData player) {
+    public void leave(AggregateId player) {
         status = FINISHED;
         winner = opponent(player);
         gameOverEvent();
     }
 
-    private PlayerData opponent(PlayerData participant) {
+    private AggregateId opponent(AggregateId participant) {
         if (participant.equals(creator)) {
             return joiner;
         } else {
@@ -132,9 +127,9 @@ public class Game extends BaseAgregateRoot {
         return new GameProjection(
                 status.toString(),
                 board.snapshot(),
-                creator.getAggregateId().getId(),
-                joiner.getAggregateId().getId(),
-                winner.getAggregateId().getId()
+                creator,
+                joiner,
+                winner
         );
     }
 

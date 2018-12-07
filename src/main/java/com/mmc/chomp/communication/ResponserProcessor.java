@@ -5,16 +5,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mmc.chomp.GameProjection;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.game.application.api.service.GameService;
+import com.mmc.chomp.app.game.application.api.service.RankingService;
 import com.mmc.chomp.app.game.domain.board.ChocolateBoxValue;
 import com.mmc.chomp.app.game.domain.board.ChocolateValue;
+import com.mmc.chomp.app.game.domain.ranking.Rank;
 import com.mmc.chomp.app.sharedkernel.Position;
 import com.mmc.chomp.communication.request.CreateGameRequest;
 import com.mmc.chomp.communication.request.JoinGameRequest;
 import com.mmc.chomp.communication.request.MoveRequest;
+import com.mmc.chomp.communication.request.RatingRequest;
 import com.mmc.chomp.communication.request.RequestDto;
 import com.mmc.chomp.communication.request.StartRequest;
 import com.mmc.chomp.communication.request.StateRequest;
 import com.mmc.chomp.communication.response.CreateGameResponse;
+import com.mmc.chomp.communication.response.RatingResponse;
 import com.mmc.chomp.communication.response.Response;
 import com.mmc.chomp.communication.response.StateResponse;
 import org.springframework.stereotype.Component;
@@ -24,9 +28,11 @@ public class ResponserProcessor {
 
     private ObjectMapper objectMapper = new ObjectMapper();
     private GameService gameService;
+    private RankingService rankingService;
 
-    public ResponserProcessor(GameService gameService) {
+    public ResponserProcessor(GameService gameService, RankingService rankingService) {
         this.gameService = gameService;
+        this.rankingService = rankingService;
     }
 
     public String response(RequestDto request) throws JsonProcessingException {
@@ -47,10 +53,20 @@ public class ResponserProcessor {
                 return start(request);
             case STATE:
                 return state(request);
+            case RATING:
+                return rating(request);
+
 
         }
 
         throw new RuntimeException("No command found");
+    }
+
+    private Response rating(RequestDto request) {
+        RatingRequest ratingRequest = (RatingRequest) request;
+        Rank rank = rankingService.get(new AggregateId(request.getUserId()));
+
+        return new RatingResponse(rank.getRank());
     }
 
     private Response state(RequestDto request) {
@@ -70,10 +86,15 @@ public class ResponserProcessor {
     private boolean[][] mapChocolateToBoolean(ChocolateValue[][] chocolateValue) {
         boolean[][] booleans = new boolean[chocolateValue.length][];
         for (int i = 0; i < chocolateValue.length; i++) {
-            for (int k = 0; k < chocolateValue[i].length; k++) {
+            ChocolateValue[] chocolateValues = chocolateValue[i];
+            boolean[] row = new boolean[chocolateValues.length];
+
+            for (int k = 0; k < chocolateValues.length; k++) {
                 ChocolateValue value = chocolateValue[i][k];
-                booleans[i][k] = value.isTaken();
+                row[k] = value.isTaken();
             }
+
+            booleans[i] = row;
         }
         return booleans;
     }

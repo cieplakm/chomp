@@ -1,7 +1,7 @@
 package com.mmc.chomp.app.game.infrastructure.repo.impl;
 
-import com.mmc.chomp.app.system.user.User;
-import com.mmc.chomp.app.system.user.UserRepository;
+import com.mmc.chomp.app.game.domain.user.User;
+import com.mmc.chomp.app.game.domain.user.UserRepository;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.ddd.support.repository.GenericAggregateRepository;
 import lombok.extern.slf4j.Slf4j;

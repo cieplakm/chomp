@@ -1,6 +1,5 @@
 package com.mmc.chomp.app.game.infrastructure.repo.impl;
 
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
 import com.mmc.chomp.app.game.domain.ranking.Rank;
 import com.mmc.chomp.app.game.domain.ranking.RankingRepository;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
@@ -17,8 +16,8 @@ public class MockRatingRepository implements RankingRepository {
 
     @Autowired
     public MockRatingRepository() {
-        rankRepository.save(MOCK_USER_ID_1, new Rank(MOCK_USER_ID_1, new PlayerData(MOCK_USER_ID_1, "Ann"),1000L));
-        rankRepository.save(MOCK_USER_ID_2, new Rank(MOCK_USER_ID_2, new PlayerData(MOCK_USER_ID_2, "Jon"),1000L));
+        rankRepository.save(MOCK_USER_ID_1, new Rank(MOCK_USER_ID_1, MOCK_USER_ID_1,1000L));
+        rankRepository.save(MOCK_USER_ID_2, new Rank(MOCK_USER_ID_2, MOCK_USER_ID_2,1000L));
     }
 
     @Override
@@ -28,7 +27,7 @@ public class MockRatingRepository implements RankingRepository {
 
     @Override
     public void save(Rank rank) {
-        rankRepository.save(rank.getPlayerData().getAggregateId(), rank);
+        rankRepository.save(rank.playerId(), rank);
     }
 
 }

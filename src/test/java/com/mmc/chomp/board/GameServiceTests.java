@@ -5,11 +5,6 @@ import com.mmc.chomp.app.game.application.api.service.GameService;
 import com.mmc.chomp.app.game.application.impl.DefaultGameService;
 
 import com.mmc.chomp.app.game.infrastructure.repo.impl.MockUserRepository;
-import com.mmc.chomp.app.sharedkernel.Player;
-import com.mmc.chomp.app.sharedkernel.Position;
-import com.mmc.chomp.app.system.user.DefaultUserService;
-import com.mmc.chomp.app.system.user.UserService;
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import org.junit.Test;
 
 public class GameServiceTests {

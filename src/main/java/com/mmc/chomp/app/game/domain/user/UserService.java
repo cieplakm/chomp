@@ -1,4 +1,4 @@
-package com.mmc.chomp.app.system.user;
+package com.mmc.chomp.app.game.domain.user;
 
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 

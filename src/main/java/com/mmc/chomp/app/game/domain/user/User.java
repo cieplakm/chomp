@@ -1,11 +1,11 @@
-package com.mmc.chomp.app.system.user;
+package com.mmc.chomp.app.game.domain.user;
 
-import com.mmc.chomp.ddd.support.domain.BaseAgregateRoot;
+import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import lombok.Value;
 
 @Value
-public class User extends BaseAgregateRoot {
+public class User extends BaseAggregateRoot {
     private String login;
     private String password;
     private long registerDate;

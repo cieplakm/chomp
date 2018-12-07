@@ -9,8 +9,8 @@ import com.mmc.chomp.app.game.domain.game.Game;
 import com.mmc.chomp.app.game.domain.game.GameRepository;
 import com.mmc.chomp.app.sharedkernel.Player;
 import com.mmc.chomp.app.sharedkernel.Position;
-import com.mmc.chomp.app.system.user.User;
-import com.mmc.chomp.app.system.user.UserRepository;
+import com.mmc.chomp.app.game.domain.user.User;
+import com.mmc.chomp.app.game.domain.user.UserRepository;
 import com.mmc.chomp.ddd.annotation.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -63,7 +63,7 @@ public class DefaultGameService implements GameService {
 
     private Player getPlayer(AggregateId userId) {
         User user = userRepository.get(userId);
-        return new Player(userId, user.getLogin());//TODO implement getting player
+        return new Player(userId, user.getLogin());//TODO implement getting playerId
     }
 
 

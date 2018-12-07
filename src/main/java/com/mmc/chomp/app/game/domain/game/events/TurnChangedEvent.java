@@ -1,4 +1,4 @@
-package com.mmc.chomp.app.canonicalmodel.events;
+package com.mmc.chomp.app.game.domain.game.events;
 
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import lombok.Value;

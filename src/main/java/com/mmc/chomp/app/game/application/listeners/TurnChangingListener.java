@@ -1,6 +1,6 @@
 package com.mmc.chomp.app.game.application.listeners;
 
-import com.mmc.chomp.app.canonicalmodel.events.TurnChangedEvent;
+import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
 
 public class TurnChangingListener implements EventHandler<TurnChangedEvent> {
 

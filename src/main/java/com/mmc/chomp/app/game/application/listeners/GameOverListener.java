@@ -1,6 +1,6 @@
 package com.mmc.chomp.app.game.application.listeners;
 
-import com.mmc.chomp.app.canonicalmodel.events.GameOver;
+import com.mmc.chomp.app.game.domain.game.events.GameOver;
 import com.mmc.chomp.app.game.application.api.service.RankingService;
 
 public class GameOverListener implements EventHandler<GameOver> {

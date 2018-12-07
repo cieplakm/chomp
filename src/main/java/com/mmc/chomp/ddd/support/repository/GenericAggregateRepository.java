@@ -1,12 +1,12 @@
 package com.mmc.chomp.ddd.support.repository;
 
-import com.mmc.chomp.ddd.support.domain.BaseAgregateRoot;
+import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class GenericAggregateRepository<T extends BaseAgregateRoot> {
+public class GenericAggregateRepository<T extends BaseAggregateRoot> {
 
     private Map<AggregateId, T> map = new HashMap<>();
 

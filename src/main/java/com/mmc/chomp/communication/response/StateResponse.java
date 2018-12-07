@@ -1,5 +1,6 @@
 package com.mmc.chomp.communication.response;
 
+import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 
@@ -8,7 +9,7 @@ import lombok.Value;
 public class StateResponse extends Response {
     private String status;
     private boolean[][] board;
-    private String creatorId;
-    private String joinerId;
-    private String winnerId;
+    private AggregateId creatorId;
+    private AggregateId joinerId;
+    private AggregateId winnerId;
 }

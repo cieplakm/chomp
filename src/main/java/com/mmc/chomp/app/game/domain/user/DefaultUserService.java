@@ -1,6 +1,6 @@
-package com.mmc.chomp.app.system.user;
+package com.mmc.chomp.app.game.domain.user;
 
-import com.mmc.chomp.app.canonicalmodel.events.UserCreatedEvent;
+import com.mmc.chomp.app.game.domain.game.events.UserCreatedEvent;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.ddd.support.domain.DomainEventPublisher;
@@ -19,7 +19,7 @@ public class DefaultUserService implements UserService{
         User user = new User(AggregateId.generate(), login, pass, System.currentTimeMillis());
         userRepository.save(user);
 
-        domainEventPublisher.event(new UserCreatedEvent(new PlayerData(user.getAggregateId(), user.getLogin())));
+        domainEventPublisher.event(new UserCreatedEvent(user.getAggregateId()));
 
         return user.getAggregateId();
     }
