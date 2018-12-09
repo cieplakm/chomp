@@ -1,11 +1,7 @@
 package com.mmc.chomp;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mmc.chomp.app.game.application.api.service.GameService;
 import com.mmc.chomp.communication.ResponserProcessor;
-import com.mmc.chomp.communication.request.CreateGameRequest;
-import com.mmc.chomp.communication.request.RequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,14 +19,13 @@ public class DefaultWebSocketHandler implements WebSocketHandler {
 
     private ResponserProcessor responserProcessor;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-
+    private ObjectMapper objectMapper;
 
 
     @Autowired
-    public DefaultWebSocketHandler(ResponserProcessor responserProcessor) {
+    public DefaultWebSocketHandler(ResponserProcessor responserProcessor, ObjectMapper objectMapper) {
         this.responserProcessor = responserProcessor;
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        this.objectMapper = objectMapper;
     }
 
     @Override

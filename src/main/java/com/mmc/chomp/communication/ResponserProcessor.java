@@ -1,13 +1,10 @@
 package com.mmc.chomp.communication;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mmc.chomp.GameProjection;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.game.application.api.service.GameService;
 import com.mmc.chomp.app.game.application.api.service.RankingService;
-import com.mmc.chomp.app.game.domain.board.ChocolateBoxValue;
 import com.mmc.chomp.app.game.domain.board.ChocolateValue;
 import com.mmc.chomp.app.game.domain.ranking.Rank;
 import com.mmc.chomp.app.sharedkernel.Position;
@@ -30,14 +27,14 @@ import java.io.Serializable;
 @Component
 public class ResponserProcessor {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper;
     private GameService gameService;
     private RankingService rankingService;
 
-    public ResponserProcessor(GameService gameService, RankingService rankingService) {
+    public ResponserProcessor(GameService gameService, RankingService rankingService, ObjectMapper objectMapper) {
         this.gameService = gameService;
         this.rankingService = rankingService;
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        this.objectMapper = objectMapper;
     }
 
     public String response(Serializable request) throws IOException {
@@ -62,19 +59,19 @@ public class ResponserProcessor {
             case RATING:
                 return rating(request);
 
-
         }
 
         throw new RuntimeException("No command found");
     }
 
-    private <T> T map(Serializable serializable, Class<? extends T> clazz){
+    private <T> T map(Serializable serializable, Class<? extends T> clazz) {
         try {
-            return objectMapper.readValue((String)serializable, clazz);
+            return objectMapper.readValue((String) serializable, clazz);
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("Serialization error");
         }
-        return null;
+
     }
 
     private Response rating(Serializable request) {
@@ -115,7 +112,7 @@ public class ResponserProcessor {
     }
 
     private Response start(Serializable request) {
-        StartRequest startRequest =  map(request, StartRequest.class);
+        StartRequest startRequest = map(request, StartRequest.class);
 
         gameService.start(new AggregateId(startRequest.getGameId()));
 
@@ -123,7 +120,7 @@ public class ResponserProcessor {
     }
 
     private Response move(Serializable request) {
-        MoveRequest moveRequest =  map(request, MoveRequest.class);
+        MoveRequest moveRequest = map(request, MoveRequest.class);
 
         gameService.move(new AggregateId(moveRequest.getGameId()), new Position(moveRequest.getRow(), moveRequest.getCol()));
 
@@ -131,7 +128,7 @@ public class ResponserProcessor {
     }
 
     private Response join(Serializable request) {
-        JoinGameRequest joinGameRequest =  map(request, JoinGameRequest.class);
+        JoinGameRequest joinGameRequest = map(request, JoinGameRequest.class);
 
         gameService.joinToGame(new AggregateId(joinGameRequest.getUserId()), new AggregateId(joinGameRequest.getGameId()));
 
@@ -140,7 +137,7 @@ public class ResponserProcessor {
 
     //TODO: convert to command
     private Response createGame(Serializable request) {
-        CreateGameRequest createGameRequest =  map(request, CreateGameRequest.class);
+        CreateGameRequest createGameRequest = map(request, CreateGameRequest.class);
         AggregateId gameAggregateId = gameService.createGame(new AggregateId(createGameRequest.getUserId()), createGameRequest.getRows(), createGameRequest.getCols());
 
         CreateGameResponse response = new CreateGameResponse(gameAggregateId.getId());
