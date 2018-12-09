@@ -1,8 +1,16 @@
 package com.mmc.chomp.communication.request;
 
 import com.mmc.chomp.communication.CommandType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public abstract class RequestDto {
+import java.io.Serializable;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class RequestDto implements Serializable {
 
     private CommandType requestType;
     private String userId;

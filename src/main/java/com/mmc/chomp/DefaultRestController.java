@@ -20,40 +20,42 @@ public class DefaultRestController {
 
     private ResponserProcessor responserProcessor;
 
+
+
     @Autowired
     public DefaultRestController(ResponserProcessor responserProcessor) {
         this.responserProcessor = responserProcessor;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String createGame(@RequestBody CreateGameRequest request) throws JsonProcessingException {
-        return responserProcessor.response(request);
-    }
-
-    @RequestMapping(value = "/join", method = RequestMethod.POST)
-    public String joinGame(@RequestBody JoinGameRequest request) throws JsonProcessingException {
-        return responserProcessor.response(request);
-    }
-
-    @RequestMapping(value = "/start", method = RequestMethod.POST)
-    public String start(@RequestBody StartRequest request) throws JsonProcessingException {
-        return responserProcessor.response(request);
-    }
-
-    @RequestMapping(value = "/move", method = RequestMethod.POST)
-    public String move(@RequestBody MoveRequest request) throws JsonProcessingException {
-        return responserProcessor.response(request);
-    }
-
-    @RequestMapping(value = "/state", method = RequestMethod.POST)
-    public String move(@RequestBody StateRequest request) throws JsonProcessingException {
-        return responserProcessor.response(request);
-    }
-
-    @RequestMapping(value = "/ranking", method = RequestMethod.POST)
-    public String move(@RequestBody RatingRequest request) throws JsonProcessingException {
-        return responserProcessor.response(request);
-    }
+//    @RequestMapping(value = "/create", method = RequestMethod.POST)
+//    public String createGame(@RequestBody CreateGameRequest request) throws JsonProcessingException {
+//        return responserProcessor.response(request);
+//    }
+//
+//    @RequestMapping(value = "/join", method = RequestMethod.POST)
+//    public String joinGame(@RequestBody JoinGameRequest request) throws JsonProcessingException {
+//        return responserProcessor.response(request);
+//    }
+//
+//    @RequestMapping(value = "/start", method = RequestMethod.POST)
+//    public String start(@RequestBody StartRequest request) throws JsonProcessingException {
+//        return responserProcessor.response(request);
+//    }
+//
+//    @RequestMapping(value = "/move", method = RequestMethod.POST)
+//    public String move(@RequestBody MoveRequest request) throws JsonProcessingException {
+//        return responserProcessor.response(request);
+//    }
+//
+//    @RequestMapping(value = "/state", method = RequestMethod.POST)
+//    public String move(@RequestBody StateRequest request) throws JsonProcessingException {
+//        return responserProcessor.response(request);
+//    }
+//
+//    @RequestMapping(value = "/ranking", method = RequestMethod.POST)
+//    public String move(@RequestBody RatingRequest request) throws JsonProcessingException {
+//        return responserProcessor.response(request);
+//    }
 
 
 

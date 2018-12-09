@@ -1,23 +1,36 @@
 package com.mmc.chomp;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mmc.chomp.app.game.application.api.service.GameService;
+import com.mmc.chomp.communication.ResponserProcessor;
+import com.mmc.chomp.communication.request.CreateGameRequest;
+import com.mmc.chomp.communication.request.RequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
+
+import java.io.Serializable;
 
 @Slf4j
 @Component
 public class DefaultWebSocketHandler implements WebSocketHandler {
 
-    private GameService gameService;
+    private ResponserProcessor responserProcessor;
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+
 
     @Autowired
-    public DefaultWebSocketHandler(GameService gameService) {
-        this.gameService = gameService;
+    public DefaultWebSocketHandler(ResponserProcessor responserProcessor) {
+        this.responserProcessor = responserProcessor;
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     @Override
@@ -27,6 +40,10 @@ public class DefaultWebSocketHandler implements WebSocketHandler {
 
     @Override
     public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) throws Exception {
+
+        String response = responserProcessor.response((Serializable) webSocketMessage.getPayload());
+
+        webSocketSession.sendMessage(new TextMessage(response));
     }
 
     @Override

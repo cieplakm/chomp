@@ -1,6 +1,7 @@
 package com.mmc.chomp.communication;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mmc.chomp.GameProjection;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
@@ -23,6 +24,9 @@ import com.mmc.chomp.communication.response.Response;
 import com.mmc.chomp.communication.response.StateResponse;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.Serializable;
+
 @Component
 public class ResponserProcessor {
 
@@ -33,14 +37,16 @@ public class ResponserProcessor {
     public ResponserProcessor(GameService gameService, RankingService rankingService) {
         this.gameService = gameService;
         this.rankingService = rankingService;
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    public String response(RequestDto request) throws JsonProcessingException {
+    public String response(Serializable request) throws IOException {
         return objectMapper.writeValueAsString(resolveResponse(request));
     }
 
-    private Response resolveResponse(RequestDto request) {
-        CommandType requestType = request.getRequestType();
+    private Response resolveResponse(Serializable request) throws IOException {
+        RequestDto requestDto = objectMapper.readValue((String) request, RequestDto.class);
+        CommandType requestType = requestDto.getRequestType();
 
         switch (requestType) {
             case CREATE:
@@ -62,15 +68,24 @@ public class ResponserProcessor {
         throw new RuntimeException("No command found");
     }
 
-    private Response rating(RequestDto request) {
-        RatingRequest ratingRequest = (RatingRequest) request;
-        Rank rank = rankingService.get(new AggregateId(request.getUserId()));
+    private <T> T map(Serializable serializable, Class<? extends T> clazz){
+        try {
+            return objectMapper.readValue((String)serializable, clazz);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Response rating(Serializable request) {
+        RatingRequest ratingRequest = map(request, RatingRequest.class);
+        Rank rank = rankingService.get(new AggregateId(ratingRequest.getUserId()));
 
         return new RatingResponse(rank.getRank());
     }
 
-    private Response state(RequestDto request) {
-        StateRequest startRequest = (StateRequest) request;
+    private Response state(Serializable request) {
+        StateRequest startRequest = map(request, StateRequest.class);
 
         GameProjection projection = gameService.projection(new AggregateId(startRequest.getGameId()));
         StateResponse response = new StateResponse(
@@ -99,24 +114,24 @@ public class ResponserProcessor {
         return booleans;
     }
 
-    private Response start(RequestDto request) {
-        StartRequest startRequest = (StartRequest) request;
+    private Response start(Serializable request) {
+        StartRequest startRequest =  map(request, StartRequest.class);
 
         gameService.start(new AggregateId(startRequest.getGameId()));
 
         return null;
     }
 
-    private Response move(RequestDto request) {
-        MoveRequest moveRequest = (MoveRequest) request;
+    private Response move(Serializable request) {
+        MoveRequest moveRequest =  map(request, MoveRequest.class);
 
         gameService.move(new AggregateId(moveRequest.getGameId()), new Position(moveRequest.getRow(), moveRequest.getCol()));
 
         return null;
     }
 
-    private Response join(RequestDto request) {
-        JoinGameRequest joinGameRequest = (JoinGameRequest) request;
+    private Response join(Serializable request) {
+        JoinGameRequest joinGameRequest =  map(request, JoinGameRequest.class);
 
         gameService.joinToGame(new AggregateId(joinGameRequest.getUserId()), new AggregateId(joinGameRequest.getGameId()));
 
@@ -124,12 +139,12 @@ public class ResponserProcessor {
     }
 
     //TODO: convert to command
-    private Response createGame(RequestDto request) {
-        CreateGameRequest createGameRequest = (CreateGameRequest) request;
+    private Response createGame(Serializable request) {
+        CreateGameRequest createGameRequest =  map(request, CreateGameRequest.class);
         AggregateId gameAggregateId = gameService.createGame(new AggregateId(createGameRequest.getUserId()), createGameRequest.getRows(), createGameRequest.getCols());
 
         CreateGameResponse response = new CreateGameResponse(gameAggregateId.getId());
-        response.setUserId(request.getUserId());
+        response.setUserId(createGameRequest.getUserId());
         response.setType(CommandType.CREATE);
 
         return response;
