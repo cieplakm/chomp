@@ -1,10 +1,8 @@
 package com.mmc.chomp.app.game.application.impl;
 
-import com.mmc.chomp.GameProjection;
+import com.mmc.chomp.app.game.application.readmodel.GameProjection;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.game.application.api.service.GameService;
-import com.mmc.chomp.app.game.domain.board.Board;
-import com.mmc.chomp.app.game.domain.board.BoardFactory;
 import com.mmc.chomp.app.game.domain.game.Game;
 import com.mmc.chomp.app.game.domain.game.GameRepository;
 import com.mmc.chomp.app.sharedkernel.Player;
@@ -27,26 +25,19 @@ public class DefaultGameService implements GameService {
 
     @Override
     public AggregateId createGame(AggregateId creator, int rows, int cols) {
-        Board chompBoard = BoardFactory.create(rows, cols);
 
-        AggregateId id = AggregateId.generate();
-        Game game = new Game(id, getPlayer(creator), chompBoard);
 
-        gameRepository.save(game);
-
-        return id;
+        return null;
     }
 
     @Override
     public void joinToGame(AggregateId userId, AggregateId gameId) {
-        Game game = gameRepository.get(gameId);
-        game.join(getPlayer(userId));
+
     }
 
     @Override
     public void move(AggregateId gameId, Position position) {
-        Game game = gameRepository.get(gameId);
-        game.move(position);
+
     }
 
     @Override

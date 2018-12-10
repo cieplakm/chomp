@@ -1,16 +1,14 @@
-package com.mmc.chomp.communication.response;
-
-import com.mmc.chomp.communication.CommandType;
+package com.mmc.chomp.app.game.application.readmodel.response;
 
 public abstract class Response {
-    private CommandType type;
     private String userId;
+    private String type;
 
-    public CommandType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(CommandType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

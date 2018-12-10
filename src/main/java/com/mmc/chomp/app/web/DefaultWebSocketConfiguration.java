@@ -1,4 +1,4 @@
-package com.mmc.chomp;
+package com.mmc.chomp.app.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +18,6 @@ public class DefaultWebSocketConfiguration implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(webSocketHandler, "/chomp");
+        webSocketHandlerRegistry.addHandler(webSocketHandler, "/chomp").withSockJS();
     }
 }

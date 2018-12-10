@@ -1,30 +1,30 @@
-package com.mmc.chomp;
+package com.mmc.chomp.app.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mmc.chomp.communication.ResponserProcessor;
+
+import com.mmc.chomp.app.game.application.command.Command;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
-
-import java.io.Serializable;
 
 @Slf4j
 @Component
 public class DefaultWebSocketHandler implements WebSocketHandler {
 
-    private ResponserProcessor responserProcessor;
+    @Autowired
+    private AutowireCapableBeanFactory beanFactory;
 
     private ObjectMapper objectMapper;
 
 
     @Autowired
-    public DefaultWebSocketHandler(ResponserProcessor responserProcessor, ObjectMapper objectMapper) {
-        this.responserProcessor = responserProcessor;
+    public DefaultWebSocketHandler( ObjectMapper objectMapper) {
+
         this.objectMapper = objectMapper;
     }
 
@@ -36,9 +36,13 @@ public class DefaultWebSocketHandler implements WebSocketHandler {
     @Override
     public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) throws Exception {
 
-        String response = responserProcessor.response((Serializable) webSocketMessage.getPayload());
+        Command command = objectMapper.readValue((String) webSocketMessage.getPayload(), Command.class);
+        beanFactory.autowireBean(command);
+        command.execute();
 
-        webSocketSession.sendMessage(new TextMessage(response));
+//        String response = responserProcessor.response((Serializable) webSocketMessage.getPayload());
+//
+//        webSocketSession.sendMessage(new TextMessage(response));
     }
 
     @Override

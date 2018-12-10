@@ -1,14 +1,13 @@
-package com.mmc.chomp.communication.response;
+package com.mmc.chomp.app.game.application.readmodel;
 
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
-import lombok.AllArgsConstructor;
+import com.mmc.chomp.app.game.domain.board.ChocolateBoxValue;
 import lombok.Value;
 
 @Value
-@AllArgsConstructor
-public class StateResponse extends Response {
+public class GameProjection {
     private String status;
-    private boolean[][] board;
+    private ChocolateBoxValue board;
     private AggregateId creatorId;
     private AggregateId joinerId;
     private AggregateId winnerId;

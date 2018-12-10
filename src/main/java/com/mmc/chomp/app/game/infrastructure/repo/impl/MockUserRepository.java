@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class MockUserRepository implements UserRepository {
-    public static final AggregateId MOCK_USER_ID_1 = new AggregateId("2b9d9694-6513-43d3-84d7-bbed57b82df1");
-    public static final AggregateId MOCK_USER_ID_2 = new AggregateId("36e68452-12e8-4c3e-99b5-a046c0fba42b");
+    public static final AggregateId MOCK_USER_ID_1 = AggregateId.create("2b9d9694-6513-43d3-84d7-bbed57b82df1");
+    public static final AggregateId MOCK_USER_ID_2 = AggregateId.create("36e68452-12e8-4c3e-99b5-a046c0fba42b");
 
     private GenericAggregateRepository<User> genericAggregateRepository = new GenericAggregateRepository<>();
 

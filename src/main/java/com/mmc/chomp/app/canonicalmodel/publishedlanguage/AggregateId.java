@@ -6,16 +6,20 @@ import java.util.UUID;
 public class AggregateId {
     private String id;
 
-    public AggregateId(String id) {
+    private AggregateId(String id) {
         this.id = id;
     }
 
-    public String getId() {
-        return id;
+    public static AggregateId create(String userId) {
+        return new AggregateId(userId);
     }
 
     public static AggregateId generate() {
         return new AggregateId(UUID.randomUUID().toString());
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override

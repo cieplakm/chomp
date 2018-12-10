@@ -1,11 +1,10 @@
 package com.mmc.chomp.app.game.domain.game;
 
-import com.mmc.chomp.GameProjection;
+import com.mmc.chomp.app.game.application.readmodel.GameProjection;
 import com.mmc.chomp.IoC;
 import com.mmc.chomp.app.game.domain.game.events.GameOver;
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
 import com.mmc.chomp.app.game.domain.board.Board;
 import com.mmc.chomp.app.sharedkernel.Player;
 import com.mmc.chomp.app.sharedkernel.Position;
@@ -31,11 +30,10 @@ public class Game extends BaseAggregateRoot {
     private AggregateId joiner;
     private AggregateId winner;
 
-    public Game(AggregateId aggregateId, Player creator, Board board) {
+    public Game(AggregateId aggregateId, AggregateId creatorId, Board board) {
         this.aggregateId = aggregateId;
-        this.creator = creator.getAggregateId();
+        this.creator = creatorId;
         this.board = board;
-        domainEventPublisher = IoC.domainEventPublisher();
 
         status = CREATED;
         log.info("Game {} created", aggregateId.getId());

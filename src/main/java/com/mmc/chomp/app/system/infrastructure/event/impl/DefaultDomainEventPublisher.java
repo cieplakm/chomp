@@ -13,19 +13,28 @@ import com.mmc.chomp.app.game.application.listeners.TurnChangingListener;
 import com.mmc.chomp.app.game.application.listeners.UserCreatedListener;
 import com.mmc.chomp.ddd.support.domain.DomainEventPublisher;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 public class DefaultDomainEventPublisher implements DomainEventPublisher {
 
-    private RankingService rankingService = new DefaultRankingService(IoC.getRankingRepository());
-    private TurnChangingListener turnChangingListener = new TurnChangingListener();
-    private UserCreatedListener userCreatedListener = new UserCreatedListener(rankingService);
-    private EventHandler<GameOver> gameOverEventHandler = new GameOverListener(rankingService);
+    private RankingService rankingService;
+    private TurnChangingListener turnChangingListener;
+    private UserCreatedListener userCreatedListener;
+    private EventHandler<GameOver> gameOverEventHandler;
 
-
-
+    @Autowired
+    public DefaultDomainEventPublisher(RankingService rankingService,
+            TurnChangingListener turnChangingListener,
+            UserCreatedListener userCreatedListener,
+            EventHandler<GameOver> gameOverEventHandler) {
+        this.rankingService = rankingService;
+        this.turnChangingListener = turnChangingListener;
+        this.userCreatedListener = userCreatedListener;
+        this.gameOverEventHandler = gameOverEventHandler;
+    }
 
     @Override
     public void event(Event event) {

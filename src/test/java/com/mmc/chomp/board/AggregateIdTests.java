@@ -8,8 +8,8 @@ public class AggregateIdTests {
 
     @Test
     public void shouldBeEquals(){
-        AggregateId aggregateId1 = new AggregateId("A");
-        AggregateId aggregateId2 = new AggregateId("A");
+        AggregateId aggregateId1 = AggregateId.create("A");
+        AggregateId aggregateId2 = AggregateId.create("A");
 
         Assertions.assertThat(aggregateId1).isEqualTo(aggregateId2);
 
