@@ -24,12 +24,9 @@ import java.io.Serializable;
         @JsonSubTypes.Type(value = MoveCommand.class, name = "MOVE"),
         @JsonSubTypes.Type(value = StartGameCommand.class, name = "START")
 })
-
 public abstract class Command implements Serializable {
     private String requestType;
-
     private String userId;
 
     public abstract void execute();
-
 }

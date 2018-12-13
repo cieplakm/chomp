@@ -21,16 +21,18 @@ public class DefaultWebSocketHandler implements WebSocketHandler {
 
     private ObjectMapper objectMapper;
 
+    private WebSocketSessionKeeper webSocketSessionKeeper;
+
 
     @Autowired
-    public DefaultWebSocketHandler( ObjectMapper objectMapper) {
-
+    public DefaultWebSocketHandler(ObjectMapper objectMapper, WebSocketSessionKeeper webSocketSessionKeeper) {
         this.objectMapper = objectMapper;
+        this.webSocketSessionKeeper = webSocketSessionKeeper;
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocketSession) throws Exception {
-
+        webSocketSessionKeeper.add(webSocketSession);
     }
 
     @Override
@@ -52,7 +54,7 @@ public class DefaultWebSocketHandler implements WebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus closeStatus) throws Exception {
-
+        webSocketSessionKeeper.remove(webSocketSession);
     }
 
     @Override

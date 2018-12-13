@@ -1,7 +1,8 @@
 package com.mmc.chomp.app.game.domain.game;
 
 import com.mmc.chomp.app.game.application.readmodel.GameProjection;
-import com.mmc.chomp.IoC;
+import com.mmc.chomp.app.game.domain.game.events.Event;
+import com.mmc.chomp.app.game.domain.game.events.GameCreated;
 import com.mmc.chomp.app.game.domain.game.events.GameOver;
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
@@ -30,17 +31,20 @@ public class Game extends BaseAggregateRoot {
     private AggregateId joiner;
     private AggregateId winner;
 
-    public Game(AggregateId aggregateId, AggregateId creatorId, Board board) {
-        this.aggregateId = aggregateId;
+    public Game(AggregateId gameId, AggregateId creatorId, Board board) {
+        this.aggregateId = gameId;
         this.creator = creatorId;
         this.board = board;
-
-        status = CREATED;
-        log.info("Game {} created", aggregateId.getId());
     }
 
     enum GameStatus {
         CREATED, STARTED, FINISHED
+    }
+
+    public void create(){
+        status = CREATED;
+        event(new GameCreated(aggregateId, creator));
+        log.info("Game {} created", getAggregateId().getId());
     }
 
     public void join(Player joiner) {
@@ -86,15 +90,11 @@ public class Game extends BaseAggregateRoot {
         changeTurn();
     }
 
-    private void gameOverEvent() {
-        domainEventPublisher.event(new GameOver(winner, opponent(winner)));
-    }
-
     private void finishGame() {
         status = FINISHED;
         winner = opponent(currentTurn);
         log.info("Game {} finished", aggregateId.getId());
-        gameOverEvent();
+        event(new GameOver(winner, opponent(winner)));
     }
 
     private void changeTurn() {
@@ -106,7 +106,7 @@ public class Game extends BaseAggregateRoot {
     public void leave(AggregateId player) {
         status = FINISHED;
         winner = opponent(player);
-        gameOverEvent();
+
     }
 
     private AggregateId opponent(AggregateId participant) {
@@ -129,6 +129,10 @@ public class Game extends BaseAggregateRoot {
                 joiner,
                 winner
         );
+    }
+
+    private void event(Event event) {
+        domainEventPublisher.event(event);
     }
 
 }
