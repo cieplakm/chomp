@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @Component
 public class DefaultDomainEventPublisher implements DomainEventPublisher {
@@ -24,6 +26,8 @@ public class DefaultDomainEventPublisher implements DomainEventPublisher {
     private GameCreatedEventListener gameCreatedEventListener;
 
     private EventHandler<GameOver> gameOverEventHandler;
+
+    private List<EventHandler> eventHandlers;
 
     @Autowired
     public DefaultDomainEventPublisher(TurnChangingListener turnChangingListener,
