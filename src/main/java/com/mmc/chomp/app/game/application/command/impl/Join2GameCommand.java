@@ -7,8 +7,10 @@ import com.mmc.chomp.app.game.domain.game.GameRepository;
 import com.mmc.chomp.app.game.domain.user.User;
 import com.mmc.chomp.app.game.domain.user.UserRepository;
 import com.mmc.chomp.app.sharedkernel.Player;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Data
 public class Join2GameCommand extends Command {
     private String gameId;
 

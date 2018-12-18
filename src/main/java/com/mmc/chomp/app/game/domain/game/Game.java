@@ -4,9 +4,11 @@ import com.mmc.chomp.app.game.application.readmodel.GameProjection;
 import com.mmc.chomp.app.game.domain.game.events.Event;
 import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameOverEvent;
+import com.mmc.chomp.app.game.domain.game.events.GameStartedEvent;
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.game.domain.board.Board;
+import com.mmc.chomp.app.game.domain.game.events.UserLeftEvent;
 import com.mmc.chomp.app.sharedkernel.Player;
 import com.mmc.chomp.app.sharedkernel.Position;
 import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
@@ -62,6 +64,7 @@ public class Game extends BaseAggregateRoot {
         choseWhoFirst();
         status = STARTED;
         log.info("Game {} started", aggregateId.getId());
+        event(new GameStartedEvent(aggregateId, creator, joiner));
     }
 
     private void choseWhoFirst() {
@@ -104,9 +107,12 @@ public class Game extends BaseAggregateRoot {
     }
 
     public void leave(AggregateId player) {
-        status = FINISHED;
-        winner = opponent(player);
+        if (status !=FINISHED){
+            status = FINISHED;
+            winner = opponent(player);
+        }
 
+        event(new UserLeftEvent(player, aggregateId));
     }
 
     private AggregateId opponent(AggregateId participant) {
