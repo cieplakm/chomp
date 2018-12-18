@@ -9,7 +9,7 @@ import com.mmc.chomp.app.sharedkernel.Player;
 import com.mmc.chomp.app.sharedkernel.Position;
 import com.mmc.chomp.app.game.domain.user.User;
 import com.mmc.chomp.app.game.domain.user.UserRepository;
-import com.mmc.chomp.ddd.annotation.ApplicationService;
+import com.mmc.chomp.ddd.annotation.application.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @ApplicationService

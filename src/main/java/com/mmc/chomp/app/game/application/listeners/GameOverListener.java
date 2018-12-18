@@ -1,11 +1,12 @@
 package com.mmc.chomp.app.game.application.listeners;
 
-import com.mmc.chomp.app.game.domain.game.events.GameOver;
 import com.mmc.chomp.app.game.application.api.service.RankingService;
-import org.springframework.stereotype.Component;
+import com.mmc.chomp.app.game.domain.game.events.GameOverEvent;
+import com.mmc.chomp.ddd.annotation.event.EventListener;
+import com.mmc.chomp.ddd.annotation.event.EventSubscriber;
 
-@Component
-public class GameOverListener implements EventHandler<GameOver> {
+@EventListener
+public class GameOverListener {
 
     private RankingService rankingService;
 
@@ -13,8 +14,8 @@ public class GameOverListener implements EventHandler<GameOver> {
         this.rankingService = rankingService;
     }
 
-    @Override
-    public void handle(GameOver event) {
+    @EventSubscriber
+    public void handle(GameOverEvent event) {
         rankingService.changeRanking(event.getWinner(), event.getLooser());
     }
 }

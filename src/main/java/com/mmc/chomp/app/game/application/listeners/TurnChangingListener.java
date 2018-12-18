@@ -1,12 +1,13 @@
 package com.mmc.chomp.app.game.application.listeners;
 
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
-import org.springframework.stereotype.Component;
+import com.mmc.chomp.ddd.annotation.event.EventListener;
+import com.mmc.chomp.ddd.annotation.event.EventSubscriber;
 
-@Component
-public class TurnChangingListener implements EventHandler<TurnChangedEvent> {
+@EventListener
+public class TurnChangingListener {
 
-
+    @EventSubscriber
     public void handle(TurnChangedEvent event){
         //todo: notify user about his turn
     }

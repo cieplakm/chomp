@@ -1,18 +1,20 @@
 package com.mmc.chomp.app.game.application.listeners;
 
-import com.mmc.chomp.app.game.domain.game.events.UserCreatedEvent;
 import com.mmc.chomp.app.game.application.api.service.RankingService;
-import org.springframework.stereotype.Component;
+import com.mmc.chomp.app.game.domain.game.events.UserCreatedEvent;
+import com.mmc.chomp.ddd.annotation.event.EventListener;
+import com.mmc.chomp.ddd.annotation.event.EventSubscriber;
 
-@Component
-public class UserCreatedListener implements EventHandler<UserCreatedEvent> {
+@EventListener
+public class UserCreatedListener {
     private RankingService rankingService;
 
     public UserCreatedListener(RankingService rankingService) {
         this.rankingService = rankingService;
     }
 
-    public void handle(UserCreatedEvent event){
+    @EventSubscriber
+    public void handle(UserCreatedEvent event) {
         rankingService.create(event.getPlayerId());
     }
 }

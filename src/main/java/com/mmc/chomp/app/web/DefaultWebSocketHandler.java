@@ -14,7 +14,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 @Slf4j
 @Component
-public class DefaultWebSocketHandler implements WebSocketHandler {
+class DefaultWebSocketHandler implements WebSocketHandler {
 
     @Autowired
     private AutowireCapableBeanFactory beanFactory;
@@ -37,14 +37,9 @@ public class DefaultWebSocketHandler implements WebSocketHandler {
 
     @Override
     public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) throws Exception {
-
         Command command = objectMapper.readValue((String) webSocketMessage.getPayload(), Command.class);
         beanFactory.autowireBean(command);
         command.execute();
-
-//        String response = responserProcessor.response((Serializable) webSocketMessage.getPayload());
-//
-//        webSocketSession.sendMessage(new TextMessage(response));
     }
 
     @Override

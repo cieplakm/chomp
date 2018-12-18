@@ -2,8 +2,8 @@ package com.mmc.chomp.app.game.domain.game;
 
 import com.mmc.chomp.app.game.application.readmodel.GameProjection;
 import com.mmc.chomp.app.game.domain.game.events.Event;
-import com.mmc.chomp.app.game.domain.game.events.GameCreated;
-import com.mmc.chomp.app.game.domain.game.events.GameOver;
+import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
+import com.mmc.chomp.app.game.domain.game.events.GameOverEvent;
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.game.domain.board.Board;
@@ -13,7 +13,7 @@ import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
 import com.mmc.chomp.app.sharedkernel.exceptions.JoinException;
 import com.mmc.chomp.app.sharedkernel.exceptions.NoOponentException;
 import com.mmc.chomp.app.sharedkernel.exceptions.NotStartedException;
-import com.mmc.chomp.ddd.annotation.AggregateRoot;
+import com.mmc.chomp.ddd.annotation.domain.AggregateRoot;
 import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,7 +43,7 @@ public class Game extends BaseAggregateRoot {
 
     public void create(){
         status = CREATED;
-        event(new GameCreated(aggregateId, creator));
+        event(new GameCreatedEvent(aggregateId, creator));
         log.info("Game {} created", getAggregateId().getId());
     }
 
@@ -94,12 +94,12 @@ public class Game extends BaseAggregateRoot {
         status = FINISHED;
         winner = opponent(currentTurn);
         log.info("Game {} finished", aggregateId.getId());
-        event(new GameOver(winner, opponent(winner)));
+        event(new GameOverEvent(winner, opponent(winner)));
     }
 
     private void changeTurn() {
         currentTurn = TurnChanger.switchTurn(currentTurn, creator, joiner);
-        domainEventPublisher.event(new TurnChangedEvent(aggregateId, currentTurn));
+        domainEventPublisher.publish(new TurnChangedEvent(aggregateId, currentTurn));
         log.info("{}'s turn at {} game", currentTurn.getId(), aggregateId.getId());
     }
 
@@ -132,7 +132,7 @@ public class Game extends BaseAggregateRoot {
     }
 
     private void event(Event event) {
-        domainEventPublisher.event(event);
+        domainEventPublisher.publish(event);
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Component
 @Slf4j
-public class WebSocketSessionKeeper {
+class WebSocketSessionKeeper {
     private Map<String, WebSocketSession> map = new HashMap<>();
 
     public void add(WebSocketSession webSocketSession) {

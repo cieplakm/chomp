@@ -1,4 +1,4 @@
-package com.mmc.chomp.ddd.annotation;
+package com.mmc.chomp.ddd.annotation.application;
 
 import org.springframework.stereotype.Service;
 

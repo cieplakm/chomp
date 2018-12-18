@@ -5,7 +5,7 @@ import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
 import lombok.Value;
 
 @Value
-public class GameOver extends Event {
+public class GameOverEvent extends Event {
     private AggregateId winner;
     private AggregateId looser;
 }
