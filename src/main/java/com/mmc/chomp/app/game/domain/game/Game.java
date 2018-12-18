@@ -58,17 +58,19 @@ public class Game extends BaseAggregateRoot {
     }
 
     public void start() {
-        if (!isFull()) {
+        if (!isFull() || status == FINISHED) {
             throw new NoOponentException();
         }
         choseWhoFirst();
         status = STARTED;
-        log.info("Game {} started", aggregateId.getId());
         event(new GameStartedEvent(aggregateId, creator, joiner));
+
+        log.info("Game {} started", aggregateId.getId());
     }
 
     private void choseWhoFirst() {
         currentTurn = TurnChanger.drawLotsPlayer(creator, joiner);
+
         log.info("First will be: {} at {}", currentTurn.getId(), aggregateId.getId());
     }
 
@@ -79,6 +81,7 @@ public class Game extends BaseAggregateRoot {
         if (isFull()) {
             try {
                 board.peakChocolate(position);
+
                 log.info("{} moved at {} game", currentTurn.getId(), aggregateId.getId());
             } catch (ChocolateTakenException e) {
                 e.printStackTrace();
@@ -96,13 +99,15 @@ public class Game extends BaseAggregateRoot {
     private void finishGame() {
         status = FINISHED;
         winner = opponent(currentTurn);
-        log.info("Game {} finished", aggregateId.getId());
         event(new GameOverEvent(winner, opponent(winner)));
+
+        log.info("Game {} finished", aggregateId.getId());
     }
 
     private void changeTurn() {
         currentTurn = TurnChanger.switchTurn(currentTurn, creator, joiner);
         domainEventPublisher.publish(new TurnChangedEvent(aggregateId, currentTurn));
+
         log.info("{}'s turn at {} game", currentTurn.getId(), aggregateId.getId());
     }
 
@@ -111,7 +116,6 @@ public class Game extends BaseAggregateRoot {
             status = FINISHED;
             winner = opponent(player);
         }
-
         event(new UserLeftEvent(player, aggregateId));
     }
 

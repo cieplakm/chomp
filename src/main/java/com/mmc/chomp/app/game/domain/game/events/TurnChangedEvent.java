@@ -5,6 +5,6 @@ import lombok.Value;
 
 @Value
 public class TurnChangedEvent extends Event {
-    private final AggregateId gameId;
     private final AggregateId currentTurnPlayerId;
+    private final AggregateId gameId;
 }
