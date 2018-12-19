@@ -4,6 +4,7 @@ import com.mmc.chomp.app.sharedkernel.Position;
 
 class Picker {
     void pick(ChocolateBox chocolateBox, Position chocolatePosition) {
+
         for (int row = chocolatePosition.getRow(); row < chocolateBox.getSize().getRows(); row++){
             Chocolate[] chocolateRow = chocolateBox.getChocolates()[row];
 

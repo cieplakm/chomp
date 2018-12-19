@@ -23,7 +23,7 @@ class Chocolate {
         return isTaken;
     }
 
-    ChocolateData chocolateData(){
-        return new ChocolateData(isTaken);
+    public boolean isPoison() {
+        return isPoison;
     }
 }

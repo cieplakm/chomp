@@ -5,7 +5,6 @@ import com.mmc.chomp.app.game.domain.board.BoardFactory;
 
 
 import com.mmc.chomp.app.game.domain.board.ChocolateBoxValue;
-import com.mmc.chomp.app.game.domain.board.ChocolateValue;
 import com.mmc.chomp.app.sharedkernel.Position;
 import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
 import org.assertj.core.api.Assertions;
@@ -23,13 +22,13 @@ public class BoardTests {
         chompBoard.peakChocolate(position);
         ChocolateBoxValue snapshot = chompBoard.snapshot();
 
-        ChocolateValue[][] chocolateValue = snapshot.getChocolateValue();
+        boolean[][] chocolateValue = snapshot.getChocolateValue();
 
-        Assertions.assertThat(chocolateValue[2][2].isTaken()).isTrue();
-        Assertions.assertThat(chocolateValue[2][3].isTaken()).isTrue();
-        Assertions.assertThat(chocolateValue[3][2].isTaken()).isTrue();
-        Assertions.assertThat(chocolateValue[2][1].isTaken()).isFalse();
-        Assertions.assertThat(chocolateValue[1][2].isTaken()).isFalse();
+        Assertions.assertThat(chocolateValue[2][2]).isTrue();
+        Assertions.assertThat(chocolateValue[2][3]).isTrue();
+        Assertions.assertThat(chocolateValue[3][2]).isTrue();
+        Assertions.assertThat(chocolateValue[2][1]).isFalse();
+        Assertions.assertThat(chocolateValue[1][2]).isFalse();
     }
 
     @Test

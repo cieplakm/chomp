@@ -1,11 +1,10 @@
 package com.mmc.chomp.app.game.domain.board;
 
-
-
 import com.mmc.chomp.app.sharedkernel.Position;
 
 class ChocolateBox {
     private Size size;
+
     private Chocolate[][] chocolates;
 
     ChocolateBox(Size size) {
@@ -32,14 +31,14 @@ class ChocolateBox {
     }
 
     ChocolateBoxValue snapshot() {
-        ChocolateValue[][] chocolateValues = new ChocolateValue[getSize().getRows()][getSize().getCols()];
+        boolean[][] chocolateValues = new boolean[getSize().getRows()][getSize().getCols()];
 
         for (int i = 0; i < chocolates.length; i++) {
             Chocolate[] chocolate = chocolates[i];
 
             for (int k = 0; k < chocolate.length; k++) {
                 Chocolate chocolate1 = chocolate[k];
-                chocolateValues[i][k] = new ChocolateValue(chocolate1.isTaken());
+                chocolateValues[i][k] = chocolate1.isTaken();
             }
 
         }
