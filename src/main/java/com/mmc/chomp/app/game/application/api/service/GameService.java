@@ -1,6 +1,6 @@
 package com.mmc.chomp.app.game.application.api.service;
 
-import com.mmc.chomp.app.game.application.readmodel.GameProjection;
+import com.mmc.chomp.app.game.domain.game.GameProjection;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.sharedkernel.Position;
 

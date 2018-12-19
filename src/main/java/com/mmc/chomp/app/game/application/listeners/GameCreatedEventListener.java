@@ -14,8 +14,6 @@ public class GameCreatedEventListener {
 
     @EventSubscriber
     public void handle(GameCreatedEvent event) {
-
         webSocketMessageSender.send(event.getCreatorId().getId(), event);
-
     }
 }

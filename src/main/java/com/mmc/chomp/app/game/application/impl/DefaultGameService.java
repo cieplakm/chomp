@@ -1,6 +1,6 @@
 package com.mmc.chomp.app.game.application.impl;
 
-import com.mmc.chomp.app.game.application.readmodel.GameProjection;
+import com.mmc.chomp.app.game.domain.game.GameProjection;
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.game.application.api.service.GameService;
 import com.mmc.chomp.app.game.domain.game.Game;

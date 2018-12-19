@@ -1,13 +1,12 @@
 package com.mmc.chomp.app.game.domain.game;
 
-import com.mmc.chomp.app.game.application.readmodel.GameProjection;
+import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+import com.mmc.chomp.app.game.domain.board.Board;
 import com.mmc.chomp.app.game.domain.game.events.Event;
 import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameOverEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameStartedEvent;
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
-import com.mmc.chomp.app.game.domain.board.Board;
 import com.mmc.chomp.app.game.domain.game.events.UserLeftEvent;
 import com.mmc.chomp.app.sharedkernel.Player;
 import com.mmc.chomp.app.sharedkernel.Position;
@@ -27,10 +26,15 @@ import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.STARTED;
 @AggregateRoot
 public class Game extends BaseAggregateRoot {
     private GameStatus status;
+
     private Board board;
+
     private AggregateId currentTurn;
+
     private AggregateId creator;
+
     private AggregateId joiner;
+
     private AggregateId winner;
 
     public Game(AggregateId gameId, AggregateId creatorId, Board board) {
@@ -43,7 +47,7 @@ public class Game extends BaseAggregateRoot {
         CREATED, STARTED, FINISHED
     }
 
-    public void create(){
+    public void create() {
         status = CREATED;
         event(new GameCreatedEvent(aggregateId, creator));
         log.info("Game {} created", getAggregateId().getId());
@@ -106,13 +110,13 @@ public class Game extends BaseAggregateRoot {
 
     private void changeTurn() {
         currentTurn = TurnChanger.switchTurn(currentTurn, creator, joiner);
-        domainEventPublisher.publish(new TurnChangedEvent(aggregateId, currentTurn));
+        domainEventPublisher.publish(new TurnChangedEvent(currentTurn, opponent(currentTurn), aggregateId));
 
         log.info("{}'s turn at {} game", currentTurn.getId(), aggregateId.getId());
     }
 
     public void leave(AggregateId player) {
-        if (status !=FINISHED){
+        if (status != FINISHED) {
             status = FINISHED;
             winner = opponent(player);
         }

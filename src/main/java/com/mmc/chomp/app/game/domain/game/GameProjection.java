@@ -1,4 +1,4 @@
-package com.mmc.chomp.app.game.application.readmodel;
+package com.mmc.chomp.app.game.domain.game;
 
 import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
 import com.mmc.chomp.app.game.domain.board.ChocolateBoxValue;
