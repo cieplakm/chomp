@@ -9,6 +9,4 @@ public class TurnDto {
     private String waiter;
     private String game;
 
-
-
 }
