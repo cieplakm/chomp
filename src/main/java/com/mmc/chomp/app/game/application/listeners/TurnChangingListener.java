@@ -1,6 +1,7 @@
 package com.mmc.chomp.app.game.application.listeners;
 
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
+import com.mmc.chomp.app.response.MoveResponse;
 import com.mmc.chomp.app.web.WebSocketMessageSender;
 import com.mmc.chomp.app.web.dto.TurnDto;
 import com.mmc.chomp.ddd.annotation.event.EventListener;
@@ -15,9 +16,9 @@ public class TurnChangingListener {
 
     @EventSubscriber
     public void handle(TurnChangedEvent event){
-        TurnDto dto = new TurnDto(event.getCurrentTurnPlayerId().getId(), event.getWaiterPlayerId().getId(), event.getGameId().getId());
         //inform both users
-        webSocketMessageSender.send(event.getCurrentTurnPlayerId().getId(), dto);
-        webSocketMessageSender.send(event.getWaiterPlayerId().getId(), dto);
+        webSocketMessageSender.send(event.getCurrentTurnPlayerId().getId(), new MoveResponse(event.getGameId().getId(), event.getGameProjection().getBoard().getChocolateValue()));
+        webSocketMessageSender.send(event.getWaiterPlayerId().getId(), new MoveResponse(event.getGameId().getId(), event.getGameProjection().getBoard().getChocolateValue()));
+
     }
 }

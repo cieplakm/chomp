@@ -99,6 +99,31 @@
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.1</version>
+                <executions>
+                    <execution>
+						<phase>package</phase>
+						<goals>
+                            <goal>jar</goal>
+                        </goals>
+
+						<configuration>
+
+							<classifier>response</classifier>
+							<finalName>communication</finalName>
+							<includes>
+								<include>com/mmc/chomp/app/response/**</include>
+							</includes>
+						</configuration>
+                    </execution>
+
+                </executions>
+
+			</plugin>
+
 
 		</plugins>
 	</build>

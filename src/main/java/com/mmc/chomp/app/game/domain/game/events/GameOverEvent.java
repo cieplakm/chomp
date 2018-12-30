@@ -8,4 +8,5 @@ import lombok.Value;
 public class GameOverEvent extends Event {
     private AggregateId winner;
     private AggregateId looser;
+    private AggregateId gameId;
 }

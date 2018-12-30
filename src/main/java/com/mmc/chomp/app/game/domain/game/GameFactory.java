@@ -15,7 +15,7 @@ public class GameFactory {
 
     public Game create(String userId, int rows, int cols) {
         Board board = BoardFactory.create(rows, cols);
-        Game game = new Game(AggregateId.generate(), AggregateId.create(userId), board);
+        Game game = new Game(AggregateId.create("ffbc2602-3603-4137-ab3f-3a6d1525cc37"), AggregateId.create(userId), board);
 
         beanFactory.autowireBean(game);
         game.create();

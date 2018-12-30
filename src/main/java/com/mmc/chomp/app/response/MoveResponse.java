@@ -2,17 +2,15 @@ package com.mmc.chomp.app.response;
 
 public class MoveResponse extends Response {
 
-    private final String gameId;
-    private final boolean[][] boardState;
+    private boolean[][] boardState;
 
     public MoveResponse(String gameId, boolean[][] boardState) {
-        super("MOVE");
-        this.gameId = gameId;
+        super("MOVE", gameId);
         this.boardState = boardState;
     }
 
-    public String getGameId() {
-        return gameId;
+    public MoveResponse() {
+        setType("MOVE");
     }
 
     public boolean[][] getBoardState() {

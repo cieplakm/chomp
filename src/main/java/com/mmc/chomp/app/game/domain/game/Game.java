@@ -7,7 +7,8 @@ import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameOverEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameStartedEvent;
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
-import com.mmc.chomp.app.game.domain.game.events.UserLeftEvent;
+import com.mmc.chomp.app.game.domain.game.events.UserJoinedEvent;
+import com.mmc.chomp.app.game.domain.game.events.PlayerLeftEvent;
 import com.mmc.chomp.app.sharedkernel.Player;
 import com.mmc.chomp.app.sharedkernel.Position;
 import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
@@ -49,7 +50,7 @@ public class Game extends BaseAggregateRoot {
 
     public void create() {
         status = CREATED;
-        event(new GameCreatedEvent(aggregateId, creator));
+        event(new GameCreatedEvent(aggregateId, creator, snapshot()));
         log.info("Game {} created", getAggregateId().getId());
     }
 
@@ -58,6 +59,8 @@ public class Game extends BaseAggregateRoot {
             throw new JoinException();
         }
         this.joiner = joiner.getAggregateId();
+        event(new UserJoinedEvent(this.joiner, aggregateId, creator));
+
         log.info("New joiner at {} game", aggregateId.getId());
     }
 
@@ -103,24 +106,24 @@ public class Game extends BaseAggregateRoot {
     private void finishGame() {
         status = FINISHED;
         winner = opponent(currentTurn);
-        event(new GameOverEvent(winner, opponent(winner)));
+        event(new GameOverEvent(winner, opponent(winner), aggregateId));
 
         log.info("Game {} finished", aggregateId.getId());
     }
 
     private void changeTurn() {
         currentTurn = TurnChanger.switchTurn(currentTurn, creator, joiner);
-        domainEventPublisher.publish(new TurnChangedEvent(currentTurn, opponent(currentTurn), aggregateId));
+        event(new TurnChangedEvent(currentTurn, opponent(currentTurn), aggregateId, snapshot()));
 
         log.info("{}'s turn at {} game", currentTurn.getId(), aggregateId.getId());
     }
 
-    public void leave(AggregateId player) {
+    public void leave(AggregateId leaver) {
         if (status != FINISHED) {
             status = FINISHED;
-            winner = opponent(player);
+            winner = opponent(leaver);
         }
-        event(new UserLeftEvent(player, aggregateId));
+        event(new PlayerLeftEvent(leaver, opponent(leaver), aggregateId));
     }
 
     private AggregateId opponent(AggregateId participant) {

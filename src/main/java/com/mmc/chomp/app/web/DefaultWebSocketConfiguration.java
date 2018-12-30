@@ -18,6 +18,6 @@ class DefaultWebSocketConfiguration implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(webSocketHandler, "/chomp").withSockJS();
+        webSocketHandlerRegistry.addHandler(webSocketHandler, "/chomp");
     }
 }

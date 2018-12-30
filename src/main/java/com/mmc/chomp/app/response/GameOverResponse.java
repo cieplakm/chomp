@@ -1,20 +1,17 @@
 package com.mmc.chomp.app.response;
 
 public class GameOverResponse extends Response {
-
-    private final String gameId;
-    private final String winnerId;
-    private final String looserId;
+    private  String winnerId;
+    private  String looserId;
 
     public GameOverResponse(String gameId, String winnerId, String looserId) {
-        super("GAME_OVER");
-        this.gameId = gameId;
+        super("GAME_OVER", gameId);
         this.winnerId = winnerId;
         this.looserId = looserId;
     }
 
-    public String getGameId() {
-        return gameId;
+    public GameOverResponse() {
+        setType("GAME_OVER");
     }
 
     public String getWinnerId() {
@@ -25,4 +22,11 @@ public class GameOverResponse extends Response {
         return looserId;
     }
 
+    void setWinnerId(String winnerId) {
+        this.winnerId = winnerId;
+    }
+
+    void setLooserId(String looserId) {
+        this.looserId = looserId;
+    }
 }

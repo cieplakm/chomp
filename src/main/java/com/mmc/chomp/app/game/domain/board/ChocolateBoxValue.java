@@ -5,4 +5,6 @@ import lombok.Value;
 @Value
 public class ChocolateBoxValue {
     private boolean[][] chocolateValue;
+    private int rows;
+    private int cols;
 }

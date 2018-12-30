@@ -42,7 +42,7 @@ class ChocolateBox {
             }
 
         }
-        return new ChocolateBoxValue(chocolateValues);
+        return new ChocolateBoxValue(chocolateValues, size.getRows(), size.getCols());
     }
 
     Chocolate getChocolateAt(Position position) {

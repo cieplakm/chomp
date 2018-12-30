@@ -7,9 +7,10 @@ import lombok.Value;
 
 @Event
 @Value
-public class UserLeftEvent extends com.mmc.chomp.app.game.domain.game.events.Event {
+public class PlayerLeftEvent extends com.mmc.chomp.app.game.domain.game.events.Event {
 
     private AggregateId leaver;
+    private AggregateId stayer;
     private AggregateId gameId;
 
 }

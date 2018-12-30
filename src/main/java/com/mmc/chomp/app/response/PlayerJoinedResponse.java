@@ -1,21 +1,22 @@
 package com.mmc.chomp.app.response;
 
 public class PlayerJoinedResponse extends Response {
-
-    private final String gameId;
-    private final String joinerId;
+    private String joinerId;
 
     public PlayerJoinedResponse(String gameId, String joinerId) {
-        super("PLAYER_JOINED");
-        this.gameId = gameId;
+        super("PLAYER_JOINED", gameId);
         this.joinerId = joinerId;
     }
 
-    public String getGameId() {
-        return gameId;
+    public PlayerJoinedResponse() {
+        setType("PLAYER_JOINED");
     }
 
     public String getJoinerId() {
         return joinerId;
+    }
+
+    void setJoinerId(String joinerId) {
+        this.joinerId = joinerId;
     }
 }
