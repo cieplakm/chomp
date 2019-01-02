@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 })
 public abstract class Response {
     private String type;
-    String gameId;
+    private String gameId;
 
     public Response(String type, String gameId) {
         this.type = type;

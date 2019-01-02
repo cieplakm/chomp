@@ -6,9 +6,9 @@ import com.mmc.chomp.app.game.domain.game.events.Event;
 import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameOverEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameStartedEvent;
+import com.mmc.chomp.app.game.domain.game.events.PlayerLeftEvent;
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
 import com.mmc.chomp.app.game.domain.game.events.UserJoinedEvent;
-import com.mmc.chomp.app.game.domain.game.events.PlayerLeftEvent;
 import com.mmc.chomp.app.sharedkernel.Player;
 import com.mmc.chomp.app.sharedkernel.Position;
 import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
@@ -113,9 +113,10 @@ public class Game extends BaseAggregateRoot {
 
     private void changeTurn() {
         currentTurn = TurnChanger.switchTurn(currentTurn, creator, joiner);
-        event(new TurnChangedEvent(currentTurn, opponent(currentTurn), aggregateId, snapshot()));
+        TurnChangedEvent event = new TurnChangedEvent(aggregateId, creator, joiner, creator.equals(currentTurn), joiner.equals(currentTurn), snapshot());
+        event(event);
 
-        log.info("{}'s turn at {} game", currentTurn.getId(), aggregateId.getId());
+        log.info("Is playerOne turn {}, is playerTwo turn {} at {} game", event.isPlayerOneTurn(), event.isPlayerTwoTurn(), aggregateId.getId());
     }
 
     public void leave(AggregateId leaver) {

@@ -6,8 +6,10 @@ import lombok.Value;
 
 @Value
 public class TurnChangedEvent extends Event {
-    private final AggregateId currentTurnPlayerId;
-    private final AggregateId waiterPlayerId;
     private final AggregateId gameId;
+    private final AggregateId playerOneId;
+    private final AggregateId playerTwoId;
+    private boolean playerOneTurn;
+    private boolean playerTwoTurn;
     private GameProjection gameProjection;
 }
