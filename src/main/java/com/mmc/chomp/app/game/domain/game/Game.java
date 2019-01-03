@@ -69,7 +69,7 @@ public class Game extends BaseAggregateRoot {
         }
         choseWhoFirst();
         status = STARTED;
-        event(new GameStartedEvent(aggregateId, creator, joiner));
+        event(new GameStartedEvent(snapshot(),creator.equals(currentTurn), joiner.equals(currentTurn)));
 
         log.info("Game {} started", aggregateId.getId());
     }

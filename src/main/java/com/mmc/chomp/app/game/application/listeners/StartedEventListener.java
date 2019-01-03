@@ -2,6 +2,7 @@ package com.mmc.chomp.app.game.application.listeners;
 
 import com.mmc.chomp.app.game.domain.game.events.GameStartedEvent;
 import com.mmc.chomp.app.response.GameStartedResponse;
+import com.mmc.chomp.app.response.GameState;
 import com.mmc.chomp.app.web.WebSocketMessageSender;
 import com.mmc.chomp.ddd.annotation.event.EventListener;
 import com.mmc.chomp.ddd.annotation.event.EventSubscriber;
@@ -15,7 +16,14 @@ public class StartedEventListener {
 
     @EventSubscriber
     public void handle(GameStartedEvent event) {
-        webSocketMessageSender.send(event.getPlayer1().getId(), new GameStartedResponse(event.getGameId().getId()));
-        webSocketMessageSender.send(event.getPlayer2().getId(), new GameStartedResponse(event.getGameId().getId()));
+        GameState gameState = new GameState(event.getSnapshot().getBoard().getChocolateValue(),
+                event.getSnapshot().getBoard().getRows(),
+                event.getSnapshot().getBoard().getCols(),
+                event.getSnapshot().getCreatorId().getId(),
+                event.getSnapshot().getJoinerId().getId(),
+                event.getSnapshot().getStatus()
+        );
+        webSocketMessageSender.send(event.getSnapshot().getCreatorId().getId(), new GameStartedResponse(event.getSnapshot().getGameId().getId(), event.isCreatorTurn(), gameState));
+        webSocketMessageSender.send(event.getSnapshot().getJoinerId().getId(), new GameStartedResponse(event.getSnapshot().getGameId().getId(), event.isJoinerTurn(), gameState));
     }
 }

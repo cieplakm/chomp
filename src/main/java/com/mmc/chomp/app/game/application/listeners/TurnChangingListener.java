@@ -1,6 +1,8 @@
 package com.mmc.chomp.app.game.application.listeners;
 
+import com.mmc.chomp.app.game.domain.game.GameProjection;
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
+import com.mmc.chomp.app.response.GameState;
 import com.mmc.chomp.app.response.MoveResponse;
 import com.mmc.chomp.app.web.WebSocketMessageSender;
 import com.mmc.chomp.ddd.annotation.event.EventListener;
@@ -15,18 +17,12 @@ public class TurnChangingListener {
 
     @EventSubscriber
     public void handle(TurnChangedEvent event) {
-        //inform both users
-        webSocketMessageSender.send
-                (event.getPlayerOneId().getId(), new MoveResponse(
-                        event.getGameId().getId(),
-                        event.getGameProjection().getBoard().getChocolateValue(),
-                        event.isPlayerOneTurn()
-                ));
+        GameProjection gp = event.getGameProjection();
 
-        webSocketMessageSender.send(
-                event.getPlayerTwoId().getId(), new MoveResponse(event.getGameId().getId(),
-                        event.getGameProjection().getBoard().getChocolateValue(),
-                        event.isPlayerTwoTurn())
-        );
+        GameState gameState = new GameState(gp.getBoard().getChocolateValue(), gp.getBoard().getRows(), gp.getBoard().getCols(), gp.getCreatorId().getId(), gp.getJoinerId().getId(), gp.getStatus());
+
+        webSocketMessageSender.send(event.getPlayerOneId().getId(), new MoveResponse(gp.getGameId().getId(), gameState, event.isPlayerOneTurn()));
+
+        webSocketMessageSender.send(event.getPlayerTwoId().getId(), new MoveResponse(gp.getGameId().getId(), gameState, event.isPlayerTwoTurn()));
     }
 }

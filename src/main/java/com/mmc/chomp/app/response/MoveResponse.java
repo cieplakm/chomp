@@ -2,12 +2,12 @@ package com.mmc.chomp.app.response;
 
 public class MoveResponse extends Response {
 
-    private boolean[][] boardState;
+    private GameState gameState;
     private boolean isMyTourTurn;
 
-    public MoveResponse(String gameId, boolean[][] boardState, boolean isMyTurn) {
+    public MoveResponse(String gameId, GameState gameState, boolean isMyTurn) {
         super("MOVE", gameId);
-        this.boardState = boardState;
+        this.gameState = gameState;
         this.isMyTourTurn = isMyTurn;
     }
 
@@ -15,8 +15,12 @@ public class MoveResponse extends Response {
         setType("MOVE");
     }
 
-    public boolean[][] getBoardState() {
-        return boardState;
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public boolean isMyTourTurn() {
