@@ -1,6 +1,6 @@
 package com.mmc.chomp.ddd.support.domain;
 
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+import com.mmc.chomp.app.game.domain.AggregateId;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class BaseAggregateRoot {

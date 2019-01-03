@@ -1,4 +1,4 @@
-package com.mmc.chomp.app.sharedkernel.exceptions;
+package com.mmc.chomp.app.game.domain.exceptions;
 
 public class NotStartedException extends RuntimeException {
 }

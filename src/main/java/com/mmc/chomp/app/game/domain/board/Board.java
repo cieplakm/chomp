@@ -1,7 +1,6 @@
 package com.mmc.chomp.app.game.domain.board;
 
-import com.mmc.chomp.app.sharedkernel.Position;
-import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
+import com.mmc.chomp.app.game.domain.exceptions.ChocolateTakenException;
 
 public class Board {
     private ChocolateBox box;

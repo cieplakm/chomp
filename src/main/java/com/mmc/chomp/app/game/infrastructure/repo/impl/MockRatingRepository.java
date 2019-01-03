@@ -2,7 +2,7 @@ package com.mmc.chomp.app.game.infrastructure.repo.impl;
 
 import com.mmc.chomp.app.game.domain.ranking.Rank;
 import com.mmc.chomp.app.game.domain.ranking.RankingRepository;
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+import com.mmc.chomp.app.game.domain.AggregateId;
 import com.mmc.chomp.ddd.support.repository.GenericAggregateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

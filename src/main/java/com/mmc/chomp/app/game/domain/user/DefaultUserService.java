@@ -1,7 +1,6 @@
 package com.mmc.chomp.app.game.domain.user;
 
-import com.mmc.chomp.app.game.domain.game.events.UserCreatedEvent;
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+import com.mmc.chomp.app.game.domain.AggregateId;
 import com.mmc.chomp.ddd.support.domain.DomainEventPublisher;
 
 public class DefaultUserService implements UserService{

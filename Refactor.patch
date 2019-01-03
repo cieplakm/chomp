@@ -1,0 +1,1473 @@
+Index: src/main/java/com/mmc/chomp/app/canonicalmodel/publishedlanguage/PlayerData.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/canonicalmodel/publishedlanguage/PlayerData.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/canonicalmodel/publishedlanguage/PlayerData.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
+@@ -1,9 +0,0 @@
+-package com.mmc.chomp.app.canonicalmodel.publishedlanguage;
+-
+-import lombok.Value;
+-
+-@Value
+-public class PlayerData {
+-    private AggregateId aggregateId;
+-    private String login;
+-}
+Index: src/main/java/com/mmc/chomp/app/game/application/readmodel/response/CreateGameResponse.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/readmodel/response/CreateGameResponse.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/readmodel/response/CreateGameResponse.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
+@@ -1,8 +0,0 @@
+-package com.mmc.chomp.app.game.application.readmodel.response;
+-
+-import lombok.Value;
+-
+-@Value
+-public class CreateGameResponse extends Response {
+-    private String gameId;
+-}
+Index: src/main/java/com/mmc/chomp/app/game/application/readmodel/response/RatingResponse.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/readmodel/response/RatingResponse.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/readmodel/response/RatingResponse.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
+@@ -1,8 +0,0 @@
+-package com.mmc.chomp.app.game.application.readmodel.response;
+-
+-import lombok.Value;
+-
+-@Value
+-public class RatingResponse extends Response{
+-    private long ranking;
+-}
+Index: src/main/java/com/mmc/chomp/app/game/application/readmodel/response/Response.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/readmodel/response/Response.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/readmodel/response/Response.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
+@@ -1,22 +0,0 @@
+-package com.mmc.chomp.app.game.application.readmodel.response;
+-
+-public abstract class Response {
+-    private String userId;
+-    private String type;
+-
+-    public String getType() {
+-        return type;
+-    }
+-
+-    public void setType(String type) {
+-        this.type = type;
+-    }
+-
+-    public String getUserId() {
+-        return userId;
+-    }
+-
+-    public void setUserId(String userId) {
+-        this.userId = userId;
+-    }
+-}
+Index: src/main/java/com/mmc/chomp/app/game/application/readmodel/response/StateResponse.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/readmodel/response/StateResponse.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/readmodel/response/StateResponse.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
+@@ -1,15 +0,0 @@
+-package com.mmc.chomp.app.game.application.readmodel.response;
+-
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+-import lombok.AllArgsConstructor;
+-import lombok.Value;
+-
+-@Value
+-@AllArgsConstructor
+-public class StateResponse extends Response {
+-    private String status;
+-    private boolean[][] board;
+-    private AggregateId creatorId;
+-    private AggregateId joinerId;
+-    private AggregateId winnerId;
+-}
+Index: src/main/java/com/mmc/chomp/app/game/application/readmodel/RatingBasicCommand.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/readmodel/RatingBasicCommand.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/readmodel/RatingBasicCommand.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
+@@ -1,14 +0,0 @@
+-package com.mmc.chomp.app.game.application.readmodel;
+-
+-import com.mmc.chomp.app.game.application.command.Command;
+-import lombok.Data;
+-
+-@Data
+-public class RatingBasicCommand extends Command {
+-    private String userId;
+-
+-    @Override
+-    public void execute() {
+-
+-    }
+-}
+Index: src/main/java/com/mmc/chomp/app/game/application/readmodel/ResponserProcessor.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/readmodel/ResponserProcessor.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/readmodel/ResponserProcessor.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
+@@ -1,151 +0,0 @@
+-//package com.mmc.chomp.app.game.application.command;
+-//
+-//import com.fasterxml.jackson.databind.ObjectMapper;
+-//import com.mmc.chomp.app.game.domain.game.GameProjection;
+-//import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+-//import com.mmc.chomp.app.game.application.api.service.GameService;
+-//import com.mmc.chomp.app.game.application.api.service.RankingService;
+-//import com.mmc.chomp.app.game.application.command.Command;
+-//import com.mmc.chomp.app.game.application.command.impl.CreateGameCommand;
+-//import com.mmc.chomp.app.game.application.command.impl.Join2GameCommand;
+-//import com.mmc.chomp.app.game.application.command.impl.MoveCommand;
+-//import com.mmc.chomp.app.game.application.readmodel.RatingBasicCommand;
+-//import com.mmc.chomp.app.game.application.command.impl.StartGameCommand;
+-//import com.mmc.chomp.app.game.application.readmodel.StateBasicCommand;
+-//import com.mmc.chomp.app.game.domain.board.ChocolateValue;
+-//import com.mmc.chomp.app.game.domain.ranking.Rank;
+-//import com.mmc.chomp.app.sharedkernel.Position;
+-//import com.mmc.chomp.app.game.application.readmodel.response.CreateGameResponse;
+-//import com.mmc.chomp.app.game.application.readmodel.response.RatingResponse;
+-//import com.mmc.chomp.app.game.application.readmodel.response.Response;
+-//import com.mmc.chomp.app.game.application.readmodel.response.StateResponse;
+-//import org.springframework.stereotype.Component;
+-//
+-//import java.io.IOException;
+-//import java.io.Serializable;
+-//
+-//@Component
+-//public class ResponserProcessor {
+-//
+-//    private ObjectMapper objectMapper;
+-//    private GameService gameService;
+-//    private RankingService rankingService;
+-//
+-//    public ResponserProcessor(GameService gameService, RankingService rankingService, ObjectMapper objectMapper) {
+-//        this.gameService = gameService;
+-//        this.rankingService = rankingService;
+-//        this.objectMapper = objectMapper;
+-//    }
+-//
+-//    public String response(Serializable request) throws IOException {
+-//        return objectMapper.writeValueAsString(resolveResponse(request));
+-//    }
+-//
+-//    private Response resolveResponse(Serializable request) throws IOException {
+-//        Command basicCommandDto = objectMapper.readValue((String) request, Command.class);
+-//        CommandType requestType = basicCommandDto.getRequestType();
+-//
+-//        switch (requestType) {
+-//            case CREATE:
+-//                return createGame(request);
+-//            case JOIN:
+-//                return join(request);
+-//            case MOVE:
+-//                return move(request);
+-//            case START:
+-//                return start(request);
+-//            case STATE:
+-//                return state(request);
+-//            case RATING:
+-//                return rating(request);
+-//
+-//        }
+-//
+-//        throw new RuntimeException("No command found");
+-//    }
+-//
+-//    private <T> T map(Serializable serializable, Class<? extends T> clazz) {
+-//        try {
+-//            return objectMapper.readValue((String) serializable, clazz);
+-//        } catch (IOException e) {
+-//            e.printStackTrace();
+-//            throw new RuntimeException("Serialization error");
+-//        }
+-//
+-//    }
+-//
+-//    private Response rating(Serializable request) {
+-//        RatingBasicCommand ratingRequest = map(request, RatingBasicCommand.class);
+-//        Rank rank = rankingService.get(new AggregateId(ratingRequest.getUserId()));
+-//
+-//        return new RatingResponse(rank.getRank());
+-//    }
+-//
+-//    private Response state(Serializable request) {
+-//        StateBasicCommand startRequest = map(request, StateBasicCommand.class);
+-//
+-//        GameProjection projection = gameService.projection(new AggregateId(startRequest.getGameId()));
+-//        StateResponse response = new StateResponse(
+-//                projection.getStatus(),
+-//                mapChocolateToBoolean(projection.getBoard().getChocolateValue()),
+-//                projection.getCreatorId(),
+-//                projection.getJoinerId(),
+-//                projection.getWinnerId()
+-//        );
+-//        return response;
+-//    }
+-//
+-//    private boolean[][] mapChocolateToBoolean(ChocolateValue[][] chocolateValue) {
+-//        boolean[][] booleans = new boolean[chocolateValue.length][];
+-//        for (int i = 0; i < chocolateValue.length; i++) {
+-//            ChocolateValue[] chocolateValues = chocolateValue[i];
+-//            boolean[] row = new boolean[chocolateValues.length];
+-//
+-//            for (int k = 0; k < chocolateValues.length; k++) {
+-//                ChocolateValue value = chocolateValue[i][k];
+-//                row[k] = value.isTaken();
+-//            }
+-//
+-//            booleans[i] = row;
+-//        }
+-//        return booleans;
+-//    }
+-//
+-//    private Response start(Serializable request) {
+-//        StartGameCommand startRequest = map(request, StartGameCommand.class);
+-//
+-//        gameService.start(new AggregateId(startRequest.getGameId()));
+-//
+-//        return null;
+-//    }
+-//
+-//    private Response move(Serializable request) {
+-//        MoveCommand moveRequest = map(request, MoveCommand.class);
+-//
+-//        gameService.move(new AggregateId(moveRequest.getGameId()), new Position(moveRequest.getRow(), moveRequest.getCol()));
+-//
+-//        return null;
+-//    }
+-//
+-//    private Response join(Serializable request) {
+-//        Join2GameCommand joinGameRequest = map(request, Join2GameCommand.class);
+-//
+-//        gameService.joinToGame(new AggregateId(joinGameRequest.getUserId()), new AggregateId(joinGameRequest.getGameId()));
+-//
+-//        return null;
+-//    }
+-//
+-//    //TODO: convert to command
+-//    private Response createGame(Serializable request) {
+-//        CreateGameCommand createGameRequest = map(request, CreateGameCommand.class);
+-//        AggregateId gameAggregateId = gameService.createGame(new AggregateId(createGameRequest.getUserId()), createGameRequest.getRows(), createGameRequest.getCols());
+-//
+-//        CreateGameResponse response = new CreateGameResponse(gameAggregateId.getId());
+-//        response.setUserId(createGameRequest.getUserId());
+-//        response.setType(CommandType.CREATE);
+-//
+-//        return response;
+-//    }
+-//
+-//
+-//}
+Index: src/main/java/com/mmc/chomp/app/game/application/readmodel/StateBasicCommand.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/readmodel/StateBasicCommand.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/readmodel/StateBasicCommand.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
+@@ -1,14 +0,0 @@
+-package com.mmc.chomp.app.game.application.readmodel;
+-
+-import com.mmc.chomp.app.game.application.command.Command;
+-import lombok.Data;
+-
+-@Data
+-public class StateBasicCommand extends Command {
+-    private String gameId;
+-
+-    @Override
+-    public void execute() {
+-
+-    }
+-}
+Index: src/main/java/com/mmc/chomp/app/readmodel/GameDto.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/readmodel/GameDto.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/readmodel/GameDto.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
+@@ -1,12 +0,0 @@
+-package com.mmc.chomp.app.readmodel;
+-
+-import lombok.Value;
+-
+-@Value
+-public class GameDto {
+-    private boolean[][] board;
+-    private String status;
+-    private String winner;
+-    private String player1;
+-    private String player2;
+-}
+Index: src/main/java/com/mmc/chomp/app/readmodel/GameFinder.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/readmodel/GameFinder.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/readmodel/GameFinder.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
+@@ -1,31 +0,0 @@
+-package com.mmc.chomp.app.readmodel;
+-
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+-import com.mmc.chomp.app.game.domain.game.Game;
+-import com.mmc.chomp.app.game.domain.game.GameProjection;
+-import com.mmc.chomp.app.game.domain.game.GameRepository;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.stereotype.Component;
+-
+-@Component
+-public class GameFinder {
+-    private GameRepository gameRepository;
+-
+-    @Autowired
+-    public GameFinder(GameRepository gameRepository) {
+-        this.gameRepository = gameRepository;
+-    }
+-
+-    public GameDto gameProjection(String gameId){
+-        Game game = gameRepository.get(AggregateId.create(gameId));
+-        GameProjection snapshot = game.snapshot();
+-        return new GameDto(
+-                snapshot.getBoard().getChocolateValue(),
+-                snapshot.getStatus(),
+-                snapshot.getWinnerId().getId(),
+-                snapshot.getCreatorId().getId(),
+-                snapshot.getJoinerId().getId()
+-        );
+-    }
+-
+-}
+Index: src/main/java/com/mmc/chomp/ddd/support/domain/BaseEntity.java
+===================================================================
+--- src/main/java/com/mmc/chomp/ddd/support/domain/BaseEntity.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/ddd/support/domain/BaseEntity.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
+@@ -1,10 +0,0 @@
+-package com.mmc.chomp.ddd.support.domain;
+-
+-public abstract class BaseEntity {
+-    protected Long id;
+-
+-    public Long id() {
+-        return id;
+-    }
+-
+-}
+Index: src/main/java/com/mmc/chomp/IoC.java
+===================================================================
+--- src/main/java/com/mmc/chomp/IoC.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/IoC.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
+@@ -1,31 +0,0 @@
+-package com.mmc.chomp;
+-
+-
+-
+-public class IoC {
+-//    public static DefaultDomainEventPublisher domainEventPublisher ;
+-//    public static GameRepository gameRepository;
+-//    public static  RankingRepository rankingRepository;
+-//
+-//    public static DefaultDomainEventPublisher domainEventPublisher(){
+-//        if (domainEventPublisher == null) {
+-//            DefaultRankingService rankingService = new DefaultRankingService(rankingRepository);
+-//            domainEventPublisher = new DefaultDomainEventPublisher(new DefaultRankingService(getRankingRepository()), new TurnChangingListener(), new UserCreatedListener(rankingService), gameCreatedEventHandler, new GameOverListener(rankingService));
+-//        }
+-//        return domainEventPublisher;
+-//    }
+-//
+-//    public static GameRepository gameRepository(){
+-//        if (gameRepository == null){
+-//            gameRepository= new MockGameRepository();
+-//        }
+-//        return gameRepository;
+-//    }
+-//
+-//    public static RankingRepository getRankingRepository() {
+-//        if (rankingRepository == null){
+-//            rankingRepository = new MockRatingRepository();
+-//        }
+-//        return rankingRepository;
+-//    }
+-}
+Index: src/main/java/com/mmc/chomp/app/game/application/command/impl/MoveCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/command/impl/MoveCommand.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/command/impl/MoveCommand.java	(date 1546510243404)
+@@ -1,10 +1,10 @@
+ package com.mmc.chomp.app.game.application.command.impl;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.app.game.application.command.Command;
+ import com.mmc.chomp.app.game.domain.game.Game;
+ import com.mmc.chomp.app.game.domain.game.GameRepository;
+-import com.mmc.chomp.app.sharedkernel.Position;
++import com.mmc.chomp.app.game.domain.board.Position;
+ import lombok.Data;
+ import org.springframework.beans.factory.annotation.Autowired;
+ 
+Index: src/main/java/com/mmc/chomp/app/game/application/listeners/NewJoinerListener.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/listeners/NewJoinerListener.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/listeners/NewJoinerListener.java	(date 1546521318366)
+@@ -1,6 +1,7 @@
+ package com.mmc.chomp.app.game.application.listeners;
+ 
+ import com.mmc.chomp.app.game.domain.game.events.UserJoinedEvent;
++import com.mmc.chomp.app.response.GameState;
+ import com.mmc.chomp.app.response.PlayerJoinedResponse;
+ import com.mmc.chomp.app.web.WebSocketMessageSender;
+ import com.mmc.chomp.ddd.annotation.event.EventListener;
+@@ -15,7 +16,18 @@
+ 
+     @EventSubscriber
+     public void handle(UserJoinedEvent event) {
+-        webSocketMessageSender.send(event.getCreator().getId(),
+-                new PlayerJoinedResponse(event.getGameId().getId(), event.getJoiner().getId()));
++        com.mmc.chomp.app.game.domain.game.GameProjection gameProjection = event.getGameProjection();
++
++        GameState gameState = new GameState(
++                gameProjection.getBoard().getChocolateValue(),
++                gameProjection.getBoard().getRows(),
++                gameProjection.getBoard().getCols(),
++                gameProjection.getCreatorId().getId(),
++                gameProjection.getJoinerId().getId(),
++                gameProjection.getStatus()
++        );
++
++        webSocketMessageSender.send(gameProjection.getCreatorId().getId(),
++                new PlayerJoinedResponse(event.getGameProjection().getGameId().getId(), gameState));
+     }
+ }
+Index: src/main/java/com/mmc/chomp/app/game/domain/game/events/PlayerLeftEvent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/game/events/PlayerLeftEvent.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/game/events/PlayerLeftEvent.java	(date 1546510240639)
+@@ -1,8 +1,7 @@
+ package com.mmc.chomp.app.game.domain.game.events;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.ddd.annotation.event.Event;
+-import lombok.Data;
+ import lombok.Value;
+ 
+ @Event
+Index: src/main/java/com/mmc/chomp/app/game/application/listeners/StartedEventListener.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/listeners/StartedEventListener.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/listeners/StartedEventListener.java	(date 1546505110422)
+@@ -1,7 +1,5 @@
+ package com.mmc.chomp.app.game.application.listeners;
+ 
+-import com.mmc.chomp.app.game.application.readmodel.response.CreateGameResponse;
+-import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
+ import com.mmc.chomp.app.game.domain.game.events.GameStartedEvent;
+ import com.mmc.chomp.app.response.GameStartedResponse;
+ import com.mmc.chomp.app.web.WebSocketMessageSender;
+Index: src/main/java/com/mmc/chomp/app/game/application/command/impl/LeaveGameCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/command/impl/LeaveGameCommand.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/command/impl/LeaveGameCommand.java	(date 1546510243758)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.app.game.application.command.impl;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.app.game.application.command.Command;
+ import com.mmc.chomp.app.game.domain.game.Game;
+ import com.mmc.chomp.app.game.domain.game.GameRepository;
+Index: src/main/java/com/mmc/chomp/app/game/application/impl/DefaultRankingService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/impl/DefaultRankingService.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/impl/DefaultRankingService.java	(date 1546510238225)
+@@ -3,14 +3,11 @@
+ import com.mmc.chomp.app.game.application.api.service.RankingService;
+ import com.mmc.chomp.app.game.domain.ranking.Rank;
+ import com.mmc.chomp.app.game.domain.ranking.RankingRepository;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import lombok.extern.slf4j.Slf4j;
+-import org.hibernate.validator.Incubating;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Service;
+ 
+-import javax.xml.ws.ServiceMode;
+-
+ @Slf4j
+ @Service
+ public class DefaultRankingService implements RankingService {
+Index: src/main/java/com/mmc/chomp/app/game/application/listeners/GameCreatedEventListener.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/listeners/GameCreatedEventListener.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/listeners/GameCreatedEventListener.java	(date 1546521465560)
+@@ -1,8 +1,8 @@
+ package com.mmc.chomp.app.game.application.listeners;
+ 
+-import com.mmc.chomp.app.game.application.readmodel.response.CreateGameResponse;
+ import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
+ import com.mmc.chomp.app.response.GameCreatedResponse;
++import com.mmc.chomp.app.response.GameState;
+ import com.mmc.chomp.app.web.WebSocketMessageSender;
+ import com.mmc.chomp.ddd.annotation.event.EventListener;
+ import com.mmc.chomp.ddd.annotation.event.EventSubscriber;
+@@ -16,9 +16,14 @@
+ 
+     @EventSubscriber
+     public void handle(GameCreatedEvent event) {
+-        webSocketMessageSender.send(event.getCreatorId().getId(), new GameCreatedResponse(event.getGameId().getId(),
++
++        GameState gameState = new GameState(event.getGameProjection().getBoard().getChocolateValue(),
+                 event.getGameProjection().getBoard().getRows(),
+                 event.getGameProjection().getBoard().getCols(),
+-                event.getGameProjection().getBoard().getChocolateValue()));
++                event.getCreatorId().getId(),
++                null,
++                event.getGameProjection().getStatus());
++
++        webSocketMessageSender.send(event.getCreatorId().getId(), new GameCreatedResponse(event.getGameId().getId(), gameState));
+     }
+ }
+Index: src/main/java/com/mmc/chomp/app/game/domain/game/GameFactory.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/game/GameFactory.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/game/GameFactory.java	(date 1546510243358)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.app.game.domain.game;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.app.game.domain.board.Board;
+ import com.mmc.chomp.app.game.domain.board.BoardFactory;
+ import org.springframework.beans.factory.annotation.Autowired;
+Index: src/main/java/com/mmc/chomp/app/response/GameState.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/response/GameState.java	(date 1546521318404)
++++ src/main/java/com/mmc/chomp/app/response/GameState.java	(date 1546521318404)
+@@ -0,0 +1,70 @@
++package com.mmc.chomp.app.response;
++
++public class GameState {
++    private boolean[][] board;
++    private int rows;
++    private int cols;
++    private String creatorId;
++    private String joinerId;
++    private String status;
++
++    public GameState() {
++    }
++
++    public GameState(boolean[][] board, int rows, int cols, String creatorId, String joinerId, String status) {
++        this.board = board;
++        this.rows = rows;
++        this.cols = cols;
++        this.creatorId = creatorId;
++        this.joinerId = joinerId;
++        this.status = status;
++    }
++
++    public boolean[][] getBoard() {
++        return board;
++    }
++
++    public void setBoard(boolean[][] board) {
++        this.board = board;
++    }
++
++    public int getRows() {
++        return rows;
++    }
++
++    public void setRows(int rows) {
++        this.rows = rows;
++    }
++
++    public int getCols() {
++        return cols;
++    }
++
++    public void setCols(int cols) {
++        this.cols = cols;
++    }
++
++    public String getCreatorId() {
++        return creatorId;
++    }
++
++    public void setCreatorId(String creatorId) {
++        this.creatorId = creatorId;
++    }
++
++    public String getJoinerId() {
++        return joinerId;
++    }
++
++    public void setJoinerId(String joinerId) {
++        this.joinerId = joinerId;
++    }
++
++    public String getStatus() {
++        return status;
++    }
++
++    public void setStatus(String status) {
++        this.status = status;
++    }
++}
+Index: src/main/java/com/mmc/chomp/app/game/domain/game/GameProjection.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/game/GameProjection.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/game/GameProjection.java	(date 1546520577940)
+@@ -1,14 +1,16 @@
+ package com.mmc.chomp.app.game.domain.game;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.app.game.domain.board.ChocolateBoxValue;
+ import lombok.Value;
+ 
+ @Value
+ public class GameProjection {
++    private AggregateId gameId;
+     private String status;
+-    private ChocolateBoxValue board;
+     private AggregateId creatorId;
+     private AggregateId joinerId;
+     private AggregateId winnerId;
++    private ChocolateBoxValue board;
++
+ }
+Index: src/main/java/com/mmc/chomp/app/game/domain/game/GameRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/game/GameRepository.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/game/GameRepository.java	(date 1546510239110)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.app.game.domain.game;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ 
+ public interface GameRepository {
+     void save(Game game);
+Index: src/main/java/com/mmc/chomp/app/game/domain/game/Game.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/game/Game.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/game/Game.java	(date 1546522453054)
+@@ -1,7 +1,12 @@
+ package com.mmc.chomp.app.game.domain.game;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.app.game.domain.board.Board;
++import com.mmc.chomp.app.game.domain.board.Position;
++import com.mmc.chomp.app.game.domain.exceptions.ChocolateTakenException;
++import com.mmc.chomp.app.game.domain.exceptions.JoinException;
++import com.mmc.chomp.app.game.domain.exceptions.NoOponentException;
++import com.mmc.chomp.app.game.domain.exceptions.NotStartedException;
+ import com.mmc.chomp.app.game.domain.game.events.Event;
+ import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
+ import com.mmc.chomp.app.game.domain.game.events.GameOverEvent;
+@@ -9,12 +14,6 @@
+ import com.mmc.chomp.app.game.domain.game.events.PlayerLeftEvent;
+ import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
+ import com.mmc.chomp.app.game.domain.game.events.UserJoinedEvent;
+-import com.mmc.chomp.app.sharedkernel.Player;
+-import com.mmc.chomp.app.sharedkernel.Position;
+-import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
+-import com.mmc.chomp.app.sharedkernel.exceptions.JoinException;
+-import com.mmc.chomp.app.sharedkernel.exceptions.NoOponentException;
+-import com.mmc.chomp.app.sharedkernel.exceptions.NotStartedException;
+ import com.mmc.chomp.ddd.annotation.domain.AggregateRoot;
+ import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
+ import lombok.extern.slf4j.Slf4j;
+@@ -54,12 +53,12 @@
+         log.info("Game {} created", getAggregateId().getId());
+     }
+ 
+-    public void join(Player joiner) {
++    public void join(AggregateId joiner) {
+         if (isFull()) {
+             throw new JoinException();
+         }
+-        this.joiner = joiner.getAggregateId();
+-        event(new UserJoinedEvent(this.joiner, aggregateId, creator));
++        this.joiner = joiner;
++        event(new UserJoinedEvent(snapshot()));
+ 
+         log.info("New joiner at {} game", aggregateId.getId());
+     }
+@@ -141,11 +140,12 @@
+ 
+     public GameProjection snapshot() {
+         return new GameProjection(
++                aggregateId,
+                 status.toString(),
+-                board.snapshot(),
+                 creator,
+                 joiner,
+-                winner
++                winner,
++                board.snapshot()
+         );
+     }
+ 
+Index: src/main/java/com/mmc/chomp/app/game/domain/game/events/UserCreatedEvent.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/game/events/UserCreatedEvent.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/user/UserCreatedEvent.java	(date 1546510240704)
+@@ -1,7 +1,7 @@
+-package com.mmc.chomp.app.game.domain.game.events;
++package com.mmc.chomp.app.game.domain.user;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
++import com.mmc.chomp.app.game.domain.AggregateId;
++import com.mmc.chomp.app.game.domain.game.events.Event;
+ import lombok.Value;
+ 
+ @Value
+Index: src/main/java/com/mmc/chomp/app/game/domain/game/events/GameOverEvent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/game/events/GameOverEvent.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/game/events/GameOverEvent.java	(date 1546510243260)
+@@ -1,7 +1,6 @@
+ package com.mmc.chomp.app.game.domain.game.events;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import lombok.Value;
+ 
+ @Value
+Index: src/main/java/com/mmc/chomp/app/game/domain/game/events/GameCreatedEvent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/game/events/GameCreatedEvent.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/game/events/GameCreatedEvent.java	(date 1546510240606)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.app.game.domain.game.events;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.app.game.domain.game.GameProjection;
+ import lombok.Data;
+ 
+Index: src/main/java/com/mmc/chomp/app/game/domain/game/events/TurnChangedEvent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/game/events/TurnChangedEvent.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/game/events/TurnChangedEvent.java	(date 1546510243177)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.app.game.domain.game.events;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.app.game.domain.game.GameProjection;
+ import lombok.Value;
+ 
+Index: src/main/java/com/mmc/chomp/app/game/domain/game/events/GameStartedEvent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/game/events/GameStartedEvent.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/game/events/GameStartedEvent.java	(date 1546510238677)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.app.game.domain.game.events;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import lombok.Value;
+ 
+ @Value
+Index: src/main/java/com/mmc/chomp/app/game/domain/user/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/user/User.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/user/User.java	(date 1546510238920)
+@@ -1,7 +1,7 @@
+ package com.mmc.chomp.app.game.domain.user;
+ 
+ import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import lombok.Value;
+ 
+ @Value
+Index: src/main/java/com/mmc/chomp/app/game/domain/user/UserRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/user/UserRepository.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/user/UserRepository.java	(date 1546510238277)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.app.game.domain.user;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ 
+ public interface UserRepository {
+     void save(User user);
+Index: src/main/java/com/mmc/chomp/app/game/domain/user/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/user/UserService.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/user/UserService.java	(date 1546510243452)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.app.game.domain.user;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ 
+ public interface UserService {
+     AggregateId create(String login, String pass);
+Index: src/main/java/com/mmc/chomp/app/game/domain/board/ChocolateBox.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/board/ChocolateBox.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/board/ChocolateBox.java	(date 1546510240884)
+@@ -1,7 +1,5 @@
+ package com.mmc.chomp.app.game.domain.board;
+ 
+-import com.mmc.chomp.app.sharedkernel.Position;
+-
+ class ChocolateBox {
+     private Size size;
+ 
+Index: src/main/java/com/mmc/chomp/app/game/domain/user/DefaultUserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/user/DefaultUserService.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/user/DefaultUserService.java	(date 1546510243429)
+@@ -1,7 +1,6 @@
+ package com.mmc.chomp.app.game.domain.user;
+ 
+-import com.mmc.chomp.app.game.domain.game.events.UserCreatedEvent;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.ddd.support.domain.DomainEventPublisher;
+ 
+ public class DefaultUserService implements UserService{
+Index: src/main/java/com/mmc/chomp/app/game/domain/board/Board.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/board/Board.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/board/Board.java	(date 1546510240955)
+@@ -1,7 +1,6 @@
+ package com.mmc.chomp.app.game.domain.board;
+ 
+-import com.mmc.chomp.app.sharedkernel.Position;
+-import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
++import com.mmc.chomp.app.game.domain.exceptions.ChocolateTakenException;
+ 
+ public class Board {
+     private ChocolateBox box;
+Index: src/main/java/com/mmc/chomp/app/game/domain/board/Picker.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/board/Picker.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/board/Picker.java	(date 1546510239008)
+@@ -1,7 +1,5 @@
+ package com.mmc.chomp.app.game.domain.board;
+ 
+-import com.mmc.chomp.app.sharedkernel.Position;
+-
+ class Picker {
+     void pick(ChocolateBox chocolateBox, Position chocolatePosition) {
+ 
+Index: src/main/java/com/mmc/chomp/app/game/domain/board/Chocolate.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/board/Chocolate.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/board/Chocolate.java	(date 1546510239179)
+@@ -1,7 +1,5 @@
+ package com.mmc.chomp.app.game.domain.board;
+ 
+-import com.mmc.chomp.app.sharedkernel.Position;
+-
+ class Chocolate {
+     private Position position;
+     private boolean isTaken;
+Index: src/main/java/com/mmc/chomp/app/game/domain/ranking/RankingRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/ranking/RankingRepository.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/ranking/RankingRepository.java	(date 1546510243622)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.app.game.domain.ranking;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ 
+ public interface RankingRepository {
+     Rank getByParticipant(AggregateId participantId);
+Index: src/main/java/com/mmc/chomp/app/game/domain/ranking/Rank.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/ranking/Rank.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/ranking/Rank.java	(date 1546510239611)
+@@ -1,7 +1,7 @@
+ package com.mmc.chomp.app.game.domain.ranking;
+ 
+ import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import lombok.extern.slf4j.Slf4j;
+ 
+ @Slf4j
+Index: src/main/java/com/mmc/chomp/app/game/application/api/service/RankingService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/api/service/RankingService.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/api/service/RankingService.java	(date 1546510239050)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.app.game.application.api.service;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.app.game.domain.ranking.Rank;
+ 
+ public interface RankingService {
+Index: src/main/java/com/mmc/chomp/app/game/application/api/service/GameService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/api/service/GameService.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/api/service/GameService.java	(date 1546510239307)
+@@ -1,8 +1,8 @@
+ package com.mmc.chomp.app.game.application.api.service;
+ 
+ import com.mmc.chomp.app.game.domain.game.GameProjection;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+-import com.mmc.chomp.app.sharedkernel.Position;
++import com.mmc.chomp.app.game.domain.AggregateId;
++import com.mmc.chomp.app.game.domain.board.Position;
+ 
+ public interface GameService {
+ 
+Index: src/main/java/com/mmc/chomp/app/game/application/impl/DefaultGameService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/impl/DefaultGameService.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/impl/DefaultGameService.java	(date 1546510238837)
+@@ -1,12 +1,12 @@
+ package com.mmc.chomp.app.game.application.impl;
+ 
+ import com.mmc.chomp.app.game.domain.game.GameProjection;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.app.game.application.api.service.GameService;
+ import com.mmc.chomp.app.game.domain.game.Game;
+ import com.mmc.chomp.app.game.domain.game.GameRepository;
+-import com.mmc.chomp.app.sharedkernel.Player;
+-import com.mmc.chomp.app.sharedkernel.Position;
++import com.mmc.chomp.app.game.domain.user.Player;
++import com.mmc.chomp.app.game.domain.board.Position;
+ import com.mmc.chomp.app.game.domain.user.User;
+ import com.mmc.chomp.app.game.domain.user.UserRepository;
+ import com.mmc.chomp.ddd.annotation.application.ApplicationService;
+Index: src/main/java/com/mmc/chomp/app/game/application/command/impl/Join2GameCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/command/impl/Join2GameCommand.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/command/impl/Join2GameCommand.java	(date 1546510240378)
+@@ -1,12 +1,12 @@
+ package com.mmc.chomp.app.game.application.command.impl;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.app.game.application.command.Command;
+ import com.mmc.chomp.app.game.domain.game.Game;
+ import com.mmc.chomp.app.game.domain.game.GameRepository;
+ import com.mmc.chomp.app.game.domain.user.User;
+ import com.mmc.chomp.app.game.domain.user.UserRepository;
+-import com.mmc.chomp.app.sharedkernel.Player;
++import com.mmc.chomp.app.game.domain.user.Player;
+ import lombok.Data;
+ import org.springframework.beans.factory.annotation.Autowired;
+ 
+@@ -23,7 +23,7 @@
+     @Override
+     public void execute() {
+         Game game = gameRepository.get(AggregateId.create(gameId));
+-        game.join(getPlayer(getUserId()));
++        game.join(getPlayer(getUserId()).getAggregateId());
+     }
+ 
+     private Player getPlayer(String userId) {
+Index: src/main/java/com/mmc/chomp/app/game/application/listeners/UserCreatedListener.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/listeners/UserCreatedListener.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/listeners/UserCreatedListener.java	(date 1546509663991)
+@@ -1,7 +1,7 @@
+ package com.mmc.chomp.app.game.application.listeners;
+ 
+ import com.mmc.chomp.app.game.application.api.service.RankingService;
+-import com.mmc.chomp.app.game.domain.game.events.UserCreatedEvent;
++import com.mmc.chomp.app.game.domain.user.UserCreatedEvent;
+ import com.mmc.chomp.ddd.annotation.event.EventListener;
+ import com.mmc.chomp.ddd.annotation.event.EventSubscriber;
+ 
+Index: src/main/java/com/mmc/chomp/app/game/infrastructure/repo/impl/MockRatingRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/infrastructure/repo/impl/MockRatingRepository.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/infrastructure/repo/impl/MockRatingRepository.java	(date 1546510240850)
+@@ -2,7 +2,7 @@
+ 
+ import com.mmc.chomp.app.game.domain.ranking.Rank;
+ import com.mmc.chomp.app.game.domain.ranking.RankingRepository;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.ddd.support.repository.GenericAggregateRepository;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Component;
+Index: src/main/java/com/mmc/chomp/app/game/infrastructure/repo/impl/MockGameRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/infrastructure/repo/impl/MockGameRepository.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/infrastructure/repo/impl/MockGameRepository.java	(date 1546510238362)
+@@ -2,7 +2,7 @@
+ 
+ import com.mmc.chomp.app.game.domain.game.Game;
+ import com.mmc.chomp.app.game.domain.game.GameRepository;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Component;
+ 
+Index: src/main/java/com/mmc/chomp/app/system/infrastructure/events/impl/EventListenerFinderRegister.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/system/infrastructure/events/impl/EventListenerFinderRegister.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/system/infrastructure/events/impl/EventListenerFinderRegister.java	(date 1546505110311)
+@@ -6,6 +6,7 @@
+ import com.mmc.chomp.ddd.support.domain.DomainEventPublisher;
+ import org.springframework.beans.BeansException;
+ import org.springframework.beans.factory.BeanFactory;
++import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.beans.factory.config.BeanPostProcessor;
+ import org.springframework.stereotype.Component;
+ 
+@@ -18,12 +19,12 @@
+     private BeanFactory factory;
+ 
+ 
++    @Autowired
+     public EventListenerFinderRegister(DomainEventPublisher eventPublisher, BeanFactory factory) {
+         this.eventPublisher = eventPublisher;
+         this.factory = factory;
+     }
+ 
+-
+     @Override
+     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+ 
+Index: src/main/java/com/mmc/chomp/app/response/GameStartedResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/response/GameStartedResponse.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/response/GameStartedResponse.java	(date 1546514180120)
+@@ -2,6 +2,7 @@
+ 
+ public class GameStartedResponse extends Response {
+ 
++
+     public GameStartedResponse(String gameId) {
+         super("GAME_STARTED", gameId);
+     }
+Index: src/main/java/com/mmc/chomp/app/response/GameCreatedResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/response/GameCreatedResponse.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/response/GameCreatedResponse.java	(date 1546521318425)
+@@ -1,42 +1,22 @@
+ package com.mmc.chomp.app.response;
+ 
+ public class GameCreatedResponse extends Response {
+-    private int rows;
+-    private int cols;
+-    private boolean[][] board;
++    private GameState gameState;
+ 
+-    public GameCreatedResponse(String gameId, int rows, int cols, boolean[][] board) {
++    public GameCreatedResponse(String gameId, GameState gameState) {
+         super("GAME_CREATED", gameId);
+-        this.rows = rows;
+-        this.cols = cols;
+-        this.board = board;
++        this.gameState = gameState;
+     }
+ 
+     public GameCreatedResponse() {
+         setType("GAME_CREATED");
+     }
+ 
+-    public int getRows() {
+-        return rows;
+-    }
+-
+-    public int getCols() {
+-        return cols;
+-    }
+-
+-    public boolean[][] getBoard() {
+-        return board;
+-    }
+-
+-    void setRows(int rows) {
+-        this.rows = rows;
+-    }
+-
+-    void setCols(int cols) {
+-        this.cols = cols;
++    public GameState getGameState() {
++        return gameState;
+     }
+ 
+-    void setBoard(boolean[][] board) {
+-        this.board = board;
++    public void setGameState(GameState gameState) {
++        this.gameState = gameState;
+     }
+ }
+Index: src/main/java/com/mmc/chomp/app/response/PlayerJoinedResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/response/PlayerJoinedResponse.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/response/PlayerJoinedResponse.java	(date 1546521318385)
+@@ -1,22 +1,22 @@
+ package com.mmc.chomp.app.response;
+ 
+ public class PlayerJoinedResponse extends Response {
+-    private String joinerId;
++    private GameState gameState;
+ 
+-    public PlayerJoinedResponse(String gameId, String joinerId) {
++    public PlayerJoinedResponse(String gameId, GameState gameState) {
+         super("PLAYER_JOINED", gameId);
+-        this.joinerId = joinerId;
++        this.gameState = gameState;
+     }
+ 
+     public PlayerJoinedResponse() {
+         setType("PLAYER_JOINED");
+     }
+ 
+-    public String getJoinerId() {
+-        return joinerId;
++    public GameState getGameState() {
++        return gameState;
+     }
+ 
+-    void setJoinerId(String joinerId) {
+-        this.joinerId = joinerId;
++    public void setGameState(GameState gameState) {
++        this.gameState = gameState;
+     }
+ }
+Index: src/main/java/com/mmc/chomp/app/sharedkernel/Player.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/sharedkernel/Player.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/user/Player.java	(date 1546510240127)
+@@ -1,7 +1,6 @@
+-package com.mmc.chomp.app.sharedkernel;
++package com.mmc.chomp.app.game.domain.user;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.PlayerData;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
+ import lombok.AllArgsConstructor;
+ 
+@@ -13,9 +12,4 @@
+         this.aggregateId = aggregateId;
+         this.login = login;
+     }
+-
+-    public PlayerData snapshot() {
+-        return new PlayerData(aggregateId, login);
+-    }
+-
+ }
+Index: src/main/java/com/mmc/chomp/app/sharedkernel/Position.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/sharedkernel/Position.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/board/Position.java	(date 1546510238781)
+@@ -1,4 +1,4 @@
+-package com.mmc.chomp.app.sharedkernel;
++package com.mmc.chomp.app.game.domain.board;
+ 
+ import lombok.Value;
+ 
+Index: src/main/java/com/mmc/chomp/app/sharedkernel/exceptions/ChocolateTakenException.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/sharedkernel/exceptions/ChocolateTakenException.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/exceptions/ChocolateTakenException.java	(date 1546510243305)
+@@ -1,4 +1,4 @@
+-package com.mmc.chomp.app.sharedkernel.exceptions;
++package com.mmc.chomp.app.game.domain.exceptions;
+ 
+ public class ChocolateTakenException extends Exception {
+ }
+Index: src/main/java/com/mmc/chomp/app/sharedkernel/exceptions/NoOponentException.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/sharedkernel/exceptions/NoOponentException.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/exceptions/NoOponentException.java	(date 1546510238387)
+@@ -1,4 +1,4 @@
+-package com.mmc.chomp.app.sharedkernel.exceptions;
++package com.mmc.chomp.app.game.domain.exceptions;
+ 
+ public class NoOponentException extends RuntimeException {
+ }
+Index: src/main/java/com/mmc/chomp/app/sharedkernel/exceptions/NotStartedException.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/sharedkernel/exceptions/NotStartedException.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/exceptions/NotStartedException.java	(date 1546510243559)
+@@ -1,4 +1,4 @@
+-package com.mmc.chomp.app.sharedkernel.exceptions;
++package com.mmc.chomp.app.game.domain.exceptions;
+ 
+ public class NotStartedException extends RuntimeException {
+ }
+Index: src/main/java/com/mmc/chomp/app/sharedkernel/exceptions/JoinException.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/sharedkernel/exceptions/JoinException.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/exceptions/JoinException.java	(date 1546510238578)
+@@ -1,4 +1,4 @@
+-package com.mmc.chomp.app.sharedkernel.exceptions;
++package com.mmc.chomp.app.game.domain.exceptions;
+ 
+ public class JoinException extends RuntimeException {
+ }
+Index: src/test/java/com/mmc/chomp/board/BoardTests.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/com/mmc/chomp/board/BoardTests.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/test/java/com/mmc/chomp/board/BoardTests.java	(date 1546510243505)
+@@ -5,8 +5,8 @@
+ 
+ 
+ import com.mmc.chomp.app.game.domain.board.ChocolateBoxValue;
+-import com.mmc.chomp.app.sharedkernel.Position;
+-import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
++import com.mmc.chomp.app.game.domain.board.Position;
++import com.mmc.chomp.app.game.domain.exceptions.ChocolateTakenException;
+ import org.assertj.core.api.Assertions;
+ import org.junit.Test;
+ 
+Index: src/main/java/com/mmc/chomp/app/canonicalmodel/publishedlanguage/AggregateId.java
+===================================================================
+--- src/main/java/com/mmc/chomp/app/canonicalmodel/publishedlanguage/AggregateId.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/AggregateId.java	(date 1546510238325)
+@@ -1,4 +1,4 @@
+-package com.mmc.chomp.app.canonicalmodel.publishedlanguage;
++package com.mmc.chomp.app.game.domain;
+ 
+ import java.util.Objects;
+ import java.util.UUID;
+Index: src/main/java/com/mmc/chomp/ddd/support/domain/BaseAggregateRoot.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/ddd/support/domain/BaseAggregateRoot.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/ddd/support/domain/BaseAggregateRoot.java	(date 1546510240468)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.ddd.support.domain;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import org.springframework.beans.factory.annotation.Autowired;
+ 
+ public abstract class BaseAggregateRoot {
+Index: src/main/java/com/mmc/chomp/ddd/support/repository/GenericAggregateRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/ddd/support/repository/GenericAggregateRepository.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/ddd/support/repository/GenericAggregateRepository.java	(date 1546510240257)
+@@ -1,7 +1,7 @@
+ package com.mmc.chomp.ddd.support.repository;
+ 
+ import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ 
+ import java.util.HashMap;
+ import java.util.Map;
+Index: src/main/java/com/mmc/chomp/app/game/domain/game/events/UserJoinedEvent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/domain/game/events/UserJoinedEvent.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/domain/game/events/UserJoinedEvent.java	(date 1546519829910)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.app.game.domain.game.events;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.game.GameProjection;
+ import com.mmc.chomp.ddd.annotation.event.Event;
+ import lombok.Value;
+ 
+@@ -8,10 +8,10 @@
+ @Value
+ public class UserJoinedEvent extends com.mmc.chomp.app.game.domain.game.events.Event {
+ 
+-    private AggregateId joiner;
+-    private AggregateId gameId;
+-    private AggregateId creator;
++    private GameProjection gameProjection;
+ 
++    public UserJoinedEvent(GameProjection snapshot) {
+ 
+-
++        gameProjection = snapshot;
++    }
+ }
+Index: src/test/java/com/mmc/chomp/board/GameServiceTests.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/com/mmc/chomp/board/GameServiceTests.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/test/java/com/mmc/chomp/board/GameServiceTests.java	(date 1546513117978)
+@@ -1,9 +1,5 @@
+ package com.mmc.chomp.board;
+ 
+-import com.mmc.chomp.IoC;
+-import com.mmc.chomp.app.game.application.api.service.GameService;
+-
+-import com.mmc.chomp.app.game.infrastructure.repo.impl.MockUserRepository;
+ import org.junit.Test;
+ 
+ public class GameServiceTests {
+Index: src/test/java/com/mmc/chomp/board/AggregateIdTests.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/com/mmc/chomp/board/AggregateIdTests.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/test/java/com/mmc/chomp/board/AggregateIdTests.java	(date 1546510240526)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.board;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import org.assertj.core.api.Assertions;
+ import org.junit.Test;
+ 
+Index: src/main/java/com/mmc/chomp/app/game/infrastructure/repo/impl/MockUserRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/infrastructure/repo/impl/MockUserRepository.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/infrastructure/repo/impl/MockUserRepository.java	(date 1546510238619)
+@@ -2,7 +2,7 @@
+ 
+ import com.mmc.chomp.app.game.domain.user.User;
+ import com.mmc.chomp.app.game.domain.user.UserRepository;
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.ddd.support.repository.GenericAggregateRepository;
+ import lombok.extern.slf4j.Slf4j;
+ import org.springframework.beans.factory.annotation.Autowired;
+Index: src/main/java/com/mmc/chomp/app/game/application/command/impl/StartGameCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mmc/chomp/app/game/application/command/impl/StartGameCommand.java	(revision 413439177acb944f96bcacea34cc6b27a72bf440)
++++ src/main/java/com/mmc/chomp/app/game/application/command/impl/StartGameCommand.java	(date 1546510240733)
+@@ -1,6 +1,6 @@
+ package com.mmc.chomp.app.game.application.command.impl;
+ 
+-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
++import com.mmc.chomp.app.game.domain.AggregateId;
+ import com.mmc.chomp.app.game.application.command.Command;
+ import com.mmc.chomp.app.game.domain.game.Game;
+ import com.mmc.chomp.app.game.domain.game.GameRepository;

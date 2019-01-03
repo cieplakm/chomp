@@ -1,7 +1,7 @@
 package com.mmc.chomp.ddd.support.repository;
 
 import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+import com.mmc.chomp.app.game.domain.AggregateId;
 
 import java.util.HashMap;
 import java.util.Map;

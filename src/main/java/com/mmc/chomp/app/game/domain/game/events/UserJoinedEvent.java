@@ -1,6 +1,6 @@
 package com.mmc.chomp.app.game.domain.game.events;
 
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+import com.mmc.chomp.app.game.domain.game.GameProjection;
 import com.mmc.chomp.ddd.annotation.event.Event;
 import lombok.Value;
 
@@ -8,10 +8,10 @@ import lombok.Value;
 @Value
 public class UserJoinedEvent extends com.mmc.chomp.app.game.domain.game.events.Event {
 
-    private AggregateId joiner;
-    private AggregateId gameId;
-    private AggregateId creator;
+    private GameProjection gameProjection;
 
+    public UserJoinedEvent(GameProjection snapshot) {
 
-
+        gameProjection = snapshot;
+    }
 }

@@ -1,7 +1,5 @@
 package com.mmc.chomp.app.game.application.listeners;
 
-import com.mmc.chomp.app.game.application.readmodel.response.CreateGameResponse;
-import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameStartedEvent;
 import com.mmc.chomp.app.response.GameStartedResponse;
 import com.mmc.chomp.app.web.WebSocketMessageSender;

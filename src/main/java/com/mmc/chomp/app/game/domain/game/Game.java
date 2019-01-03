@@ -1,7 +1,12 @@
 package com.mmc.chomp.app.game.domain.game;
 
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+import com.mmc.chomp.app.game.domain.AggregateId;
 import com.mmc.chomp.app.game.domain.board.Board;
+import com.mmc.chomp.app.game.domain.board.Position;
+import com.mmc.chomp.app.game.domain.exceptions.ChocolateTakenException;
+import com.mmc.chomp.app.game.domain.exceptions.JoinException;
+import com.mmc.chomp.app.game.domain.exceptions.NoOponentException;
+import com.mmc.chomp.app.game.domain.exceptions.NotStartedException;
 import com.mmc.chomp.app.game.domain.game.events.Event;
 import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameOverEvent;
@@ -9,12 +14,6 @@ import com.mmc.chomp.app.game.domain.game.events.GameStartedEvent;
 import com.mmc.chomp.app.game.domain.game.events.PlayerLeftEvent;
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
 import com.mmc.chomp.app.game.domain.game.events.UserJoinedEvent;
-import com.mmc.chomp.app.sharedkernel.Player;
-import com.mmc.chomp.app.sharedkernel.Position;
-import com.mmc.chomp.app.sharedkernel.exceptions.ChocolateTakenException;
-import com.mmc.chomp.app.sharedkernel.exceptions.JoinException;
-import com.mmc.chomp.app.sharedkernel.exceptions.NoOponentException;
-import com.mmc.chomp.app.sharedkernel.exceptions.NotStartedException;
 import com.mmc.chomp.ddd.annotation.domain.AggregateRoot;
 import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
 import lombok.extern.slf4j.Slf4j;
@@ -54,12 +53,12 @@ public class Game extends BaseAggregateRoot {
         log.info("Game {} created", getAggregateId().getId());
     }
 
-    public void join(Player joiner) {
+    public void join(AggregateId joiner) {
         if (isFull()) {
             throw new JoinException();
         }
-        this.joiner = joiner.getAggregateId();
-        event(new UserJoinedEvent(this.joiner, aggregateId, creator));
+        this.joiner = joiner;
+        event(new UserJoinedEvent(snapshot()));
 
         log.info("New joiner at {} game", aggregateId.getId());
     }
@@ -141,11 +140,12 @@ public class Game extends BaseAggregateRoot {
 
     public GameProjection snapshot() {
         return new GameProjection(
+                aggregateId,
                 status.toString(),
-                board.snapshot(),
                 creator,
                 joiner,
-                winner
+                winner,
+                board.snapshot()
         );
     }
 

@@ -1,6 +1,6 @@
 package com.mmc.chomp.app.game.application.command.impl;
 
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+import com.mmc.chomp.app.game.domain.AggregateId;
 import com.mmc.chomp.app.game.application.command.Command;
 import com.mmc.chomp.app.game.domain.game.Game;
 import com.mmc.chomp.app.game.domain.game.GameRepository;

@@ -1,12 +1,12 @@
 package com.mmc.chomp.app.game.application.impl;
 
 import com.mmc.chomp.app.game.domain.game.GameProjection;
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+import com.mmc.chomp.app.game.domain.AggregateId;
 import com.mmc.chomp.app.game.application.api.service.GameService;
 import com.mmc.chomp.app.game.domain.game.Game;
 import com.mmc.chomp.app.game.domain.game.GameRepository;
-import com.mmc.chomp.app.sharedkernel.Player;
-import com.mmc.chomp.app.sharedkernel.Position;
+import com.mmc.chomp.app.game.domain.user.Player;
+import com.mmc.chomp.app.game.domain.board.Position;
 import com.mmc.chomp.app.game.domain.user.User;
 import com.mmc.chomp.app.game.domain.user.UserRepository;
 import com.mmc.chomp.ddd.annotation.application.ApplicationService;

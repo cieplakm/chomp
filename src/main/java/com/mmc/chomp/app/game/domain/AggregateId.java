@@ -1,4 +1,4 @@
-package com.mmc.chomp.app.canonicalmodel.publishedlanguage;
+package com.mmc.chomp.app.game.domain;
 
 import java.util.Objects;
 import java.util.UUID;

@@ -6,6 +6,7 @@ import com.mmc.chomp.app.system.infrastructure.events.impl.handlers.SpringEventH
 import com.mmc.chomp.ddd.support.domain.DomainEventPublisher;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
@@ -18,11 +19,11 @@ public class EventListenerFinderRegister implements BeanPostProcessor {
     private BeanFactory factory;
 
 
+    @Autowired
     public EventListenerFinderRegister(DomainEventPublisher eventPublisher, BeanFactory factory) {
         this.eventPublisher = eventPublisher;
         this.factory = factory;
     }
-
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {

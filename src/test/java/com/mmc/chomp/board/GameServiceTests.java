@@ -1,9 +1,5 @@
 package com.mmc.chomp.board;
 
-import com.mmc.chomp.IoC;
-import com.mmc.chomp.app.game.application.api.service.GameService;
-
-import com.mmc.chomp.app.game.infrastructure.repo.impl.MockUserRepository;
 import org.junit.Test;
 
 public class GameServiceTests {

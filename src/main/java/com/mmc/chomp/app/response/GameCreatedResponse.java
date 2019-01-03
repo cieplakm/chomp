@@ -1,42 +1,22 @@
 package com.mmc.chomp.app.response;
 
 public class GameCreatedResponse extends Response {
-    private int rows;
-    private int cols;
-    private boolean[][] board;
+    private GameState gameState;
 
-    public GameCreatedResponse(String gameId, int rows, int cols, boolean[][] board) {
+    public GameCreatedResponse(String gameId, GameState gameState) {
         super("GAME_CREATED", gameId);
-        this.rows = rows;
-        this.cols = cols;
-        this.board = board;
+        this.gameState = gameState;
     }
 
     public GameCreatedResponse() {
         setType("GAME_CREATED");
     }
 
-    public int getRows() {
-        return rows;
+    public GameState getGameState() {
+        return gameState;
     }
 
-    public int getCols() {
-        return cols;
-    }
-
-    public boolean[][] getBoard() {
-        return board;
-    }
-
-    void setRows(int rows) {
-        this.rows = rows;
-    }
-
-    void setCols(int cols) {
-        this.cols = cols;
-    }
-
-    void setBoard(boolean[][] board) {
-        this.board = board;
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 }

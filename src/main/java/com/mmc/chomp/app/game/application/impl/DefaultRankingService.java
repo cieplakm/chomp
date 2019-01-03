@@ -3,13 +3,10 @@ package com.mmc.chomp.app.game.application.impl;
 import com.mmc.chomp.app.game.application.api.service.RankingService;
 import com.mmc.chomp.app.game.domain.ranking.Rank;
 import com.mmc.chomp.app.game.domain.ranking.RankingRepository;
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+import com.mmc.chomp.app.game.domain.AggregateId;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.Incubating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.xml.ws.ServiceMode;
 
 @Slf4j
 @Service

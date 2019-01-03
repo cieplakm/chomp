@@ -1,7 +1,5 @@
 package com.mmc.chomp.app.game.domain.board;
 
-import com.mmc.chomp.app.sharedkernel.Position;
-
 class Chocolate {
     private Position position;
     private boolean isTaken;

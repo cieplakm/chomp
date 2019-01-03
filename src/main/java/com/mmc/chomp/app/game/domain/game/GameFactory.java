@@ -1,6 +1,6 @@
 package com.mmc.chomp.app.game.domain.game;
 
-import com.mmc.chomp.app.canonicalmodel.publishedlanguage.AggregateId;
+import com.mmc.chomp.app.game.domain.AggregateId;
 import com.mmc.chomp.app.game.domain.board.Board;
 import com.mmc.chomp.app.game.domain.board.BoardFactory;
 import org.springframework.beans.factory.annotation.Autowired;
