@@ -7,6 +7,7 @@ import com.mmc.chomp.app.game.application.command.impl.Join2GameCommand;
 import com.mmc.chomp.app.game.application.command.impl.LeaveGameCommand;
 import com.mmc.chomp.app.game.application.command.impl.MoveCommand;
 import com.mmc.chomp.app.game.application.command.impl.StartGameCommand;
+import com.mmc.chomp.app.game.application.command.impl.WantToPlayCommand;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,8 @@ import java.io.Serializable;
         @JsonSubTypes.Type(value = Join2GameCommand.class, name = "JOIN"),
         @JsonSubTypes.Type(value = MoveCommand.class, name = "MOVE"),
         @JsonSubTypes.Type(value = StartGameCommand.class, name = "START"),
-        @JsonSubTypes.Type(value = LeaveGameCommand.class, name = "LEAVE")
+        @JsonSubTypes.Type(value = LeaveGameCommand.class, name = "LEAVE"),
+        @JsonSubTypes.Type(value = WantToPlayCommand.class, name = "WANT_TO_PLAY")
 })
 public abstract class Command implements Serializable {
     private String requestType;
