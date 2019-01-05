@@ -10,7 +10,6 @@ import com.mmc.chomp.app.game.domain.exceptions.NotStartedException;
 import com.mmc.chomp.app.game.domain.game.events.Event;
 import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameOverEvent;
-import com.mmc.chomp.app.game.domain.game.events.GameStartedEvent;
 import com.mmc.chomp.app.game.domain.game.events.PlayerLeftEvent;
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
 import com.mmc.chomp.app.game.domain.game.events.UserJoinedEvent;
@@ -31,15 +30,15 @@ public class Game extends BaseAggregateRoot {
 
     private AggregateId currentTurn;
 
-    private AggregateId creator;
+    private AggregateId playerOne;
 
-    private AggregateId joiner;
+    private AggregateId playerTwo;
 
     private AggregateId winner;
 
     public Game(AggregateId gameId, AggregateId creatorId, Board board) {
         this.aggregateId = gameId;
-        this.creator = creatorId;
+        this.playerOne = creatorId;
         this.board = board;
     }
 
@@ -49,7 +48,6 @@ public class Game extends BaseAggregateRoot {
 
     public void create() {
         status = CREATED;
-        event(new GameCreatedEvent(aggregateId, creator, snapshot()));
         log.info("Game {} created", getAggregateId().getId());
     }
 
@@ -57,10 +55,9 @@ public class Game extends BaseAggregateRoot {
         if (isFull()) {
             throw new JoinException();
         }
-        this.joiner = joiner;
-        event(new UserJoinedEvent(snapshot()));
+        this.playerTwo = joiner;
 
-        log.info("New joiner at {} game", aggregateId.getId());
+        log.info("New playerTwo at {} game", aggregateId.getId());
     }
 
     public void start() {
@@ -69,13 +66,12 @@ public class Game extends BaseAggregateRoot {
         }
         choseWhoFirst();
         status = STARTED;
-        event(new GameStartedEvent(snapshot(),creator.equals(currentTurn), joiner.equals(currentTurn)));
 
-        log.info("Game {} started", aggregateId.getId());
+        //log.info("Game {} started", aggregateId.getId());
     }
 
     private void choseWhoFirst() {
-        currentTurn = TurnChanger.drawLotsPlayer(creator, joiner);
+        currentTurn = TurnChanger.drawLotsPlayer(playerOne, playerTwo);
 
         log.info("First will be: {} at {}", currentTurn.getId(), aggregateId.getId());
     }
@@ -105,14 +101,18 @@ public class Game extends BaseAggregateRoot {
     private void finishGame() {
         status = FINISHED;
         winner = opponent(currentTurn);
-        event(new GameOverEvent(winner, opponent(winner), aggregateId));
+        event(new GameOverEvent(aggregateId, playerOne, playerTwo, isWonOf(playerOne),  isWonOf(playerTwo)));
 
         log.info("Game {} finished", aggregateId.getId());
     }
 
+    private boolean isWonOf(AggregateId player) {
+        return player.equals(winner);
+    }
+
     private void changeTurn() {
-        currentTurn = TurnChanger.switchTurn(currentTurn, creator, joiner);
-        TurnChangedEvent event = new TurnChangedEvent(aggregateId, creator, joiner, creator.equals(currentTurn), joiner.equals(currentTurn), snapshot());
+        currentTurn = TurnChanger.switchTurn(currentTurn, playerOne, playerTwo);
+        TurnChangedEvent event = new TurnChangedEvent(aggregateId, playerOne, playerTwo, playerOne.equals(currentTurn), playerTwo.equals(currentTurn), snapshot());
         event(event);
 
         log.info("Is playerOne turn {}, is playerTwo turn {} at {} game", event.isPlayerOneTurn(), event.isPlayerTwoTurn(), aggregateId.getId());
@@ -127,26 +127,32 @@ public class Game extends BaseAggregateRoot {
     }
 
     private AggregateId opponent(AggregateId participant) {
-        if (participant.equals(creator)) {
-            return joiner;
+        if (participant.equals(playerOne)) {
+            return playerTwo;
         } else {
-            return creator;
+            return playerOne;
         }
     }
 
     private boolean isFull() {
-        return joiner != null;
+        return playerTwo != null;
     }
 
     public GameProjection snapshot() {
         return new GameProjection(
                 aggregateId,
                 status.toString(),
-                creator,
-                joiner,
+                playerOne,
+                playerTwo,
                 winner,
+                isTurnOf(playerOne),
+                isTurnOf(playerTwo),
                 board.snapshot()
         );
+    }
+
+    private boolean isTurnOf(AggregateId player) {
+        return currentTurn.equals(player);
     }
 
     private void event(Event event) {

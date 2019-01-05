@@ -1,6 +1,8 @@
 package com.mmc.chomp.app.game.application.command.impl;
 
 import com.mmc.chomp.app.game.application.command.Command;
+import com.mmc.chomp.app.game.domain.AggregateId;
+import com.mmc.chomp.app.game.domain.board.Size;
 import com.mmc.chomp.app.game.domain.game.Game;
 import com.mmc.chomp.app.game.domain.game.GameFactory;
 import com.mmc.chomp.app.game.domain.game.GameRepository;
@@ -19,7 +21,7 @@ public class CreateGameCommand extends Command {
 
     @Override
     public void execute() {
-        Game game = gameFactory.create(getUserId(), rows, cols);
+        Game game = gameFactory.create(AggregateId.create(getUserId()), new Size(rows, cols));
         gameRepository.save(game);
     }
 }

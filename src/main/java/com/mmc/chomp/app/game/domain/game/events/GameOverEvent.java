@@ -5,7 +5,9 @@ import lombok.Value;
 
 @Value
 public class GameOverEvent extends Event {
-    private AggregateId winner;
-    private AggregateId looser;
     private AggregateId gameId;
+    private AggregateId playerOne;
+    private AggregateId playerTwo;
+    private boolean isPlayerOneWinner;
+    private boolean isPlayerTwoWinner;
 }

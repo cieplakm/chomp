@@ -8,9 +8,11 @@ import lombok.Value;
 public class GameProjection {
     private AggregateId gameId;
     private String status;
-    private AggregateId creatorId;
-    private AggregateId joinerId;
+    private AggregateId playerOne;
+    private AggregateId playerTwo;
     private AggregateId winnerId;
+    private boolean isCurrentPlayerOne;
+    private boolean isCurrentPlayerTwo;
     private ChocolateBoxValue board;
 
 }

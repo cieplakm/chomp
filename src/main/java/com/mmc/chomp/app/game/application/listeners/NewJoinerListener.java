@@ -22,12 +22,12 @@ public class NewJoinerListener {
                 gameProjection.getBoard().getChocolateValue(),
                 gameProjection.getBoard().getRows(),
                 gameProjection.getBoard().getCols(),
-                gameProjection.getCreatorId().getId(),
-                gameProjection.getJoinerId().getId(),
+                gameProjection.getPlayerOne().getId(),
+                gameProjection.getPlayerTwo().getId(),
                 gameProjection.getStatus()
         );
 
-        webSocketMessageSender.send(gameProjection.getCreatorId().getId(),
+        webSocketMessageSender.send(gameProjection.getPlayerOne().getId(),
                 new PlayerJoinedResponse(event.getGameProjection().getGameId().getId(), gameState));
     }
 }

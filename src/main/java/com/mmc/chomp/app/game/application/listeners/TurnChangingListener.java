@@ -19,7 +19,7 @@ public class TurnChangingListener {
     public void handle(TurnChangedEvent event) {
         GameProjection gp = event.getGameProjection();
 
-        GameState gameState = new GameState(gp.getBoard().getChocolateValue(), gp.getBoard().getRows(), gp.getBoard().getCols(), gp.getCreatorId().getId(), gp.getJoinerId().getId(), gp.getStatus());
+        GameState gameState = new GameState(gp.getBoard().getChocolateValue(), gp.getBoard().getRows(), gp.getBoard().getCols(), gp.getPlayerOne().getId(), gp.getPlayerTwo().getId(), gp.getStatus());
 
         webSocketMessageSender.send(event.getPlayerOneId().getId(), new MoveResponse(gp.getGameId().getId(), gameState, event.isPlayerOneTurn()));
 

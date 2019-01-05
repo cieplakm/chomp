@@ -2,7 +2,8 @@ package com.mmc.chomp.app.game.application.command.impl;
 
 import com.mmc.chomp.app.game.application.command.Command;
 import com.mmc.chomp.app.game.domain.AggregateId;
-import com.mmc.chomp.app.game.domain.WaiterForGame;
+import com.mmc.chomp.app.game.domain.DefaultWaitingList;
+import com.mmc.chomp.app.game.domain.WaitingList;
 import com.mmc.chomp.app.game.domain.board.Size;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,10 @@ public class WantToPlayCommand extends Command {
     private int cols;
 
     @Autowired
-    private WaiterForGame waiterForGame;
+    private WaitingList waitingList;
 
     @Override
     public void execute() {
-        waiterForGame.signToWaiterList(AggregateId.create(getUserId()), new Size(getRows(), getCols()));
+        waitingList.signToWaitingList(AggregateId.create(getUserId()), new Size(getRows(), getCols()));
     }
 }
