@@ -30,12 +30,19 @@ public class DefaultWaingList implements WaitingList {
         Waiter newly = new Waiter(userId, size);
         Optional<Waiter> optionalWaiter = find(newly);
         if (optionalWaiter.isPresent()) {
-            eventPublisher.publish(new OpponentFoundEvent(newly.userId, optionalWaiter.get().userId, size));
+            Waiter waiter = optionalWaiter.get();
+            eventPublisher.publish(new OpponentFoundEvent(newly.userId, waiter.userId, size));
+            remove(waiter);
             log.info("User ({}) found opponent ({})", newly.userId, optionalWaiter.get().userId);
         }else {
             waiters.add(newly);
             log.info("Opponent not found. User {} added to waiting list.", newly.userId);
         }
+    }
+
+    private void remove(Waiter waiter){
+        waiters.remove(waiter);
+        log.info("User ({}) removed from waiting list.", waiter.userId);
     }
 
     private Optional<Waiter> find(Waiter newly) {
