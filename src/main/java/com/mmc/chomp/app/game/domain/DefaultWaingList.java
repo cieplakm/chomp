@@ -1,6 +1,7 @@
 package com.mmc.chomp.app.game.domain;
 
 import com.mmc.chomp.app.game.domain.board.Size;
+import com.mmc.chomp.app.game.domain.game.events.FakePlayerNeededEvent;
 import com.mmc.chomp.app.game.domain.game.events.OpponentFoundEvent;
 import com.mmc.chomp.ddd.support.domain.DomainEventPublisher;
 import lombok.Value;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Slf4j
 @Component
@@ -30,13 +33,30 @@ public class DefaultWaingList implements WaitingList {
         Waiter newly = new Waiter(userId, size);
         Optional<Waiter> optionalWaiter = find(newly);
         if (optionalWaiter.isPresent()) {
+            log.info("User ({}) found opponent ({})", newly.userId, optionalWaiter.get().userId);
             Waiter waiter = optionalWaiter.get();
             eventPublisher.publish(new OpponentFoundEvent(newly.userId, waiter.userId, size));
             remove(waiter);
-            log.info("User ({}) found opponent ({})", newly.userId, optionalWaiter.get().userId);
         }else {
             waiters.add(newly);
             log.info("Opponent not found. User {} added to waiting list.", newly.userId);
+
+            TimerTask fakePlayerNeededEvent = new TimerTask() {
+                @Override
+                public void run() {
+                    if (waiters.contains(newly)) {
+                        log.info("User ({}) needs opponent", newly.userId);
+                        eventPublisher.publish(new FakePlayerNeededEvent(newly.userId, size));
+                        remove(newly);
+                    }else {
+                        log.info("User ({}) doesn't need opponent", newly.userId);
+                    }
+                }
+            };
+
+            Timer timer = new Timer();
+            long delay = 1000L * 10;
+            timer.schedule(fakePlayerNeededEvent, delay);
         }
     }
 

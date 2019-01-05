@@ -25,6 +25,7 @@ import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.STARTED;
 @AggregateRoot
 public class Game extends BaseAggregateRoot {
     private GameStatus status;
+    private AggregateId fakeOpponent;
 
     private Board board;
 
@@ -58,6 +59,20 @@ public class Game extends BaseAggregateRoot {
         this.playerTwo = joiner;
 
         log.info("New playerTwo at {} game", aggregateId.getId());
+    }
+
+    public void joinFake(AggregateId joiner) {
+        if (isFull()) {
+            throw new JoinException();
+        }
+        this.playerTwo = joiner;
+        fakeOpponent = playerTwo;
+
+        log.info("New fake opponent at {} game", aggregateId.getId());
+    }
+
+    private boolean isFakeOpponent(){
+        return fakeOpponent != null;
     }
 
     public void start() {
@@ -147,7 +162,8 @@ public class Game extends BaseAggregateRoot {
                 winner,
                 isTurnOf(playerOne),
                 isTurnOf(playerTwo),
-                board.snapshot()
+                board.snapshot(),
+                isFakeOpponent()
         );
     }
 

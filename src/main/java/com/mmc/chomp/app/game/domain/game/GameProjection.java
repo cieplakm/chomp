@@ -14,5 +14,6 @@ public class GameProjection {
     private boolean isCurrentPlayerOne;
     private boolean isCurrentPlayerTwo;
     private ChocolateBoxValue board;
+    private boolean isFakeOpponent;
 
 }
