@@ -40,6 +40,19 @@ public class OnFakePlayerNeededListener {
 
         GameProjection snapshot = game.snapshot();
 
+
+
+        if (snapshot.isFakeOpponent()) {
+            if (snapshot.isCurrentPlayerTwo()) {
+                FakePlayer fakePlayer = new FakePlayer();
+                fakePlayer.move(game);
+
+                snapshot = game.snapshot();
+            }
+        }
+
+        gameRepository.save(game);
+
         GameState gameState = new GameState(snapshot.getBoard().getChocolateValue(),
                 snapshot.getBoard().getRows(),
                 snapshot.getBoard().getCols(),
@@ -48,17 +61,7 @@ public class OnFakePlayerNeededListener {
                 snapshot.getStatus()
         );
 
-        if (snapshot.isFakeOpponent()) {
-            if (snapshot.isCurrentPlayerTwo()) {
-                game.move(new Position(3, 3));
-                snapshot = game.snapshot();
-            }
-        }
-
-        gameRepository.save(game);
-
         webSocketMessageSender.send(snapshot.getPlayerOne().getId(), new GameStartedResponse(snapshot.getGameId().getId(), snapshot.isCurrentPlayerOne(), gameState));
-
 
         log.info("FAKE PLAYER IS NEEDED");
 

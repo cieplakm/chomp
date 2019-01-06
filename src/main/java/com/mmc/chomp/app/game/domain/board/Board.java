@@ -21,6 +21,10 @@ public class Board {
                 && box.getChocolateAt(Position.AT_BOTTOM_OF_POISON_POSITION).isTaken();
     }
 
+    public boolean isPoisonTaken(){
+        return box.getChocolateAt(Position.POISON_POSITION).isTaken();
+    }
+
     private void checkIfIsPossiblePeakChocolate(Position position) throws ChocolateTakenException {
         if (box.getChocolateAt(position).isTaken()) {
             throw new ChocolateTakenException();

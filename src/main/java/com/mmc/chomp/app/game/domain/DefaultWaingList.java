@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -55,9 +57,17 @@ public class DefaultWaingList implements WaitingList {
             };
 
             Timer timer = new Timer();
-            long delay = 1000L * 10;
+            long delay = 1000L * (new Random().nextInt(3)+1);
             timer.schedule(fakePlayerNeededEvent, delay);
         }
+    }
+
+    public Set<AggregateId> list(){//TODO: snapshot
+        HashSet<AggregateId> objects = new HashSet<>();
+        for (Waiter waiter : waiters) {
+            objects.add(waiter.userId);
+        }
+        return objects;
     }
 
     private void remove(Waiter waiter){

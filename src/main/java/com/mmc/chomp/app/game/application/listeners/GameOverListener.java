@@ -23,7 +23,7 @@ public class GameOverListener {
     @EventSubscriber
     public void handle(GameOverEvent event) {
         webSocketMessageSender.send(event.getPlayerOne().getId(), new GameOverResponse(event.getGameId().getId(), event.isPlayerOneWinner()));
-        webSocketMessageSender.send(event.getPlayerTwo().getId(), new GameOverResponse(event.getGameId().getId(), event.isPlayerTwoWinner()));
-        rankingService.changeRanking(event.getPlayerOne(), event.getPlayerTwo());
+        //webSocketMessageSender.send(event.getPlayerTwo().getId(), new GameOverResponse(event.getGameId().getId(), event.isPlayerTwoWinner()));
+        //rankingService.changeRanking(event.getPlayerOne(), event.getPlayerTwo());
     }
 }

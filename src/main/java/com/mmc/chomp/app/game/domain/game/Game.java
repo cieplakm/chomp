@@ -106,7 +106,7 @@ public class Game extends BaseAggregateRoot {
             }
         }
 
-        if (board.isPoissonLeft()) {
+        if (board.isPoisonTaken()) {
             finishGame();
             return;
         }
