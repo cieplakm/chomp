@@ -148,7 +148,7 @@ public class Game extends BaseAggregateRoot {
 
     }
 
-    private AggregateId opponent(AggregateId participant) {
+    private AggregateId  opponent(AggregateId participant) {
         if (participant.equals(playerOne)) {
             return playerTwo;
         } else {
