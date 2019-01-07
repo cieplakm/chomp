@@ -5,7 +5,7 @@ import com.mmc.chomp.app.game.domain.board.Size;
 import lombok.Value;
 
 @Value
-public class FakePlayerNeededEvent extends Event {
+public class PlayerAddedToWaitingListEvent extends Event {
     private final AggregateId userId;
     private final Size size;
 }

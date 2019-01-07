@@ -1,0 +1,88 @@
+package com.mmc.chomp.app.game.application.listeners;
+
+import com.mmc.chomp.app.game.domain.AggregateId;
+import com.mmc.chomp.app.game.domain.FakePlayer;
+import com.mmc.chomp.app.game.domain.WaitingList;
+import com.mmc.chomp.app.game.domain.board.Size;
+import com.mmc.chomp.app.game.domain.game.Game;
+import com.mmc.chomp.app.game.domain.game.GameFactory;
+import com.mmc.chomp.app.game.domain.game.GameProjection;
+import com.mmc.chomp.app.game.domain.game.GameRepository;
+import com.mmc.chomp.app.game.domain.game.events.PlayerAddedToWaitingListEvent;
+import com.mmc.chomp.app.response.GameStartedResponse;
+import com.mmc.chomp.app.response.GameState;
+import com.mmc.chomp.app.web.WebSocketMessageSender;
+import com.mmc.chomp.ddd.annotation.event.EventListener;
+import com.mmc.chomp.ddd.annotation.event.EventSubscriber;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
+@EventListener
+@Slf4j
+public class OnPlayerAddedToWaitingListListener {
+
+    @Autowired
+    private WebSocketMessageSender webSocketMessageSender;
+
+    @Autowired
+    GameFactory gameFactory;
+
+    @Autowired
+    GameRepository gameRepository;
+
+    @Autowired
+    WaitingList waitingList;
+
+    @EventSubscriber
+    public void handle(PlayerAddedToWaitingListEvent event) {
+        TimerTask fakePlayerNeededEvent = new TimerTask() {
+            @Override
+            public void run() {
+                boolean stillOnList = waitingList.isStillOnList(event.getUserId());
+
+                if (stillOnList){
+                    log.info("User ({}) is still on waiting list. Creating fake player.", event.getUserId());
+                    createGameWithFakePlayer(event.getUserId(), event.getSize());
+                    waitingList.remove(event.getUserId());
+                }
+            }
+        };
+
+        Timer timer = new Timer();
+        long delay = 1000L * (new Random().nextInt(5) + 3);
+        timer.schedule(fakePlayerNeededEvent, delay);
+    }
+
+    private void createGameWithFakePlayer(AggregateId playerId, Size size) {
+        Game game = gameFactory.create(playerId, size);
+        game.joinFake(AggregateId.generate());
+        game.start();
+
+        GameProjection snapshot = game.snapshot();
+
+        GameState gameState = new GameState(snapshot.getBoard().getChocolateValue(),
+                snapshot.getBoard().getRows(),
+                snapshot.getBoard().getCols(),
+                snapshot.getPlayerOne().getId(),
+                snapshot.getPlayerTwo().getId(),
+                snapshot.getStatus()
+        );
+
+        gameRepository.save(game);
+
+        webSocketMessageSender.send(snapshot.getPlayerOne().getId(), new GameStartedResponse(snapshot.getGameId().getId(), snapshot.isCurrentPlayerOne(), gameState));
+
+        if (snapshot.isFakeOpponent()) {
+            if (snapshot.isCurrentPlayerTwo()) {
+                FakePlayer fakePlayer = new FakePlayer();
+                fakePlayer.move(game);
+                gameRepository.save(game);
+            }
+        }
+
+    }
+}

@@ -79,10 +79,11 @@ public class Game extends BaseAggregateRoot {
         if (!isFull() || status == FINISHED) {
             throw new NoOponentException();
         }
+
         choseWhoFirst();
         status = STARTED;
 
-        //log.info("Game {} started", aggregateId.getId());
+        log.info("Game {} started", aggregateId.getId());
     }
 
     private void choseWhoFirst() {
@@ -107,15 +108,17 @@ public class Game extends BaseAggregateRoot {
         }
 
         if (board.isPoisonTaken()) {
+            winner = opponent(currentTurn);
             finishGame();
             return;
         }
+
         changeTurn();
     }
 
     private void finishGame() {
         status = FINISHED;
-        winner = opponent(currentTurn);
+
         event(new GameOverEvent(aggregateId, playerOne, playerTwo, isWonOf(playerOne),  isWonOf(playerTwo)));
 
         log.info("Game {} finished", aggregateId.getId());
@@ -134,11 +137,15 @@ public class Game extends BaseAggregateRoot {
     }
 
     public void leave(AggregateId leaver) {
-        if (status != FINISHED) {
-            status = FINISHED;
-            winner = opponent(leaver);
+        if (status == FINISHED){
+            log.info("Game ({}) already finished.", aggregateId.getId());
+            return;
         }
-        event(new PlayerLeftEvent(leaver, opponent(leaver), aggregateId));
+
+        log.info("User ({}) left from game ({}).",leaver.getId(), aggregateId.getId());
+        winner = opponent(leaver);
+        finishGame();
+
     }
 
     private AggregateId opponent(AggregateId participant) {

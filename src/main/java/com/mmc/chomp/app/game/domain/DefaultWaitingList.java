@@ -1,7 +1,7 @@
 package com.mmc.chomp.app.game.domain;
 
 import com.mmc.chomp.app.game.domain.board.Size;
-import com.mmc.chomp.app.game.domain.game.events.FakePlayerNeededEvent;
+import com.mmc.chomp.app.game.domain.game.events.PlayerAddedToWaitingListEvent;
 import com.mmc.chomp.app.game.domain.game.events.OpponentFoundEvent;
 import com.mmc.chomp.ddd.support.domain.DomainEventPublisher;
 import lombok.Value;
@@ -10,22 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.Iterator;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 @Slf4j
 @Component
-public class DefaultWaingList implements WaitingList {
+public class DefaultWaitingList implements WaitingList {
 
     private DomainEventPublisher eventPublisher;
+
     private Set<Waiter> waiters;
 
     @Autowired
-    DefaultWaingList(DomainEventPublisher eventPublisher) {
+    DefaultWaitingList(DomainEventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
         waiters = new HashSet<>();
     }
@@ -34,45 +32,45 @@ public class DefaultWaingList implements WaitingList {
     public void signToWaitingList(AggregateId userId, Size size) {
         Waiter newly = new Waiter(userId, size);
         Optional<Waiter> optionalWaiter = find(newly);
+
         if (optionalWaiter.isPresent()) {
             log.info("User ({}) found opponent ({})", newly.userId, optionalWaiter.get().userId);
             Waiter waiter = optionalWaiter.get();
             eventPublisher.publish(new OpponentFoundEvent(newly.userId, waiter.userId, size));
             remove(waiter);
-        }else {
+        } else {
             waiters.add(newly);
+            eventPublisher.publish(new PlayerAddedToWaitingListEvent(newly.userId, size));
             log.info("Opponent not found. User {} added to waiting list.", newly.userId);
-
-            TimerTask fakePlayerNeededEvent = new TimerTask() {
-                @Override
-                public void run() {
-                    if (waiters.contains(newly)) {
-                        log.info("User ({}) needs opponent", newly.userId);
-                        eventPublisher.publish(new FakePlayerNeededEvent(newly.userId, size));
-                        remove(newly);
-                    }else {
-                        log.info("User ({}) doesn't need opponent", newly.userId);
-                    }
-                }
-            };
-
-            Timer timer = new Timer();
-            long delay = 1000L * (new Random().nextInt(3)+1);
-            timer.schedule(fakePlayerNeededEvent, delay);
         }
     }
 
-    public Set<AggregateId> list(){//TODO: snapshot
-        HashSet<AggregateId> objects = new HashSet<>();
+    @Override
+    public boolean isStillOnList(AggregateId playerId){
         for (Waiter waiter : waiters) {
-            objects.add(waiter.userId);
+            if (waiter.getUserId().equals(playerId)){
+                return true;
+            }
         }
-        return objects;
+
+        return false;
     }
 
-    private void remove(Waiter waiter){
-        waiters.remove(waiter);
-        log.info("User ({}) removed from waiting list.", waiter.userId);
+    @Override
+    public void remove(AggregateId waiterId) {
+        Iterator<Waiter> iterator = waiters.iterator();
+        while (iterator.hasNext()){
+            Waiter waiter = iterator.next();
+            if (waiter.getUserId().equals(waiterId)){
+                waiters.remove(waiter);
+                log.info("User ({}) removed from waiting list.", waiterId);
+                return;
+            }
+        }
+    }
+
+    private void remove(Waiter waiter) {
+        remove(waiter.getUserId());
     }
 
     private Optional<Waiter> find(Waiter newly) {

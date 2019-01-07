@@ -4,4 +4,8 @@ import com.mmc.chomp.app.game.domain.board.Size;
 
 public interface WaitingList {
     void signToWaitingList(AggregateId userId, Size size);
+
+    boolean isStillOnList(AggregateId playerId);
+
+    void remove(AggregateId waiter);
 }

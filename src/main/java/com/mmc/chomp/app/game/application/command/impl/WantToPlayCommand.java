@@ -20,4 +20,5 @@ public class WantToPlayCommand extends Command {
     public void execute() {
         waitingList.signToWaitingList(AggregateId.create(getUserId()), new Size(getRows(), getCols()));
     }
+
 }

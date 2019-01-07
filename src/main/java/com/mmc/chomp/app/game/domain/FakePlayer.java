@@ -4,7 +4,6 @@ import com.mmc.chomp.app.game.domain.board.Position;
 import com.mmc.chomp.app.game.domain.game.Game;
 import lombok.extern.slf4j.Slf4j;
 
-
 @Slf4j
 public class FakePlayer {
     public void move(Game game) {
@@ -26,7 +25,5 @@ public class FakePlayer {
                 }
             }
         }
-
-
     }
 }

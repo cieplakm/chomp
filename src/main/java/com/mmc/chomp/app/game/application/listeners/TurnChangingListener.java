@@ -46,9 +46,7 @@ public class TurnChangingListener {
         GameState gameState = new GameState(gp.getBoard().getChocolateValue(), gp.getBoard().getRows(), gp.getBoard().getCols(), gp.getPlayerOne().getId(), gp.getPlayerTwo().getId(), gp.getStatus());
 
         webSocketMessageSender.send(event.getPlayerOneId().getId(), new MoveResponse(gp.getGameId().getId(), gameState, event.isPlayerOneTurn()));
+        webSocketMessageSender.send(event.getPlayerTwoId().getId(), new MoveResponse(gp.getGameId().getId(), gameState, event.isPlayerTwoTurn()));
 
-        if (!gp.isFakeOpponent()) {
-            webSocketMessageSender.send(event.getPlayerTwoId().getId(), new MoveResponse(gp.getGameId().getId(), gameState, event.isPlayerTwoTurn()));
-        }
     }
 }
