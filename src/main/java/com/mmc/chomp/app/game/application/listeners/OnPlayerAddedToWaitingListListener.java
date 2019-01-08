@@ -29,13 +29,13 @@ public class OnPlayerAddedToWaitingListListener {
     private WebSocketMessageSender webSocketMessageSender;
 
     @Autowired
-    GameFactory gameFactory;
+    private GameFactory gameFactory;
 
     @Autowired
-    GameRepository gameRepository;
+    private GameRepository gameRepository;
 
     @Autowired
-    WaitingList waitingList;
+    private WaitingList waitingList;
 
     @EventSubscriber
     public void handle(PlayerAddedToWaitingListEvent event) {
@@ -53,36 +53,27 @@ public class OnPlayerAddedToWaitingListListener {
         };
 
         Timer timer = new Timer();
-        long delay = 1000L * (new Random().nextInt(5) + 3);
+        long delay = 1000L * (new Random().nextInt(1) + 2);
         timer.schedule(fakePlayerNeededEvent, delay);
     }
 
     private void createGameWithFakePlayer(AggregateId playerId, Size size) {
         Game game = gameFactory.create(playerId, size);
         game.joinFake(AggregateId.generate());
+        gameRepository.save(game);
         game.start();
 
-        GameProjection snapshot = game.snapshot();
-
-        GameState gameState = new GameState(snapshot.getBoard().getChocolateValue(),
-                snapshot.getBoard().getRows(),
-                snapshot.getBoard().getCols(),
-                snapshot.getPlayerOne().getId(),
-                snapshot.getPlayerTwo().getId(),
-                snapshot.getStatus()
-        );
-
-        gameRepository.save(game);
-
-        webSocketMessageSender.send(snapshot.getPlayerOne().getId(), new GameStartedResponse(snapshot.getGameId().getId(), snapshot.isCurrentPlayerOne(), gameState));
-
-        if (snapshot.isFakeOpponent()) {
-            if (snapshot.isCurrentPlayerTwo()) {
-                FakePlayer fakePlayer = new FakePlayer();
-                fakePlayer.move(game);
-                gameRepository.save(game);
-            }
-        }
+//        GameProjection snapshot = game.snapshot();
+//
+//        GameState gameState = new GameState(snapshot.getBoard().getChocolateValue(),
+//                snapshot.getBoard().getRows(),
+//                snapshot.getBoard().getCols(),
+//                snapshot.getPlayerOne().getId(),
+//                snapshot.getPlayerTwo().getId(),
+//                snapshot.getStatus()
+//        );
+//
+//        webSocketMessageSender.send(snapshot.getPlayerOne().getId(), new GameStartedResponse(snapshot.getGameId().getId(), snapshot.isCurrentPlayerOne(), gameState));
 
     }
 }

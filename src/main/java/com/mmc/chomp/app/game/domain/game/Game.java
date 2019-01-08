@@ -1,6 +1,7 @@
 package com.mmc.chomp.app.game.domain.game;
 
 import com.mmc.chomp.app.game.domain.AggregateId;
+import com.mmc.chomp.app.game.domain.FakePlayer;
 import com.mmc.chomp.app.game.domain.board.Board;
 import com.mmc.chomp.app.game.domain.board.Position;
 import com.mmc.chomp.app.game.domain.exceptions.ChocolateTakenException;
@@ -10,6 +11,7 @@ import com.mmc.chomp.app.game.domain.exceptions.NotStartedException;
 import com.mmc.chomp.app.game.domain.game.events.Event;
 import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameOverEvent;
+import com.mmc.chomp.app.game.domain.game.events.GameStartedEvent;
 import com.mmc.chomp.app.game.domain.game.events.PlayerLeftEvent;
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
 import com.mmc.chomp.app.game.domain.game.events.UserJoinedEvent;
@@ -87,7 +89,8 @@ public class Game extends BaseAggregateRoot {
 
         choseWhoFirst();
         status = STARTED;
-
+        GameStartedEvent gameStartedEvent = new GameStartedEvent(snapshot(), isTurnOf(playerOne), isTurnOf(playerTwo));
+        event(gameStartedEvent);
         log.info("Game {} started", aggregateId.getId());
     }
 
@@ -118,6 +121,7 @@ public class Game extends BaseAggregateRoot {
             return;
         }
         lastMoveTimestamp = Time.getTime();
+
         changeTurn();
     }
 
@@ -137,23 +141,36 @@ public class Game extends BaseAggregateRoot {
         currentTurn = TurnChanger.switchTurn(currentTurn, playerOne, playerTwo);
         TurnChangedEvent event = new TurnChangedEvent(aggregateId, playerOne, playerTwo, playerOne.equals(currentTurn), playerTwo.equals(currentTurn), snapshot());
         event(event);
-        ticTock();
 
         log.info("Is playerOne turn {}, is playerTwo turn {} at {} game", event.isPlayerOneTurn(), event.isPlayerTwoTurn(), aggregateId.getId());
     }
 
-    private void ticTock() {
+//    if (gp.isFakeOpponent() && gp.isCurrentPlayerTwo()) {
+//        TimerTask tt = new TimerTask() {
+//            @Override
+//            public void run() {
+//                Game game = gameRepository.get(gp.getGameId());
+//                FakePlayer fakePlayer = new FakePlayer();
+//                fakePlayer.move(game);
+//            }
+//        };
+//
+//        Timer timer = new Timer();
+//        timer.schedule(tt, 750L);
+//    }
 
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                winner = opponent(currentTurn);
-                finishGame();
-            }
-        };
-        Timer timer = new Timer();
-        timer.schedule(timerTask, 15*1000L);
-    }
+//    private void ticTock() {
+//
+//        TimerTask timerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                winner = opponent(currentTurn);
+//                finishGame();
+//            }
+//        };
+//        Timer timer = new Timer();
+//        timer.schedule(timerTask, 15*1000L);
+//    }
 
     public void leave(AggregateId leaver) {
         if (status == FINISHED){

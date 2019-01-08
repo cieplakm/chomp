@@ -26,20 +26,7 @@ public class OpponentFoundListener {
     public void handle(OpponentFoundEvent event) {
         Game game = gameFactory.create(event.getPlayerOne() ,event.getSize());
         game.join(event.getPlayerTwo());
-        game.start();
-
         gameRepository.save(game);
-
-        GameProjection snapshot = game.snapshot();
-
-        GameState gameState = new GameState(snapshot.getBoard().getChocolateValue(),
-                snapshot.getBoard().getRows(),
-                snapshot.getBoard().getCols(),
-                snapshot.getPlayerOne().getId(),
-                snapshot.getPlayerTwo().getId(),
-                snapshot.getStatus()
-        );
-        webSocketMessageSender.send(snapshot.getPlayerOne().getId(), new GameStartedResponse(snapshot.getGameId().getId(), snapshot.isCurrentPlayerOne(), gameState));
-        webSocketMessageSender.send(snapshot.getPlayerTwo().getId(), new GameStartedResponse(snapshot.getGameId().getId(), snapshot.isCurrentPlayerTwo(), gameState));
+        game.start();
     }
 }

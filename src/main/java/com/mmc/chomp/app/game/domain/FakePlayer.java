@@ -3,8 +3,10 @@ package com.mmc.chomp.app.game.domain;
 import com.mmc.chomp.app.game.domain.board.Position;
 import com.mmc.chomp.app.game.domain.game.Game;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class FakePlayer {
     public void move(Game game) {
         boolean[][] chocolateValue = game.snapshot().getBoard().getChocolateValue();

@@ -34,7 +34,7 @@ public class WebSocketMessageSender {
         WebSocketSession webSocketSession = webSocketSessionKeeper.get(reciverId);
 
         if (webSocketSession == null){
-            log.info("There is no WebSocketSession for User ({])", reciverId);
+            log.info("There is no WebSocketSession for User ({})", reciverId);
             return;
         }
 
