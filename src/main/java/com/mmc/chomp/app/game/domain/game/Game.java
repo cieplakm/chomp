@@ -1,7 +1,6 @@
 package com.mmc.chomp.app.game.domain.game;
 
 import com.mmc.chomp.app.game.domain.AggregateId;
-import com.mmc.chomp.app.game.domain.FakePlayer;
 import com.mmc.chomp.app.game.domain.board.Board;
 import com.mmc.chomp.app.game.domain.board.Position;
 import com.mmc.chomp.app.game.domain.exceptions.ChocolateTakenException;
@@ -9,18 +8,12 @@ import com.mmc.chomp.app.game.domain.exceptions.JoinException;
 import com.mmc.chomp.app.game.domain.exceptions.NoOponentException;
 import com.mmc.chomp.app.game.domain.exceptions.NotStartedException;
 import com.mmc.chomp.app.game.domain.game.events.Event;
-import com.mmc.chomp.app.game.domain.game.events.GameCreatedEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameOverEvent;
 import com.mmc.chomp.app.game.domain.game.events.GameStartedEvent;
-import com.mmc.chomp.app.game.domain.game.events.PlayerLeftEvent;
 import com.mmc.chomp.app.game.domain.game.events.TurnChangedEvent;
-import com.mmc.chomp.app.game.domain.game.events.UserJoinedEvent;
 import com.mmc.chomp.ddd.annotation.domain.AggregateRoot;
 import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.CREATED;
 import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.FINISHED;
@@ -30,6 +23,7 @@ import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.STARTED;
 @AggregateRoot
 public class Game extends BaseAggregateRoot {
     private GameStatus status;
+
     private AggregateId fakeOpponent;
 
     private Board board;
@@ -78,7 +72,7 @@ public class Game extends BaseAggregateRoot {
         log.info("New fake opponent at {} game", aggregateId.getId());
     }
 
-    private boolean isFakeOpponent(){
+    private boolean isFakeOpponent() {
         return fakeOpponent != null;
     }
 
@@ -128,7 +122,7 @@ public class Game extends BaseAggregateRoot {
     private void finishGame() {
         status = FINISHED;
 
-        event(new GameOverEvent(aggregateId, playerOne, playerTwo, isWonOf(playerOne),  isWonOf(playerTwo)));
+        event(new GameOverEvent(aggregateId, playerOne, playerTwo, isWonOf(playerOne), isWonOf(playerTwo)));
 
         log.info("Game {} finished", aggregateId.getId());
     }
@@ -145,46 +139,46 @@ public class Game extends BaseAggregateRoot {
         log.info("Is playerOne turn {}, is playerTwo turn {} at {} game", event.isPlayerOneTurn(), event.isPlayerTwoTurn(), aggregateId.getId());
     }
 
-//    if (gp.isFakeOpponent() && gp.isCurrentPlayerTwo()) {
-//        TimerTask tt = new TimerTask() {
-//            @Override
-//            public void run() {
-//                Game game = gameRepository.get(gp.getGameId());
-//                FakePlayer fakePlayer = new FakePlayer();
-//                fakePlayer.move(game);
-//            }
-//        };
-//
-//        Timer timer = new Timer();
-//        timer.schedule(tt, 750L);
-//    }
+    //    if (gp.isFakeOpponent() && gp.isCurrentPlayerTwo()) {
+    //        TimerTask tt = new TimerTask() {
+    //            @Override
+    //            public void run() {
+    //                Game game = gameRepository.get(gp.getGameId());
+    //                FakePlayer fakePlayer = new FakePlayer();
+    //                fakePlayer.move(game);
+    //            }
+    //        };
+    //
+    //        Timer timer = new Timer();
+    //        timer.schedule(tt, 750L);
+    //    }
 
-//    private void ticTock() {
-//
-//        TimerTask timerTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                winner = opponent(currentTurn);
-//                finishGame();
-//            }
-//        };
-//        Timer timer = new Timer();
-//        timer.schedule(timerTask, 15*1000L);
-//    }
+    //    private void ticTock() {
+    //
+    //        TimerTask timerTask = new TimerTask() {
+    //            @Override
+    //            public void run() {
+    //                winner = opponent(currentTurn);
+    //                finishGame();
+    //            }
+    //        };
+    //        Timer timer = new Timer();
+    //        timer.schedule(timerTask, 15*1000L);
+    //    }
 
     public void leave(AggregateId leaver) {
-        if (status == FINISHED){
+        if (status == FINISHED) {
             log.info("Game ({}) already finished.", aggregateId.getId());
             return;
         }
 
-        log.info("User ({}) left from game ({}).",leaver.getId(), aggregateId.getId());
+        log.info("User ({}) left from game ({}).", leaver.getId(), aggregateId.getId());
         winner = opponent(leaver);
         finishGame();
 
     }
 
-    private AggregateId  opponent(AggregateId participant) {
+    private AggregateId opponent(AggregateId participant) {
         if (participant.equals(playerOne)) {
             return playerTwo;
         } else {

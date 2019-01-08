@@ -1,16 +1,12 @@
 package com.mmc.chomp.app.game.application.listeners;
 
 import com.mmc.chomp.app.game.domain.AggregateId;
-import com.mmc.chomp.app.game.domain.FakePlayer;
 import com.mmc.chomp.app.game.domain.WaitingList;
 import com.mmc.chomp.app.game.domain.board.Size;
 import com.mmc.chomp.app.game.domain.game.Game;
 import com.mmc.chomp.app.game.domain.game.GameFactory;
-import com.mmc.chomp.app.game.domain.game.GameProjection;
 import com.mmc.chomp.app.game.domain.game.GameRepository;
 import com.mmc.chomp.app.game.domain.game.events.PlayerAddedToWaitingListEvent;
-import com.mmc.chomp.app.response.GameStartedResponse;
-import com.mmc.chomp.app.response.GameState;
 import com.mmc.chomp.app.web.WebSocketMessageSender;
 import com.mmc.chomp.ddd.annotation.event.EventListener;
 import com.mmc.chomp.ddd.annotation.event.EventSubscriber;
@@ -44,7 +40,7 @@ public class OnPlayerAddedToWaitingListListener {
             public void run() {
                 boolean stillOnList = waitingList.isStillOnList(event.getUserId());
 
-                if (stillOnList){
+                if (stillOnList) {
                     log.info("User ({}) is still on waiting list. Creating fake player.", event.getUserId());
                     createGameWithFakePlayer(event.getUserId(), event.getSize());
                     waitingList.remove(event.getUserId());
@@ -62,18 +58,5 @@ public class OnPlayerAddedToWaitingListListener {
         game.joinFake(AggregateId.generate());
         gameRepository.save(game);
         game.start();
-
-//        GameProjection snapshot = game.snapshot();
-//
-//        GameState gameState = new GameState(snapshot.getBoard().getChocolateValue(),
-//                snapshot.getBoard().getRows(),
-//                snapshot.getBoard().getCols(),
-//                snapshot.getPlayerOne().getId(),
-//                snapshot.getPlayerTwo().getId(),
-//                snapshot.getStatus()
-//        );
-//
-//        webSocketMessageSender.send(snapshot.getPlayerOne().getId(), new GameStartedResponse(snapshot.getGameId().getId(), snapshot.isCurrentPlayerOne(), gameState));
-
     }
 }

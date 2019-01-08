@@ -14,7 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 @EventListener
-public class FakeGameController {
+public class FakePlayerMover {
 
     @Autowired
     private GameRepository gameRepository;
