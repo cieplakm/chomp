@@ -17,6 +17,9 @@ import com.mmc.chomp.ddd.annotation.domain.AggregateRoot;
 import com.mmc.chomp.ddd.support.domain.BaseAggregateRoot;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.CREATED;
 import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.FINISHED;
 import static com.mmc.chomp.app.game.domain.game.Game.GameStatus.STARTED;
@@ -36,6 +39,8 @@ public class Game extends BaseAggregateRoot {
     private AggregateId playerTwo;
 
     private AggregateId winner;
+
+    private long lastMoveTimestamp;
 
     public Game(AggregateId gameId, AggregateId creatorId, Board board) {
         this.aggregateId = gameId;
@@ -112,7 +117,7 @@ public class Game extends BaseAggregateRoot {
             finishGame();
             return;
         }
-
+        lastMoveTimestamp = Time.getTime();
         changeTurn();
     }
 
@@ -132,8 +137,22 @@ public class Game extends BaseAggregateRoot {
         currentTurn = TurnChanger.switchTurn(currentTurn, playerOne, playerTwo);
         TurnChangedEvent event = new TurnChangedEvent(aggregateId, playerOne, playerTwo, playerOne.equals(currentTurn), playerTwo.equals(currentTurn), snapshot());
         event(event);
+        ticTock();
 
         log.info("Is playerOne turn {}, is playerTwo turn {} at {} game", event.isPlayerOneTurn(), event.isPlayerTwoTurn(), aggregateId.getId());
+    }
+
+    private void ticTock() {
+
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                winner = opponent(currentTurn);
+                finishGame();
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 15*1000L);
     }
 
     public void leave(AggregateId leaver) {

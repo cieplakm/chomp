@@ -27,8 +27,8 @@ public class DefaultRankingService implements RankingService {
         winnerRank.up();
         looserRank.down();
 
-//        rankingRepository.save(winnerRank);
-//        rankingRepository.save(looserRank);
+        rankingRepository.save(winnerRank);
+        rankingRepository.save(looserRank);
 
         log.info("Ranking changed for {}. Now is: {}", winnerRank.playerId().getId(), winnerRank.getRank());
         log.info("Ranking changed for {}. Now is: {}", looserRank.playerId().getId(), looserRank.getRank());
