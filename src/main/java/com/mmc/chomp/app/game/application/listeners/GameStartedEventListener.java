@@ -9,7 +9,7 @@ import com.mmc.chomp.ddd.annotation.event.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @EventListener
-public class StartedEventListener {
+public class GameStartedEventListener {
 
     @Autowired
     private WebSocketMessageSender webSocketMessageSender;
