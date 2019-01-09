@@ -6,5 +6,15 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
+
+        stage('builddokcer') {
+                    steps {
+                        sh 'mvn dockerfile:build'
+                    }
+
+                    steps {
+                                            sh 'docker save -o image.tar'
+                                }
+                }
     }
 }
