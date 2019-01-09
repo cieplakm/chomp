@@ -5,7 +5,7 @@ agent any
             steps {
                 sh 'mvn clean install'
                 sh 'mvn dockerfile:build'
-                sh 'docker save -o image.tar'
+                sh 'docker save -o image.tar chomp'
             }
         }
     }
