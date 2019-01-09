@@ -5,8 +5,14 @@ agent any
             steps {
                 sh 'mvn clean install'
                 sh 'mvn dockerfile:build'
-                sh 'docker save -o image.tar chomp'
+
             }
         }
+
+        stage('building_images') {
+                    steps {
+                        sh 'docker save -o image.tar chomp'
+                    }
+                }
     }
 }
