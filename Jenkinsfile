@@ -1,18 +1,12 @@
 pipeline {
-    agent any
+agent any
     stages {
         stage('build') {
             steps {
                 sh 'mvn clean install'
+                sh 'mvn dockerfile:build'
+                sh 'docker save -o image.tar'
             }
-            steps {
-                                    sh 'mvn dockerfile:build'
-                                }
-
-                                steps {
-                                                        sh 'docker save -o image.tar'
-                                            }
         }
-
     }
 }
