@@ -12,6 +12,8 @@ agent any
         stage('building_images') {
                     steps {
                         sh 'docker save -o image.tar chomp'
+                        sh 'docker cp 81bd8bf639f8:image.tar image.tar'
+                        sh 'docker load -i image.tar'
                     }
                 }
     }
