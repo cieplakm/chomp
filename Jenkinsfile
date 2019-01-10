@@ -3,6 +3,7 @@ agent any
     stages {
         stage('build') {
             steps {
+            sh 'apt-get update && apt-get install -y maven'
                 sh 'mvn clean install'
                 sh 'mvn dockerfile:build'
 
