@@ -5,15 +5,8 @@ agent any
             steps {
                 sh 'mvn clean install -DskipTests'
                 sh 'mvn dockerfile:build'
+                sh 'docker run -d -p 8080:8080 chomp'
             }
         }
-
-        stage('building_images') {
-                    steps {
-                        sh 'docker save -o /tmp/image.tar chomp'
-                        sh 'docker cp 81bd8bf639f8:/tmp/image.tar image.tar'
-                        sh 'docker load -i image.tar'
-                    }
-                }
     }
 }
